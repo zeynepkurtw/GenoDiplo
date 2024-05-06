@@ -22,11 +22,11 @@ rule all:
         #flye
         expand("output/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/{read}.assembly.fasta",
                read=config["nanopore"]),
-
         #masurca
-
+        "output/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/masurca.assembly.fasta",
         #polca
-
+        expand("output/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/{assembly}.polished.fasta",
+               assembly=["flye", "masurca"]),
 
 """
 Genomics Analysis
@@ -38,7 +38,6 @@ Genomics Analysis
         -Structural Annotation
         -Functional Annotation
 """
-
 rule trimmomatic:
     input:
         r1="resources/RawData/DNA/{read}.fastq.gz",
@@ -64,12 +63,14 @@ rule fastqc:
 
 rule bwa:
     input:
-        contamination= "resources/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/contamination.fasta",
-        raw_reads= "resources/RawData/DNA/{read}.fastq.gz",
+        contamination="resources/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/contamination.fasta",
+        raw_reads="resources/RawData/DNA/{read}.fastq.gz"
     output:
-        raw_reads_unmapped= "output/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/{read}.clean.bam",
-        raw_reads_unmapped_sorted= "output/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/{read}.clean.sorted.bam",
-        raw_reads_unmapped_fastq= "output/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/{read}.clean.fastq",
+        raw_reads_unmapped="output/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/{read}.clean.bam",
+        raw_reads_unmapped_sorted="output/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/{read}.clean.sorted.bam",
+        raw_reads_unmapped_fastq="output/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/{read}.clean.fastq"
+    script:
+        "scripts/Genomics/1_HybridGenomeAssemblyWorkflow/1_ReadsPreprocessing/ContaminationRemovalRawReads.py"
 
  rule flye:
     input:
@@ -86,12 +87,12 @@ rule masurca:
     input:
         config = "resources/AssemblyConfig/masurca_config.sh"
     output:
-        "output/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/assembled_genome.fasta"
+        "output/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/masurca.assembly.fasta"
     script:
         "scripts/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assemblers/MasurcaAssembler.py"
 rule polca:
     input:
-        assembly = "output/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/{assembly}.fasta",
+        assembly = "output/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/{assembly}.assembly.fasta",
         illumina_run1_R1= "resources/RawData/DNA/illumina_run1_R1.fastq.gz",
         illumina_run1_R2= "resources/RawData/DNA/illumina_run1_R2.fastq.gz",
         illumina_run2_R1= "resources/RawData/DNA/illumina_run2_R1.fastq.gz",
@@ -99,10 +100,9 @@ rule polca:
         illumina_run3_R1= "resources/RawData/DNA/illumina_run3_R1.fastq.gz",
         illumina_run3_R2= "resources/RawData/DNA/illumina_run3_R2.fastq.gz",
     output:
-        polished_assembly = "output/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/{read}.polished.fasta"
+        polished_assembly = "output/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/{assembly}.polished.fasta"
     script:
         "scripts/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assemblers/Polishing.py"
-
 
 """
 Comparative Genomics Analysis
