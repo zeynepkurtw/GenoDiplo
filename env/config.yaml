@@ -7,7 +7,7 @@ DNAseq: [pacbio.fastq.gz, nanopore.fastq.gz,
       illumina_run2_R1.fastq.gz, illumina_run2_R2.fastq.gz,
       illumina_run3_R1.fastq.gz, illumina_run3_R2.fastq.gz]
 
-illumina_run1 : [illumina_run1_R1.fastq.gz,illumina_run1_R2.fastq.gz]
+illumina_run1 : [illumina_run1_R1.fastq.gz, illumina_run1_R2.fastq.gz]
 illumina_run2 : [illumina_run2_R1.fastq.gz, illumina_run2_R2.fastq.gz]
 illumina_run3 : [illumina_run3_R1.fastq.gz, illumina_run3_R2.fastq.gz]
 
