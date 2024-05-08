@@ -2,13 +2,13 @@ configfile: "env/config.yaml"
 
 rule all:
     input:
-         #fastqc
-        expand("output/Genomics/1_HybridGenomeAssemblyWorkflow/1_ReadsPreprocessing/{read}.fastq.gz.html",
-                read = config["DNAseq"]),
+        #fastqc
+        expand("output/Genomics/1_HybridGenomeAssemblyWorkflow/1_ReadsPreprocessing/{seq}.html",
+                seq = config["DNAseq"]),
         #trimmomatic
-        expand("output/Genomics/1_HybridGenomeAssemblyWorkflow/1_ReadsPreprocessing/{read}_R1.unique.trimmed.fastq",
-               read=["illumina_run1", "illumina_run2", "illumina_run3"]),
-         #fastqc
+        expand("output/Genomics/1_HybridGenomeAssemblyWorkflow/1_ReadsPreprocessing/{run}_R1.unique.trimmed.fastq",
+               run=["illumina_run1", "illumina_run2", "illumina_run3"]),
+        #fastqc
         expand("output/Genomics/1_HybridGenomeAssemblyWorkflow/1_ReadsPreprocessing/{run}_R{pair}.{type}.trimmed_fastqc.html",
                run=["illumina_run1", "illumina_run2", "illumina_run3"],
                pair=[1, 2],
@@ -16,39 +16,53 @@ rule all:
         #calculatereadmeanstdev
         #ContaminationDetection.py
         #bwa
-        expand("output/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/{read}.unmapped.fastq",
-               read=config["DNAseq"]),
-         #flye
-        "output/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/flye.assembly.fasta",
-         #masurca
-        "output/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/masurca.assembly.fasta",
-         #polca
-        expand("output/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/{assembly}.polished.fasta",
-               assembly=["flye", "masurca"]),
+        #expand("output/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/{read}.unmapped.fastq",
+        # read=config["DNAseq"]),
+         expand("resources/RawData/DNA/{process}/{read}.fastq.gz",
+                read=["pacbio","nanopore",
+         "illumina_run1_R1","illumina_run1_R2",
+         "illumina_run2_R1","illumina_run2_R2",
+         "illumina_run3_R1","illumina_run3_R2"],
+                process=["clean"]),
+        #flye
+        expand("output/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/flye/{genome}.fasta",
+               genome=["Hexamita"]),
+        #masurca
+        expand("output/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/masurca/{genome}.fasta",
+            genome=["Hexamita"]),
+        #polca
+        expand("output/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/{assembler}/{genome}.polished.fasta",
+               assembler=["flye", "masurca"],
+               genome=["Hexamita"]),
         #quast
         expand("output/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/{assembly}.quast_report",
                assembly=["flye", "masurca"]),
         #bowtie2_paired_reads
-        expand("output/Genomics/1_HybridGenomeAssemblyWorkflow/3_AssemblyEvaluation/{assembly}/{process}/{reads}.pair.bam",
-                assembly=["flye", "masurca"],
-                process=["raw", "clean"],
-                reads=["illumina_run1", "illumina_run2", "illumina_run3"]),
+        expand("output/Genomics/1_HybridGenomeAssemblyWorkflow/3_AssemblyEvaluation/{assembler}/{genome}/{process}/{run}.pair.bam",
+                assembler=["flye", "masurca"],
+                genome=["Hexamita"],
+                process=["clean"],
+                run=["illumina_run1", "illumina_run2", "illumina_run3"]),
 
         #bowtie2_single_reads
-        expand("output/Genomics/1_HybridGenomeAssemblyWorkflow/3_AssemblyEvaluation/{assembly}/{process}/{reads}.sin.bam",
-                assembly=["flye", "masurca"],
-                process=["raw", "clean"],
-                reads=["illumina_run1", "illumina_run2", "illumina_run3"]),
-         #meryl
-        expand("output/Genomics/1_HybridGenomeAssemblyWorkflow/3_AssemblyEvaluation/{assembly}/winnowmap/merlyDB",
-                assembly=["flye", "masurca"]),
-        expand("output/Genomics/1_HybridGenomeAssemblyWorkflow/3_AssemblyEvaluation/{assembly}/winnowmap/repetitive_k15.txt",
-                assembly=["flye", "masurca"]),
-         #winnowmap
-        expand("output/Genomics/1_HybridGenomeAssemblyWorkflow/3_AssemblyEvaluation/{assembly}/{process}/winnowmap/{reads}.win.bam",
-                assembly=["flye", "masurca"],
-                process=["raw", "clean"],
-                reads=config["nanopore"])
+        expand("output/Genomics/1_HybridGenomeAssemblyWorkflow/3_AssemblyEvaluation/{assembler}/{genome}/{process}/{run}.sin.bam",
+                assembler=["flye", "masurca"],
+                genome=["Hexamita"],
+                process=["clean"],
+                run=["illumina_run1", "illumina_run2", "illumina_run3"]),
+        #meryl
+        expand("output/Genomics/1_HybridGenomeAssemblyWorkflow/3_AssemblyEvaluation/{assembler}/{genome}/winnowmap/merlyDB",
+                assembler=["flye", "masurca"],
+                genome=["Hexamita"]),
+        expand("output/Genomics/1_HybridGenomeAssemblyWorkflow/3_AssemblyEvaluation/{assembler}/{genome}/winnowmap/repetitive_k15.txt",
+                assembler=["flye", "masurca"],
+                genome=["Hexamita"]),
+        #winnowmap
+        expand("output/Genomics/1_HybridGenomeAssemblyWorkflow/3_AssemblyEvaluation/{assembler}/{genome}/{process}/winnowmap/{long_reads}.win.bam",
+                assembler=["flye", "masurca"],
+                genome=["Hexamita"],
+                process=["clean"],
+                long_reads=config["nanopore"])
 
 
 """
@@ -63,13 +77,13 @@ Genomics Analysis
 """
 rule trimmomatic:
     input:
-        r1="resources/RawData/DNA/{read}.fastq.gz",
-        r2="resources/RawData/DNA/{read}.fastq.gz"
+        r1="resources/RawData/DNA/raw/{run}_R1.fastq.gz",
+        r2="resources/RawData/DNA/raw/{run}_R2.fastq.gz"
     output:
-          r1_u="output/Genomics/1_HybridGenomeAssemblyWorkflow/1_ReadsPreprocessing/{read}_R1.unique.trimmed.fastq",
-          r2_u="output/Genomics/1_HybridGenomeAssemblyWorkflow/1_ReadsPreprocessing/{read}_R2.unique.trimmed.fastq",
-          r1_d="output/Genomics/1_HybridGenomeAssemblyWorkflow/1_ReadsPreprocessing/{read}_R1.duplicate.trimmed.fastq",
-          r2_d="output/Genomics/1_HybridGenomeAssemblyWorkflow/1_ReadsPreprocessing/{read}_R2.duplicate.trimmed.fastq"
+          r1_u="output/Genomics/1_HybridGenomeAssemblyWorkflow/1_ReadsPreprocessing/{run}_R1.unique.trimmed.fastq",
+          r2_u="output/Genomics/1_HybridGenomeAssemblyWorkflow/1_ReadsPreprocessing/{run}_R2.unique.trimmed.fastq",
+          r1_d="output/Genomics/1_HybridGenomeAssemblyWorkflow/1_ReadsPreprocessing/{run}_R1.duplicate.trimmed.fastq",
+          r2_d="output/Genomics/1_HybridGenomeAssemblyWorkflow/1_ReadsPreprocessing/{run}_R2.duplicate.trimmed.fastq"
 
     conda:
         "env/genomics.yaml"
@@ -77,10 +91,10 @@ rule trimmomatic:
         "scripts/Genomics/1_HybridGenomeAssemblyWorkflow/1_ReadsPreprocessing/TrimIlluminaReads.py"
 rule fastqc:
     input:
-        r1="output/Genomics/1_HybridGenomeAssemblyWorkflow/1_ReadsPreprocessing/{read}.unique.trimmed.fastq",
-        r2="output/Genomics/1_HybridGenomeAssemblyWorkflow/1_ReadsPreprocessing/{read}.duplicate.trimmed.fastq",
+        r1="output/Genomics/1_HybridGenomeAssemblyWorkflow/1_ReadsPreprocessing/{seq}.unique.trimmed.fastq",
+        r2="output/Genomics/1_HybridGenomeAssemblyWorkflow/1_ReadsPreprocessing/{seq}.duplicate.trimmed.fastq",
     output:
-        html="output/Genomics/1_HybridGenomeAssemblyWorkflow/1_ReadsPreprocessing/{read}.unique.trimmed_fastqc.html",
+        html="output/Genomics/1_HybridGenomeAssemblyWorkflow/1_ReadsPreprocessing/{seq}.unique.trimmed_fastqc.html",
     conda:
         "env/genomics.yaml"
     script:
@@ -88,24 +102,27 @@ rule fastqc:
 #rule calculatereadmeanstdev
 rule bwa:
     input:
-        contamination="resources/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/contamination.fasta",
-        raw_reads="resources/RawData/DNA/{read}.fastq.gz"
+        contamination="output/Genomics/1_HybridGenomeAssemblyWorkflow/1_ReadsPreprocessing/contamination.fasta",
+        raw_reads="resources/RawData/DNA/raw/{read}.fastq.gz"
     output:
-        raw_reads_unmapped="output/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/{read}.clean.bam",
-        raw_reads_unmapped_sorted="output/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/{read}.clean.sorted.bam",
-        raw_reads_unmapped_fastq="output/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/{read}.clean.fastq"
+        #raw_reads_unmapped="output/Genomics/1_HybridGenomeAssemblyWorkflow/1_ReadsPreprocessing/{read}.clean.bam",
+        #raw_reads_unmapped_sorted="output/Genomics/1_HybridGenomeAssemblyWorkflow/1_ReadsPreprocessing/{read}.clean.sorted.bam",
+        #raw_reads_unmapped_fastq="output/Genomics/1_HybridGenomeAssemblyWorkflow/1_ReadsPreprocessing/{read}.clean.fastq"
+        raw_reads_unmapped="resources/RawData/DNA/clean/{read}.bam",
+        raw_reads_unmapped_sorted="resources/RawData/DNA/clean/{read}.sorted.bam",
+        raw_reads_unmapped_fastq="resources/RawData/DNA/clean/{read}.fastq.gz"
     conda:
         "env/genomics.yaml"
     script:
         "scripts/Genomics/1_HybridGenomeAssemblyWorkflow/1_ReadsPreprocessing/ContaminationRemovalRawReads.py"
 rule flye:
     input:
-        reads= "output/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/{read}.clean.fastq",
+        reads= "resources/RawData/DNA/clean/nanopore.fastq.gz",
     params:
         genome_size= "114m",
         threads = 25,
     output:
-        assembly= "output/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/{read}.flye.assembly.fasta",
+        assembly= "output/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/flye/{genome}.fasta",
     conda:
         "env/genomics.yaml"
     script:
@@ -114,31 +131,31 @@ rule masurca:
     input:
         config = "resources/AssemblyConfig/masurca_config.sh"
     output:
-        "output/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/masurca.assembly.fasta"
+        "output/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/masurca/{genome}.fasta"
     conda:
         "env/genomics.yaml"
     script:
         "scripts/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assemblers/MasurcaAssembler.py"
 rule polca:
     input:
-        assembly = "output/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/{assembly}.assembly.fasta",
-        illumina_run1_R1= "resources/RawData/DNA/illumina_run1_R1.fastq.gz",
-        illumina_run1_R2= "resources/RawData/DNA/illumina_run1_R2.fastq.gz",
-        illumina_run2_R1= "resources/RawData/DNA/illumina_run2_R1.fastq.gz",
-        illumina_run2_R2= "resources/RawData/DNA/illumina_run2_R2.fastq.gz",
-        illumina_run3_R1= "resources/RawData/DNA/illumina_run3_R1.fastq.gz",
-        illumina_run3_R2= "resources/RawData/DNA/illumina_run3_R2.fastq.gz",
+        assembly = "output/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/{assembler}/{genome}.fasta",
+        illumina_run1_R1= "resources/RawData/DNA/raw/illumina_run1_R1.fastq.gz",
+        illumina_run1_R2= "resources/RawData/DNA/raw/illumina_run1_R2.fastq.gz",
+        illumina_run2_R1= "resources/RawData/DNA/raw/illumina_run2_R1.fastq.gz",
+        illumina_run2_R2= "resources/RawData/DNA/raw/illumina_run2_R2.fastq.gz",
+        illumina_run3_R1= "resources/RawData/DNA/raw/illumina_run3_R1.fastq.gz",
+        illumina_run3_R2= "resources/RawData/DNA/raw/illumina_run3_R2.fastq.gz",
     output:
-        polished_assembly = "output/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/{assembly}.polished.fasta"
+        polished_assembly = "output/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/{assembler}/polca/{genome}.polished.fasta"
     script:
         "scripts/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assemblers/Polishing.py"
 rule quast:
     input:
-        assembly = "output/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/{assembly}.assembly.fasta",
+        assembly = "output/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/{assembler}/polca/{genome}.polished.fasta",
     params:
         threads = 2
     output:
-        quast_report = "output/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/{assembly}.quast_report"
+        quast_report = "output/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/{assembler}/{genome}.quast_report"
     conda:
         "env/genomics.yaml"
     script:
@@ -146,10 +163,10 @@ rule quast:
 #Assembly coverage depth
 rule bowtie2_biult_index:
     input:
-        "output/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/{assembly}.assembly.fasta"
+        "output/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/{assembler}/{assembly}.assembly.fasta"
     output:
         multiext(
-            "output/Genomics/1_HybridGenomeAssemblyWorkflow/3_AssemblyEvaluation/index_bt2/{assembly}",
+            "output/Genomics/1_HybridGenomeAssemblyWorkflow/3_AssemblyEvaluation/index_bt2/{assembler}/{assembly}",
             ".1.bt2",
             ".2.bt2",
             ".3.bt2",
@@ -157,7 +174,7 @@ rule bowtie2_biult_index:
             ".rev.1.bt2",
             ".rev.2.bt2")
     params:
-        outname = "output/Genomics/1_HybridGenomeAssemblyWorkflow/3_AssemblyEvaluation/index_bt2/{assembly}",
+        outname = "output/Genomics/1_HybridGenomeAssemblyWorkflow/3_AssemblyEvaluation/index_bt2/{assembler}/{assembly}",
         num_threads = 30
     conda:
         "env/genomics.yaml"
@@ -166,18 +183,18 @@ rule bowtie2_biult_index:
 rule bowtie2_paired_reads:
     input:
         index=multiext(
-        "output/Genomics/1_HybridGenomeAssemblyWorkflow/3_AssemblyEvaluation/index_bt2/{assembly}",
+        "output/Genomics/1_HybridGenomeAssemblyWorkflow/3_AssemblyEvaluation/index_bt2/{assembler}/{assembly}",
             ".1.bt2",
             ".2.bt2",
             ".3.bt2",
             ".4.bt2",
             ".rev.1.bt2",
             ".rev.2.bt2"),
-        illumina_R1 ="resources/RawData/DNA/{process}/{reads}_R1.fastq.gz",
-        illumina_R2 ="resources/RawData/DNA/{process}/{reads}_R2.fastq.gz"
+        illumina_R1 ="resources/RawData/DNA/{process}/{run}_R1.fastq.gz",
+        illumina_R2 ="resources/RawData/DNA/{process}/{run}_R2.fastq.gz"
     output:
-        bam= "output/Genomics/1_HybridGenomeAssemblyWorkflow/3_AssemblyEvaluation/{assembly}/{process}/{reads}.pair.bam",
-        bai= "output/Genomics/1_HybridGenomeAssemblyWorkflow/3_AssemblyEvaluation/{assembly}/{process}/{reads}.pair.bai"
+        bam= "output/Genomics/1_HybridGenomeAssemblyWorkflow/3_AssemblyEvaluation/{assembler}/{assembly}/{process}/{run}.pair.bam",
+        bai= "output/Genomics/1_HybridGenomeAssemblyWorkflow/3_AssemblyEvaluation/{assembler}/{assembly}/{process}/{run}.pair.bai"
     params:
         paired = True,
         num_threads = 30,
@@ -188,17 +205,17 @@ rule bowtie2_paired_reads:
 rule bowtie2_single_reads:
     input:
         index=multiext(
-        "output/Genomics/1_HybridGenomeAssemblyWorkflow/3_AssemblyEvaluation/index_bt2/{assembly}",
+        "output/Genomics/1_HybridGenomeAssemblyWorkflow/3_AssemblyEvaluation/index_bt2/{assembler}/{assembly}",
             ".1.bt2",
             ".2.bt2",
             ".3.bt2",
             ".4.bt2",
             ".rev.1.bt2",
             ".rev.2.bt2"),
-        read="resources/RawData/DNA/{process}/{reads}.fastq.gz",
+        run="resources/RawData/DNA/{process}/{run}.fastq.gz",
     output:
-        bam= "output/Genomics/1_HybridGenomeAssemblyWorkflow/3_AssemblyEvaluation/{assembly}/{process}/{reads}.sin.bam",
-        bai= "output/Genomics/1_HybridGenomeAssemblyWorkflow/3_AssemblyEvaluation/{assembly}/{process}/{reads}.sin.bai"
+        bam= "output/Genomics/1_HybridGenomeAssemblyWorkflow/3_AssemblyEvaluation/{assembler}/{assembly}/{process}/{run}.sin.bam",
+        bai= "output/Genomics/1_HybridGenomeAssemblyWorkflow/3_AssemblyEvaluation/{assembler}/{assembly}/{process}/{run}.sin.bai"
     params:
         num_threads = 30,
     conda:
@@ -207,10 +224,10 @@ rule bowtie2_single_reads:
         "scripts/Genomics/1_HybridGenomeAssemblyWorkflow/3_AssemblyEvaluation/MapShortReadsToAssembly.py"
 rule meryl:
     input:
-        genome="output/Genomics/1_HybridGenomeAssemblyWorkflow/3_AssemblyEvaluation/{assembly}.assembly.fasta",
+        genome="output/Genomics/1_HybridGenomeAssemblyWorkflow/3_AssemblyEvaluation/{assembler}/{assembly}.assembly.fasta",
     output:
-        merylDB= directory("output/Genomics/1_HybridGenomeAssemblyWorkflow/3_AssemblyEvaluation/{assembly}/winnowmap/merlyDB"),
-        repetitive_k15="output/Genomics/1_HybridGenomeAssemblyWorkflow/3_AssemblyEvaluation/{assembly}/winnowmap/repetitive_k15.txt",
+        merylDB= directory("output/Genomics/1_HybridGenomeAssemblyWorkflow/3_AssemblyEvaluation/{assembler}/{assembly}/winnowmap/merlyDB"),
+        repetitive_k15="output/Genomics/1_HybridGenomeAssemblyWorkflow/3_AssemblyEvaluation/{assembler}/{assembly}/winnowmap/repetitive_k15.txt",
     params:
         num_threads = 30,
         nanopore=True
@@ -220,13 +237,13 @@ rule meryl:
         "scripts/Genomics/1_HybridGenomeAssemblyWorkflow/3_AssemblyEvaluation/CalculateKmerLongReads.py"
 rule winnowmap:
     input:
-        genome="output/Genomics/1_HybridGenomeAssemblyWorkflow/3_AssemblyEvaluation/{assembly}.assembly.fasta",
-        read="resources/RawData/DNA/{process}/{reads}_R1.fastq.gz",
-        merylDB="output/Genomics/1_HybridGenomeAssemblyWorkflow/3_AssemblyEvaluation/{assembly}/winnowmap/merlyDB",
-        repetitive_k15="output/Genomics/1_HybridGenomeAssemblyWorkflow/3_AssemblyEvaluation/{assembly}/winnowmap/repetitive_k15.txt",
+        genome="output/Genomics/1_HybridGenomeAssemblyWorkflow/3_AssemblyEvaluation/{assembler}/{assembly}.assembly.fasta",
+        run="resources/RawData/DNA/{process}/{run}_R1.fastq.gz",
+        merylDB="output/Genomics/1_HybridGenomeAssemblyWorkflow/3_AssemblyEvaluation/{assembler}/{assembly}/winnowmap/merlyDB",
+        repetitive_k15="output/Genomics/1_HybridGenomeAssemblyWorkflow/3_AssemblyEvaluation/{assembler}/{assembly}/winnowmap/repetitive_k15.txt",
     output:
-        bam="output/Genomics/1_HybridGenomeAssemblyWorkflow/3_AssemblyEvaluation/{assembly}/{process}/winnowmap/{reads}.win.bam",
-        bai="output/Genomics/1_HybridGenomeAssemblyWorkflow/3_AssemblyEvaluation/{assembly}/{process}/winnowmap/{reads}.win.bai"
+        bam="output/Genomics/1_HybridGenomeAssemblyWorkflow/3_AssemblyEvaluation/{assembler}/{assembly}/{process}/winnowmap/{reads}.win.bam",
+        bai="output/Genomics/1_HybridGenomeAssemblyWorkflow/3_AssemblyEvaluation/{assembler}/{assembly}/{process}/winnowmap/{reads}.win.bai"
     params:
         num_threads = 30,
         nanopore = True

@@ -12,3 +12,4 @@ shell(f"bwa mem -t 30 {contamination} {raw_reads} | samtools view -b -f 4 -o {ra
 shell(f"samtools sort -@ 30 {raw_reads_unmapped} -o {raw_reads_unmapped_sorted}")
 shell(f"samtools index -@ 30 {raw_reads_unmapped_sorted}")
 shell(f"samtools fastq -@ 30 {raw_reads_unmapped_sorted} -o {raw_reads_unmapped_fastq}")
+shell(f"gzip {raw_reads_unmapped_fastq}")
