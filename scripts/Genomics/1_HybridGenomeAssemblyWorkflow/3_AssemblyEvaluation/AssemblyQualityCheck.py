@@ -2,6 +2,6 @@ from snakemake.shell import shell
 
 assembly = snakemake.input.assembly
 threads = snakemake.params.threads
-outdir = snakemake.output.outdir
+report_dir = snakemake.output.report_dir
 
-shell(f"quast.py {assembly} -o {outdir} --threads {threads} --eukaryote")
+shell(f"quast.py {assembly} -o {report_dir} --threads {threads} --eukaryote")
