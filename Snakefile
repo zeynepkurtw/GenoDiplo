@@ -102,22 +102,22 @@ rule all:
                 assembler=["flye"],
                 genome=["Hexamita"]),
         #tRNAscan_cov
-            expand("output/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/{assembler}/{genome}.cov.tRNAscan",
+            expand("output/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/{assembler}/{genome}.tRNAscan_cov",
                 assembler=["flye"],
                 genome=["Hexamita"]),
         #barrnap
-            expand("output/Genomics/3_ComparativeGenomics/1_GenomeStructureLevel/{assembler}/{genome}.rrna.gff",
+            expand("output/ComparativeGenomics/1_GenomeStructureLevel/{assembler}/{genome}.rrna.gff",
                 assembler=["flye"],
                 genome=["Hexamita"]),
         #cdhit
-            expand("output/Genomics/3_ComparativeGenomics/1_GenomeStructureLevel/{assembler}/{genome}_{n}.cdhit",
+            expand("output/ComparativeGenomics/1_GenomeStructureLevel/{assembler}/{genome}_{n}.cdhit",
                 assembler=["flye"],
-                genome=["Hexamita"]),
+                genome=["Hexamita"],
+                   n=[0.70, 0.75, 0.80, 0.85, 0.90, 0.95, 1]),
         #orthofinder
-            expand("output/Genomics/3_ComparativeGenomics/2_SequenceSimilarityLevel/{assembler}/{annotation}/",
-                assembler=["flye"],
-                annotation=["glimmerhmm"]),
+            "output/ComparativeGenomics/2_SequenceSimilarityLevel/"
         #orthofinder_rerun
+
 
 
 
@@ -464,15 +464,15 @@ rule build_database:
 
 rule repeatmodeler:
     input:
-         genome="output/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/{assembler}/polca/{genome}.polished.fasta",
-         db="output/1_repeatmasker/{genome}_RModeler/{genome}_db.nhr"
+         db="output/ComparativeGenomics/1_GenomeStructureLevel/{assembler}/{genome}_RModeler/{genome}_db.nhr"
     output:
           "output/ComparativeGenomics/1_GenomeStructureLevel/{assembler}/{genome}_RModeler/{genome}_db-families.fasta"
     params:
-          db_name="output/ComparativeGenomics/1_GenomeStructureLevel/{assembler}/{genome}_RModeler/{genome}_db"
+          db_name="output/ComparativeGenomics/1_GenomeStructureLevel/{assembler}/{genome}_RModeler/{genome}_db",
+          threads = 8,
+          engine="ncbi"
     conda:
          "env/genomics.yaml"
-    threads: 32
     script:
           "scripts/ComparativeGenomics/1_GenomeStructureLevel/Repeatmodeler.py"
 
@@ -506,18 +506,18 @@ rule tRNAscan_cov:
          genome="output/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/{assembler}/polca/{genome}.polished.fasta"
     params: threads=8
     output:
-          tRNA="output/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/{assembler}/{genome}.cov.tRNAscan",
-          stats="output/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/{assembler}/{genome}.cov.stats"
+          tRNA="output/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/{assembler}/{genome}.tRNAscan_cov",
+          stats="output/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/{assembler}/{genome}.stats_cov"
     conda:
          "env/genomics.yaml"
     script:
-          "scripts/ComparativeGenomics/1_GenomeStructureLevel/tRNAscan.py"
+          "scripts/ComparativeGenomics/1_GenomeStructureLevel/tRNAscan_cov.py"
 
 rule barrnap:
     input:
          genome="output/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/{assembler}/polca/{genome}.polished.fasta"
     output:
-          gff="output/Genomics/3_ComparativeGenomicsAnalysis/1_GenomeStructureLevel/{assembler}/{genome}.rrna.gff",
+          gff="output/ComparativeGenomics/1_GenomeStructureLevel/{assembler}/{genome}.rrna.gff",
     conda:
          "env/genomics.yaml"
     script:
@@ -528,7 +528,7 @@ rule cdhit:
         genome = "output/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/{assembler}/polca/{genome}.polished.fasta"
     params:
         threads=8
-    output: "output/Genomics/3_ComparativeGenomicsAnalysis/1_GenomeStructureLevel/{assembler}/{annotation}/{genome}_{n}.cdhit"
+    output: "output/ComparativeGenomics/1_GenomeStructureLevel/{assembler}/{genome}_{n}.cdhit"
     conda:
          "env/genomics.yaml"
     script:
@@ -536,9 +536,9 @@ rule cdhit:
 
 rule orthofinder:
     input:
-         proteome="output/Genomics/2_GenomeAnnotationWorkflow/1_StructuralAnnotation/{assembler}/{annotation}/{genome}.faa"
+         proteome="resources/Orthofinder/sp/"
     output:
-        directory('output/Genomics/3_ComparativeGenomicsAnalysis/2_SequenceSimilarityLevel/{assembler}/{annotation}/')
+        directory('output/ComparativeGenomics/2_SequenceSimilarityLevel/')
     conda:
          "env/genomics.yaml"
     script:
@@ -546,7 +546,7 @@ rule orthofinder:
 
 rule orthofinder_rerun:
     input:
-         new_sp="resources/Orthofinder_rerun/new_sp",
+         new_sp="resources/Orthofinder/new_sp",
          old_sp="output/Genomics/3_ComparativeGenomicsAnalysis/2_SequenceSimilarityLevel/{assembler}/{annotation}/OrthoFinder/{results}/WorkingDirectory/"
     output:
           directory('output/Genomics/3_ComparativeGenomicsAnalysis/2_SequenceSimilarityLevel/{assembler}/{annotation}/{results}/new_sp')
