@@ -1,0 +1,7 @@
+Building DAG of jobs...
+MissingInputException in rule trimmomatic in file /Users/zeyku390/PycharmProjects/GenoDiplo/Snakefile, line 65:
+Missing input files for rule trimmomatic:
+    output: output/Genomics/1_HybridGenomeAssemblyWorkflow/1_ReadsPreprocessing/illumina_run1_R1.unique.trimmed.fastq, output/Genomics/1_HybridGenomeAssemblyWorkflow/1_ReadsPreprocessing/illumina_run1_R2.unique.trimmed.fastq, output/Genomics/1_HybridGenomeAssemblyWorkflow/1_ReadsPreprocessing/illumina_run1_R1.duplicate.trimmed.fastq, output/Genomics/1_HybridGenomeAssemblyWorkflow/1_ReadsPreprocessing/illumina_run1_R2.duplicate.trimmed.fastq
+    wildcards: read=illumina_run1
+    affected files:
+        resources/RawData/DNA/illumina_run1.fastq.gz

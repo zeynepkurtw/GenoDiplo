@@ -1,0 +1,3 @@
+KeyError in file /Users/zeyku390/PycharmProjects/GenoDiplo/Snakefile, line 36:
+('illumina_run1', 'illumina_run2', 'illumina_run3')
+  File "/Users/zeyku390/PycharmProjects/GenoDiplo/Snakefile", line 36, in <module>
