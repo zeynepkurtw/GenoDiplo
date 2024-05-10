@@ -1,6 +1,6 @@
 from snakemake.shell import shell
 
-diplomonad_proteome= snakemake.input.proteome
+genome= snakemake.input.genome
 
 db_prefix = snakemake.params.db_prefix
 outfmt = snakemake.params.outfmt
@@ -11,7 +11,7 @@ more_sensitive = snakemake.params.more_sensitive
 
 output = snakemake.output
 
-shell(f"""diamond blastp --query {diplomonad_proteome} \
+shell(f"""diamond blastp --query {genome} \
  --db {db_prefix} \
  --out {output} \
  --outfmt {outfmt} \
