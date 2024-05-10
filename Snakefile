@@ -181,7 +181,7 @@ rule fastqc_after_trimming:
 #rule calculatereadmeanstdev
 rule bwa:
     input:
-         contamination="output/Genomics/1_HybridGenomeAssemblyWorkflow/1_ReadsPreprocessing/contamination.fasta",
+         contamination="resources/Contamination/contamination.fasta",
          raw_reads="resources/RawData/DNA/raw/{DNAseq}.fastq.gz"
     output:
           #raw_reads_unmapped="output/Genomics/1_HybridGenomeAssemblyWorkflow/1_ReadsPreprocessing/{read}.clean.bam",
