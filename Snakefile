@@ -102,7 +102,7 @@ rule all:
                 assembler=["flye"],
                 genome=["Hexamita"]),
         #tRNAscan_cov
-            expand("output/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/{assembler}/{genome}.tRNAscan_cov",
+            expand("output/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/{assembler}/sensitive_search/{genome}.tRNAscan_cov",
                 assembler=["flye"],
                 genome=["Hexamita"]),
         #barrnap
@@ -506,8 +506,8 @@ rule tRNAscan_cov:
          genome="output/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/{assembler}/polca/{genome}.polished.fasta"
     params: threads=8
     output:
-          tRNA="output/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/{assembler}/{genome}.tRNAscan_cov",
-          stats="output/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/{assembler}/{genome}.stats_cov"
+          tRNA="output/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/{assembler}/sensitive_search/{genome}.tRNAscan_cov",
+          stats="output/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/{assembler}/sensitive_search/{genome}.stats_cov"
     conda:
          "env/genomics.yaml"
     script:
