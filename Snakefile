@@ -200,6 +200,8 @@ rule bwa:
     input:
          contamination="resources/Contamination/all_contaminated.fasta",
          raw_reads="resources/RawData/DNA/raw/{DNAseq}.fastq.gz"
+    params:
+          threads=32
     output:
           #raw_reads_unmapped="output/Genomics/1_HybridGenomeAssemblyWorkflow/1_ReadsPreprocessing/{read}.clean.bam",
           #raw_reads_unmapped_sorted="output/Genomics/1_HybridGenomeAssemblyWorkflow/1_ReadsPreprocessing/{read}.clean.sorted.bam",
