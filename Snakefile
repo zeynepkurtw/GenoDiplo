@@ -4,7 +4,8 @@ rule all:
     input:
          #fastqc
          expand("output/Genomics/1_HybridGenomeAssemblyWorkflow/1_ReadsPreprocessing/{seq}.fastqc.html",
-                seq=config["reads"]),
+                seq=["pacbio", "nanopore"])
+                #seq=config["reads"]),
          #trimmomatic
          expand("output/Genomics/1_HybridGenomeAssemblyWorkflow/1_ReadsPreprocessing/{run}_R1.unique.trimmed.fastq",
                 run=["illumina_run1", "illumina_run2", "illumina_run3"]),
