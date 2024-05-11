@@ -1,8 +1,8 @@
 DATA
-PE = aa 236 240 illumina_run1_R1.fastq.gz illumina_run1_R2.fastq.gz
-PE = ab 229 232 illumina_run2_R1.fastq.gz illumina_run2_R2.fastq.gz
-PE = ac 235 238 illumina_run3_R1.fastq.gz illumina_run3_R2.fastq.gz
-PACBIO = pacbio.fastq.gz #or nanopore or both
+PE = aa 236 240 resources/RawData/DNA/clean/illumina_run1_R1.clean.fastq.gz resources/RawData/DNA/clean/illumina_run1_R2.clean.fastq.gz
+PE = ab 229 232 resources/RawData/DNA/clean/illumina_run2_R1.clean.fastq.gz resources/RawData/DNA/clean/illumina_run2_R2.clean.fastq.gz
+PE = ac 235 238 resources/RawData/DNA/clean/illumina_run3_R1.clean.fastq.gz resources/RawData/DNA/clean/illumina_run3_R2.clean.fastq.gz
+PACBIO = resources/RawData/DNA/clean/pacbio.clean.fastq.gz #or nanopore or both
 END
 
 PARAMETERS
