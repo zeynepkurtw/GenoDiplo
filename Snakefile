@@ -235,7 +235,7 @@ rule bowtie2_clean_reads:
     conda:
         "env/genomics.yaml"
     script:
-        "scripts/Genomics/1_HybridGenomeAssemblyWorkflow/1_ReadsPreprocessing/ContaminationRemovalRawReads.py"
+        "scripts/Genomics/1_HybridGenomeAssemblyWorkflow/1_ReadsPreprocessing/ContaminationRemovalRawReads2.py"
 
 
 
