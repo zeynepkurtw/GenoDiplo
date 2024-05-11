@@ -17,8 +17,12 @@ rule all:
          #ContaminationDetection.py
 
          #bwa
-         expand("resources/RawData/DNA/clean/{DNAseq}.clean.fastq.gz",
-                DNAseq=config["reads"]),
+         #expand("resources/RawData/DNA/clean/{DNAseq}.clean.fastq.gz",
+         #       DNAseq=config["reads"]),
+         #bowtie2_clean_reads
+            expand("resources/RawData/DNA/clean/{sample}_sorted.bam",
+                    sample=config["reads"]),
+
          #flye
          expand("output/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/flye/{genome}.fasta",
                 genome=["Hexamita"]),
@@ -180,7 +184,7 @@ rule fastqc_after_trimming:
           "scripts/Genomics/1_HybridGenomeAssemblyWorkflow/1_ReadsPreprocessing/ReadQualityCheck2.py"
 
 #rule calculatereadmeanstdev
-rule bwa_index:
+"""rule bwa_index:
     input:
         "resources/Contamination/all_contaminated.fasta"
     output:
@@ -213,6 +217,27 @@ rule bwa:
          "env/genomics.yaml"
     script:
           "scripts/Genomics/1_HybridGenomeAssemblyWorkflow/1_ReadsPreprocessing/ContaminationRemovalRawReads.py"
+          """
+
+rule bowtie2_clean_reads:
+    input:
+        contamination="resources/Contamination/all_contaminated.fasta",
+        illumina_reads_1="resources/RawData/DNA/raw/{sample}_R1.fastq.gz",
+        illumina_reads_2="resources/RawData/DNA/raw/{sample}_R2.fastq.gz",
+        nanopore_reads="resources/RawData/DNA/raw/{sample}.fastq.gz",
+        pacbio_reads="resources/RawData/DNA/raw/{sample}.fastq.gz"
+    output:
+        illumina_bam="resources/RawData/DNA/clean/{sample}_sorted.bam",
+        nanopore_bam="resources/RawData/DNA/clean/{sample}_sorted.bam",
+        pacbio_bam="resources/RawData/DNA/clean/{sample}_sorted.bam"
+    params:
+        threads=32
+    conda:
+        "env/genomics.yaml"
+    script:
+        "scripts/Genomics/1_HybridGenomeAssemblyWorkflow/1_ReadsPreprocessing/ContaminationRemovalRawReads.py"
+
+
 
 #Assembly
 rule flye:
