@@ -192,9 +192,6 @@ rule bwa_index:
             ".bwt",
             ".pac",
             ".sa")
-    params:
-        outname = "resources/Contamination/all_contaminated",
-        num_threads = 32
     conda:
          "env/genomics.yaml"
     shell:
