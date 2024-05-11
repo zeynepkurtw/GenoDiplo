@@ -4,8 +4,8 @@ rule all:
     input:
          #fastqc
          expand("output/Genomics/1_HybridGenomeAssemblyWorkflow/1_ReadsPreprocessing/{seq}.fastqc.html",
-                seq=["pacbio", "nanopore"]),
-                #seq=config["reads"]),
+                #seq=["pacbio", "nanopore"]),
+                seq=config["reads"]),
          #trimmomatic
          expand("output/Genomics/1_HybridGenomeAssemblyWorkflow/1_ReadsPreprocessing/{run}_R1.unique.trimmed.fastq",
                 run=["illumina_run1", "illumina_run2", "illumina_run3"]),
@@ -149,7 +149,7 @@ rule fastqc_before_trimming:
           "output/Genomics/1_HybridGenomeAssemblyWorkflow/1_ReadsPreprocessing/{seq}.fastqc.html",
     params:
           threads=32,
-           outdir="output/Genomics/1_HybridGenomeAssemblyWorkflow/1_ReadsPreprocessing/fastqc"
+          outdir="output/Genomics/1_HybridGenomeAssemblyWorkflow/1_ReadsPreprocessing/fastqc"
     conda:
          "env/genomics.yaml"
     script:
