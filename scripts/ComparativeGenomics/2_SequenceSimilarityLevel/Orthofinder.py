@@ -7,4 +7,4 @@ out = snakemake.output
 
 
 # -og : stop after inferring orthogroups
-shell(f"""orthofinder -f {proteome} -og -S blast""")
+shell(f"""orthofinder -f {proteome} -o {out} -og -S blast""")

@@ -113,7 +113,7 @@ rule all:
                 genome=["Hexamita"],
                    n=[0.70, 0.75, 0.80, 0.85, 0.90, 0.95, 1]),
         #orthofinder
-            "output/ComparativeGenomics/2_SequenceSimilarityLevel/"
+            #"output/ComparativeGenomics/2_SequenceSimilarityLevel/"
         #orthofinder_rerun
 
 
@@ -183,17 +183,17 @@ rule fastqc_after_trimming:
 #rule calculatereadmeanstdev
 rule bwa_index:
     input:
-        "resources/Contamination/{contamination}.fasta"
+        "resources/Contamination/all_contaminated.fasta"
     output:
         multiext(
-            "resources/Contamination/{contamination}",
+            "resources/Contamination/all_contaminated",
             ".amb",
             ".ann",
             ".bwt",
             ".pac",
             ".sa")
     params:
-        outname = "resources/Contamination/{contamination}",
+        outname = "resources/Contamination/all_contaminated",
         num_threads = 32
     conda:
          "env/genomics.yaml"
@@ -202,7 +202,7 @@ rule bwa_index:
 
 rule bwa:
     input:
-         contamination="resources/Contamination/contamination.fasta",
+         contamination="resources/Contamination/all_contaminated.fasta",
          raw_reads="resources/RawData/DNA/raw/{DNAseq}.fastq.gz"
     output:
           #raw_reads_unmapped="output/Genomics/1_HybridGenomeAssemblyWorkflow/1_ReadsPreprocessing/{read}.clean.bam",
