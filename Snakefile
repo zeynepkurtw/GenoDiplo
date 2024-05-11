@@ -20,8 +20,9 @@ rule all:
          #expand("resources/RawData/DNA/clean/{DNAseq}.clean.fastq.gz",
          #       DNAseq=config["reads"]),
          #bowtie2_clean_reads
-            expand("resources/RawData/DNA/clean/{sample}_sorted.bam",
-                    sample=config["reads"]),
+            expand("resources/RawData/DNA/clean/{tech}/{sample}_sorted.bam",
+                    sample=config["reads"],
+                   tech=["illumina", "nanopore", "pacbio"]),
 
          #flye
          expand("output/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/flye/{genome}.fasta",
@@ -227,9 +228,9 @@ rule bowtie2_clean_reads:
         nanopore_reads="resources/RawData/DNA/raw/{sample}.fastq.gz",
         pacbio_reads="resources/RawData/DNA/raw/{sample}.fastq.gz"
     output:
-        illumina_bam="resources/RawData/DNA/clean/{sample}_sorted.bam",
-        nanopore_bam="resources/RawData/DNA/clean/{sample}_sorted.bam",
-        pacbio_bam="resources/RawData/DNA/clean/{sample}_sorted.bam"
+        illumina_bam="resources/RawData/DNA/clean/illumina{sample}_sorted.bam",
+        nanopore_bam="resources/RawData/DNA/clean/nanopore/{sample}_sorted.bam",
+        pacbio_bam="resources/RawData/DNA/clean/pacbio/{sample}_sorted.bam"
     params:
         threads=32
     conda:
@@ -242,7 +243,7 @@ rule bowtie2_clean_reads:
 #Assembly
 rule flye:
     input:
-         reads="resources/RawData/DNA/clean/nanopore.clean.fastq.gz",
+         reads="resources/RawData/DNA/clean/nanopore/nanopore.clean.fastq.gz",
     params:
           genome_size="114m",
           threads=25,
@@ -268,12 +269,12 @@ rule masurca:
 rule polca:
     input:
          assembly="output/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/{assembler}/{genome}.fasta",
-         illumina_run1_R1="resources/RawData/DNA/clean/illumina_run1_R1.fastq.gz",
-         illumina_run1_R2="resources/RawData/DNA/clean/illumina_run1_R2.fastq.gz",
-         illumina_run2_R1="resources/RawData/DNA/clean/illumina_run2_R1.fastq.gz",
-         illumina_run2_R2="resources/RawData/DNA/clean/illumina_run2_R2.fastq.gz",
-         illumina_run3_R1="resources/RawData/DNA/clean/illumina_run3_R1.fastq.gz",
-         illumina_run3_R2="resources/RawData/DNA/clean/illumina_run3_R2.fastq.gz",
+         illumina_run1_R1="resources/RawData/DNA/clean/illumina/illumina_run1_R1.fastq.gz",
+         illumina_run1_R2="resources/RawData/DNA/clean/illumina/illumina_run1_R2.fastq.gz",
+         illumina_run2_R1="resources/RawData/DNA/clean/illumina/illumina_run2_R1.fastq.gz",
+         illumina_run2_R2="resources/RawData/DNA/clean/illumina/illumina_run2_R2.fastq.gz",
+         illumina_run3_R1="resources/RawData/DNA/clean/illumina/illumina_run3_R1.fastq.gz",
+         illumina_run3_R2="resources/RawData/DNA/clean/illumina/illumina_run3_R2.fastq.gz",
     output:
           polished_assembly="output/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/{assembler}/polca/{genome}.polished.fasta"
     script:
@@ -322,8 +323,8 @@ rule bowtie2_paired_reads:
              ".4.bt2",
              ".rev.1.bt2",
              ".rev.2.bt2"),
-         illumina_R1="resources/RawData/DNA/clean/{run}_R1.clean.fastq.gz",
-         illumina_R2="resources/RawData/DNA/clean/{run}_R2.clean.fastq.gz"
+         illumina_R1="resources/RawData/DNA/clean/illumina/{run}_R1.clean.fastq.gz",
+         illumina_R2="resources/RawData/DNA/clean/illumina/{run}_R2.clean.fastq.gz"
     output:
           bam="output/Genomics/1_HybridGenomeAssemblyWorkflow/3_AssemblyEvaluation/{assembler}/{assembly}/{process}/{run}.pair.bam",
           bai="output/Genomics/1_HybridGenomeAssemblyWorkflow/3_AssemblyEvaluation/{assembler}/{assembly}/{process}/{run}.pair.bai"
@@ -345,7 +346,7 @@ rule bowtie2_paired_reads:
             ".4.bt2",
             ".rev.1.bt2",
             ".rev.2.bt2"),
-        run="resources/RawData/DNA/clean/illumina_run1_R1.clean.fastq.gz",
+        run="resources/RawData/DNA/clean/illumina/illumina_run1_R1.clean.fastq.gz",
     output:
         bam= "output/Genomics/1_HybridGenomeAssemblyWorkflow/3_AssemblyEvaluation/{assembler}/{assembly}/{process}/{run}.sin.bam",
         bai= "output/Genomics/1_HybridGenomeAssemblyWorkflow/3_AssemblyEvaluation/{assembler}/{assembly}/{process}/{run}.sin.bai"
