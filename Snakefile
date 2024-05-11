@@ -228,7 +228,7 @@ rule bowtie2_clean_reads:
         nanopore_reads="resources/RawData/DNA/raw/{sample}.fastq.gz",
         pacbio_reads="resources/RawData/DNA/raw/{sample}.fastq.gz"
     output:
-        illumina_bam="resources/RawData/DNA/clean/illumina{sample}_sorted.bam",
+        illumina_bam="resources/RawData/DNA/clean/illumina/{sample}_sorted.bam",
         nanopore_bam="resources/RawData/DNA/clean/nanopore/{sample}_sorted.bam",
         pacbio_bam="resources/RawData/DNA/clean/pacbio/{sample}_sorted.bam"
     params:
