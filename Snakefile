@@ -181,7 +181,7 @@ rule fastqc_after_trimming:
           "scripts/Genomics/1_HybridGenomeAssemblyWorkflow/1_ReadsPreprocessing/ReadQualityCheck2.py"
 
 #rule calculatereadmeanstdev
-rule bwa_index:
+"""rule bwa_index:
     input:
         "resources/Contamination/all_contaminated.fasta"
     output:
@@ -195,7 +195,7 @@ rule bwa_index:
     conda:
          "env/genomics.yaml"
     shell:
-        'bwa index {input}'
+        'bwa index {input}'"""
 
 rule bwa:
     input:
