@@ -13,7 +13,6 @@ rule all:
          #     pair=[1, 2],
          #    type = ["unique", "duplicate"]),
 
-         #calculatereadmeanstdev
 
          #ContaminationDetection.py
 
@@ -229,7 +228,7 @@ rule flye:
 
 rule masurca:
     input:
-         config="resources/AssemblyConfig/masurca_config.sh"
+         config="resources/AssemblyConfig/assemble.sh"
     params:
           path="resources/RawData/DNA/clean/",
     output:
