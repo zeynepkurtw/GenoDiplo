@@ -3,9 +3,7 @@ configfile: "env/config.yaml"
 rule all:
     input:
          #fastqc
-         expand("output/Genomics/1_HybridGenomeAssemblyWorkflow/1_ReadsPreprocessing/{seq}.fastqc.html",
-                #seq=["pacbio", "nanopore"]),
-                seq=config["reads"]),
+         directory("output/Genomics/1_HybridGenomeAssemblyWorkflow/1_ReadsPreprocessing/fastqc"),
          #trimmomatic
          expand("output/Genomics/1_HybridGenomeAssemblyWorkflow/1_ReadsPreprocessing/{run}_R1.unique.trimmed.fastq",
                 run=["illumina_run1", "illumina_run2", "illumina_run3"]),
@@ -144,12 +142,12 @@ Genomics Analysis
 #Reads Preprocessing
 rule fastqc_before_trimming:
     input:
-         reads="resources/RawData/DNA/raw/{seq}.fastq.gz"
+         input_dir = "resources/RawData/DNA/raw/",
     output:
-          "output/Genomics/1_HybridGenomeAssemblyWorkflow/1_ReadsPreprocessing/{seq}.fastqc.html",
+          directory("output/Genomics/1_HybridGenomeAssemblyWorkflow/1_ReadsPreprocessing/fastqc"),
     params:
           threads=32,
-          outdir="output/Genomics/1_HybridGenomeAssemblyWorkflow/1_ReadsPreprocessing/fastqc"
+
     conda:
          "env/genomics.yaml"
     script:

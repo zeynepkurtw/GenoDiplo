@@ -1,8 +1,8 @@
 from snakemake.shell import shell
 
-reads = snakemake.input.reads
-outdir = snakemake.params.outdir
+input_dir = snakemake.input.input_dir
+out = snakemake.output
 
-
-shell(f"fastqc --threads 32 {reads} --outdir {outdir}")
+shell(f"cd {input_dir}")
+shell(f"fastqc --threads 32 .")
 
