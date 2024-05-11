@@ -21,7 +21,7 @@ rule all:
          #       DNAseq=config["reads"]),
          #bowtie2_clean_reads
             expand("resources/RawData/DNA/clean/{tech}/{sample}_sorted.bam",
-                    sample=config["reads"],
+                    sample=config["ill", "nano", "pac"],
                    tech=["illumina", "nanopore", "pacbio"]),
 
          #flye
@@ -223,14 +223,14 @@ rule bwa:
 rule bowtie2_clean_reads:
     input:
         contamination="resources/Contamination/all_contaminated.fasta",
-        illumina_reads_1="resources/RawData/DNA/raw/illumina/{sample}_R1.fastq.gz",
-        illumina_reads_2="resources/RawData/DNA/raw/illumina/{sample}_R2.fastq.gz",
-        nanopore_reads="resources/RawData/DNA/raw/nanopore/{sample}.fastq.gz",
-        pacbio_reads="resources/RawData/DNA/raw/pacbio/{sample}.fastq.gz"
+        illumina_reads_1="resources/RawData/DNA/raw/illumina/{ill}_R1.fastq.gz",
+        illumina_reads_2="resources/RawData/DNA/raw/illumina/{ill}_R2.fastq.gz",
+        nanopore_reads="resources/RawData/DNA/raw/nanopore/{nano}.fastq.gz",
+        pacbio_reads="resources/RawData/DNA/raw/pacbio/{pac}.fastq.gz"
     output:
-        illumina_bam="resources/RawData/DNA/clean/illumina/{sample}_sorted.bam",
-        nanopore_bam="resources/RawData/DNA/clean/nanopore/{sample}_sorted.bam",
-        pacbio_bam="resources/RawData/DNA/clean/pacbio/{sample}_sorted.bam"
+        illumina_bam="resources/RawData/DNA/clean/illumina/{ill}_sorted.bam",
+        nanopore_bam="resources/RawData/DNA/clean/nanopore/{nano}_sorted.bam",
+        pacbio_bam="resources/RawData/DNA/clean/pacbio/{pac}_sorted.bam"
     params:
         threads=32
     conda:
