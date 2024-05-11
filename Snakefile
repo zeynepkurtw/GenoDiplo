@@ -21,7 +21,7 @@ rule all:
          #       DNAseq=config["reads"]),
          #bowtie2_clean_reads
             expand("resources/RawData/DNA/clean/{tech}/{sample}_sorted.bam",
-                   run=["illumina_run1", "illumina_run2", "illumina_run3", "nanopore", "pacbio"],
+                   sample=["illumina_run1", "illumina_run2", "illumina_run3", "nanopore", "pacbio"],
                    tech=["illumina", "nanopore", "pacbio"]),
 
          #flye
