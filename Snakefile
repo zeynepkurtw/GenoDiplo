@@ -18,9 +18,8 @@ rule all:
          #ContaminationDetection.py
 
          #bwa
-         expand("resources/RawData/DNA/bwa_unmapped/{contamination}/{DNAseq}.clean.fastq.gz",
-                DNAseq=config["reads"],
-                contamination="all_contaminated"),
+         expand("resources/RawData/DNA/clean/{DNAseq}.clean.fastq.gz",
+                DNAseq=config["reads"]),
          #flye
          expand("output/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/flye/{genome}.fasta",
                 genome=["Hexamita"]),
@@ -184,17 +183,17 @@ rule fastqc_after_trimming:
 #rule calculatereadmeanstdev
 rule bwa_index:
     input:
-        "resources/Contamination/{contamination}.fasta"
+        "resources/Contamination/all_contaminated.fasta"
     output:
         multiext(
-            "resources/Contamination/{contamination}",
+            "resources/Contamination/all_contaminated",
             ".amb",
             ".ann",
             ".bwt",
             ".pac",
             ".sa")
     params:
-        outname = "resources/Contamination/{contamination}",
+        outname = "resources/Contamination/all_contaminated",
         num_threads = 32
     conda:
          "env/genomics.yaml"
@@ -203,15 +202,15 @@ rule bwa_index:
 
 rule bwa:
     input:
-         contamination="resources/Contamination/{contamination}.fasta",
+         contamination="resources/Contamination/all_contaminated.fasta",
          raw_reads="resources/RawData/DNA/raw/{DNAseq}.fastq.gz"
     output:
           #raw_reads_unmapped="output/Genomics/1_HybridGenomeAssemblyWorkflow/1_ReadsPreprocessing/{read}.clean.bam",
           #raw_reads_unmapped_sorted="output/Genomics/1_HybridGenomeAssemblyWorkflow/1_ReadsPreprocessing/{read}.clean.sorted.bam",
           #raw_reads_unmapped_fastq="output/Genomics/1_HybridGenomeAssemblyWorkflow/1_ReadsPreprocessing/{read}.clean.fastq"
-          raw_reads_unmapped="resources/RawData/DNA/bwa_unmapped/{contamination}/{DNAseq}.clean.bam",
-          raw_reads_unmapped_sorted="resources/RawData/DNA/bwa_unmapped/{contamination}/{DNAseq}.clean.sorted.bam",
-          raw_reads_unmapped_fastq="resources/RawData/DNA/bwa_unmapped/{contamination}/{DNAseq}.clean.fastq.gz"
+          raw_reads_unmapped="resources/RawData/DNA/clean/{DNAseq}.clean.bam",
+          raw_reads_unmapped_sorted="resources/RawData/DNA/clean/{DNAseq}.clean.sorted.bam",
+          raw_reads_unmapped_fastq="resources/RawData/DNA/clean/{DNAseq}.clean.fastq.gz"
     conda:
          "env/genomics.yaml"
     script:
