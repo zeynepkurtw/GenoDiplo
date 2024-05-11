@@ -114,7 +114,7 @@ rule all:
                 genome=["Hexamita"],
                    n=[0.70, 0.75, 0.80, 0.85, 0.90, 0.95, 1]),
         #orthofinder
-            "output/ComparativeGenomics/2_SequenceSimilarityLevel/"
+            #"output/ComparativeGenomics/2_SequenceSimilarityLevel/"
         #orthofinder_rerun
 
 
