@@ -1,7 +1,7 @@
 from snakemake.shell import shell
 
 reads = snakemake.input.reads
-outdir = snakemake.output.outdir
+output = snakemake.output
 
-shell(f"fastqc --threads 8 {reads} --outdir {outdir}")
+shell(f"fastqc --threads 8 {reads} --outdir {output}")
 
