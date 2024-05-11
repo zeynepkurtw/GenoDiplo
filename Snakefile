@@ -202,7 +202,7 @@ rule bwa_index:
 
 rule bwa:
     input:
-         contamination="resources/Contamination/contamination.fasta",
+         contamination="resources/Contamination/all_contaminated.fasta",
          raw_reads="resources/RawData/DNA/raw/{DNAseq}.fastq.gz"
     output:
           #raw_reads_unmapped="output/Genomics/1_HybridGenomeAssemblyWorkflow/1_ReadsPreprocessing/{read}.clean.bam",
