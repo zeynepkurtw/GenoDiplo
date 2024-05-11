@@ -1,7 +1,7 @@
 DATA
-PE = aa 236 240 run1_R1.fastq.gz run1_R2.fastq.gz
-PE = ab 229 232 run2_R1.fastq.gz run2_R2.fastq.gz
-PE = ac 235 238 run3_R1.fastq.gz run3_R2.fastq.gz
+PE = aa 236 240 illumina_run1_R1.fastq.gz illumina_run1_R2.fastq.gz
+PE = ab 229 232 illumina_run2_R1.fastq.gz illumina_run2_R2.fastq.gz
+PE = ac 235 238 illumina_run3_R1.fastq.gz illumina_run3_R2.fastq.gz
 PACBIO = pacbio.fastq.gz #or nanopore or both
 END
 
