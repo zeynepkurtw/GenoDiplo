@@ -157,6 +157,8 @@ rule trimmomatic:
     input:
          r1="resources/RawData/DNA/raw/{run}_R1.fastq.gz",
          r2="resources/RawData/DNA/raw/{run}_R2.fastq.gz"
+    params:
+            threads=32,
     output:
           r1_u="output/Genomics/1_HybridGenomeAssemblyWorkflow/1_ReadsPreprocessing/trimmomatic/{run}_R1.unique.trimmed.fastq",
           r2_u="output/Genomics/1_HybridGenomeAssemblyWorkflow/1_ReadsPreprocessing/trimmomatic/{run}_R2.unique.trimmed.fastq",
