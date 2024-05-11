@@ -145,7 +145,7 @@ Genomics Analysis
 #Reads Preprocessing
 rule fastqc_before_trimming:
     input:
-         input_dir = "resources/RawData/DNA/raw/",
+         input_dir = "resources/RawData/DNA/raw/illumina/",
     output:
           directory("output/Genomics/1_HybridGenomeAssemblyWorkflow/1_ReadsPreprocessing/fastqc"),
     params:
@@ -158,8 +158,8 @@ rule fastqc_before_trimming:
 
 rule trimmomatic:
     input:
-         r1="resources/RawData/DNA/raw/{run}_R1.fastq.gz",
-         r2="resources/RawData/DNA/raw/{run}_R2.fastq.gz"
+         r1="resources/RawData/DNA/raw/illumina/{run}_R1.fastq.gz",
+         r2="resources/RawData/DNA/raw/illumina/{run}_R2.fastq.gz"
     params:
             threads=32,
     output:
@@ -223,10 +223,10 @@ rule bwa:
 rule bowtie2_clean_reads:
     input:
         contamination="resources/Contamination/all_contaminated.fasta",
-        illumina_reads_1="resources/RawData/DNA/raw/{sample}_R1.fastq.gz",
-        illumina_reads_2="resources/RawData/DNA/raw/{sample}_R2.fastq.gz",
-        nanopore_reads="resources/RawData/DNA/raw/{sample}.fastq.gz",
-        pacbio_reads="resources/RawData/DNA/raw/{sample}.fastq.gz"
+        illumina_reads_1="resources/RawData/DNA/raw/illumina/{sample}_R1.fastq.gz",
+        illumina_reads_2="resources/RawData/DNA/raw/illumina/{sample}_R2.fastq.gz",
+        nanopore_reads="resources/RawData/DNA/raw/nanopore/{sample}.fastq.gz",
+        pacbio_reads="resources/RawData/DNA/raw/pacbio/{sample}.fastq.gz"
     output:
         illumina_bam="resources/RawData/DNA/clean/illumina/{sample}_sorted.bam",
         nanopore_bam="resources/RawData/DNA/clean/nanopore/{sample}_sorted.bam",
