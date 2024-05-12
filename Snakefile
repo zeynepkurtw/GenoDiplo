@@ -244,10 +244,10 @@ rule bowtie2_index:
 rule bowtie2_paired_reads:
     input:
         contamination="resources/Contamination/all_contaminated.fasta",
-        paired_reads_1="resources/RawData/DNA/raw/{sample}_R1.fastq.gz",
-        paired_reads_2="resources/RawData/DNA/raw/{sample}_R2.fastq.gz",
+        pair_reads_1="resources/RawData/DNA/raw/{sample}_R1.fastq.gz",
+        pair_reads_2="resources/RawData/DNA/raw/{sample}_R2.fastq.gz",
     output:
-        paired_reads_bam="resources/RawData/DNA/clean/paired/{sample}_sorted.bam",
+        paired_reads="resources/RawData/DNA/clean/paired/{sample}.fastq.gz",
     params:
         threads=32,
         paired= True
@@ -261,7 +261,7 @@ rule bowtie2_single_reads:
         contamination="resources/Contamination/all_contaminated.fasta",
         single_reads="resources/RawData/DNA/raw/{sample}.fastq.gz",
     output:
-        single_reads_bam="resources/RawData/DNA/clean/single/{sample}_sorted.bam",
+        single_reads_bam="resources/RawData/DNA/clean/single/{sample}.fastq.gz",
     params:
         threads=32,
         paired= False
@@ -273,7 +273,7 @@ rule bowtie2_single_reads:
 #Assembly
 rule flye:
     input:
-         reads="resources/RawData/DNA/clean/single/nanopore.clean.fastq.gz",
+         reads="resources/RawData/DNA/clean/single/nanopore.fastq.gz",
     params:
           genome_size="114m",
           threads=25,
@@ -288,7 +288,7 @@ rule masurca:
     input:
          config="resources/AssemblyConfig/assemble.sh"
     params:
-          path="resources/RawData/DNA/clean/single/",
+          path="resources/RawData/DNA/clean/paired/",
     output:
           "output/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/masurca/{genome}.fasta"
     conda:

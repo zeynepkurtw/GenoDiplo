@@ -1,16 +1,16 @@
 from snakemake.shell import shell
 
 contamination = snakemake.input.contamination
-paired_reads_1 = snakemake.input.paired_reads_1
-paired_reads_2 = snakemake.input.paired_reads_2
+pair_reads_1 = snakemake.input.pair_reads_1
+pair_reads_2 = snakemake.input.pair_reads_2
 single_reads = snakemake.input.single_reads
 
 paired = snakemake.params.get('paired', False)
 threads = snakemake.params.threads
 
 # Outputs for BAM files
-paired_reads_bam = snakemake.output.paired_reads_bam
-single_reads_bam = snakemake.output.single_reads_bam
+paired_reads = snakemake.output.paired_reads
+single_reads = snakemake.output.single_reads
 
 
 # Build the Bowtie2 index for the contamination reference
@@ -18,15 +18,19 @@ single_reads_bam = snakemake.output.single_reads_bam
 
 if paired:
     # Process Illumina paired-end reads
-    shell(f"bowtie2 -p {threads} -x {contamination}_index -1 {paired_reads_1} -2 {paired_reads_2} \
-          --no-head --no-sq | samtools view -bS - > {paired_reads_bam}")
-    shell(f"samtools sort -@ {threads} {paired_reads_bam} -o {paired_reads_bam}_sorted.bam")
-    shell(f"samtools index {paired_reads_bam}_sorted.bam")
+    shell(f"bowtie2 -p {threads} -x {contamination}_index -1 {pair_reads_1} -2 {pair_reads_2} \
+          --no-head --no-sq | samtools view -bS - > {paired_reads}.bam")
+    shell(f"samtools sort -@ {threads} {paired_reads} -o {paired_reads}_sorted.bam")
+    shell(f"samtools index {paired_reads}_sorted.bam")
+    shell(f"samtools fastq -@ {threads} {paired_reads}_sorted.bam -o {paired_reads}.fastq")
+    shell(f"gzip -c {paired_reads}.fastq > {paired_reads}.fastq.gz")
 
 else:
     # Process Pacbio and Nanopore reads
     shell(f"bowtie2 -p {threads} -x {contamination}_index -U {single_reads} \
-          --no-head --no-sq | samtools view -bS - > {single_reads_bam}")
-    shell(f"samtools sort -@ {threads} {single_reads_bam} -o {single_reads_bam}_sorted.bam")
-    shell(f"samtools index {single_reads_bam}_sorted.bam")
+          --no-head --no-sq | samtools view -bS - > {single_reads}.bam")
+    shell(f"samtools sort -@ {threads} {single_reads} -o {single_reads}_sorted.bam")
+    shell(f"samtools index {single_reads}_sorted.bam")
+    shell(f"samtools fastq -@ {threads} {single_reads}_sorted.bam -o {single_reads}.fastq")
+    shell(f"gzip -c {single_reads}.fastq > {single_reads}.fastq.gz")
 
