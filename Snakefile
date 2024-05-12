@@ -18,13 +18,13 @@ rule all:
             expand("resources/RawData/DNA/clean/long/{sample}.fastq.gz",
                    sample=["nanopore", "pacbio"]),
          #flye
-         expand("output/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/flye/{genome}.fasta",
+         expand("output/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/flye/flye_{genome}.fasta",
                 genome=["Hexamita"]),
          #masurca
-         expand("output/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/masurca/{genome}.fasta",
+         expand("output/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/masurca/masurca_{genome}.fasta",
                 genome=["Hexamita"]),
          #polca
-         expand("output/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/{assembler}/polished.{genome}.fasta",
+         expand("output/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/{assembler}_polished_{genome}.fasta",
                 assembler=["flye", "masurca"],
                 genome=["Hexamita"]),
          #quast
@@ -263,7 +263,7 @@ rule flye:
           genome_size="114m",
           threads=25,
     output:
-          assembly="output/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/flye/{genome}.fasta",
+          assembly="output/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/flye/flye_{genome}.fasta",
     conda:
          "env/genomics.yaml"
     script:
@@ -291,7 +291,7 @@ rule polca:
          illumina_run3_R1="resources/RawData/DNA/clean/short/illumina_run3_R1.fastq.gz",
          illumina_run3_R2="resources/RawData/DNA/clean/short/illumina_run3_R2.fastq.gz",
     output:
-          polished_assembly="output/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/{assembler}/polished.{genome}.fasta"
+          polished_assembly="output/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/{assembler}_polished_{genome}.fasta"
     script:
           "scripts/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assemblers/Polishing.py"
 
