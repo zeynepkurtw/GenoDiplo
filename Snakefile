@@ -213,7 +213,7 @@ rule bwa:
           "scripts/Genomics/1_HybridGenomeAssemblyWorkflow/1_ReadsPreprocessing/ContaminationRemovalRawReads.py"
           """
 
-rule bowtie2_index:
+rule bowtie2_index_cleaning_contamination:
     input:
         "resources/Contamination/all_contaminated.fasta"
     output:
@@ -233,7 +233,7 @@ rule bowtie2_index:
     shell:
         'bowtie2-build {input} --threads {params.num_threads} {params.outname}'
 
-rule bowtie2_paired_reads:
+rule bowtie2_paired_reads_cleaning_contamination:
     input:
         contamination="resources/Contamination/all_contaminated.fasta",
         pair_reads_1="resources/RawData/DNA/raw/{sample}_R1.fastq.gz",
@@ -248,7 +248,7 @@ rule bowtie2_paired_reads:
     script:
         "scripts/Genomics/1_HybridGenomeAssemblyWorkflow/1_ReadsPreprocessing/ContaminationRemovalRawReads.py"
 
-rule bowtie2_single_reads:
+rule bowtie2_single_reads_cleaning_contamination:
     input:
         contamination="resources/Contamination/all_contaminated.fasta",
         single_reads="resources/RawData/DNA/raw/{sample}.fastq.gz",
@@ -315,6 +315,7 @@ rule quast:
     script:
           "scripts/Genomics/1_HybridGenomeAssemblyWorkflow/3_AssemblyEvaluation/AssemblyQualityCheck.py"
 
+"""
 rule bowtie2_biult_index_evaluation:
     input:
          "output/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/{assembler}/{assembly}.assembly.fasta"
@@ -335,7 +336,6 @@ rule bowtie2_biult_index_evaluation:
     shell:
          'bowtie2-build {input} --threads {params.num_threads} {params.outname}'
 
-"""
 rule bowtie2_evaluation:
     input:
          index=multiext(
@@ -397,7 +397,7 @@ rule meryl:
 rule winnowmap:
     input:
          genome="output/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/{assembler}/{genome}.fasta",
-         long_read="resources/RawData/DNA/{process}/{long_read}.clean.fastq.gz",
+         long_read="resources/RawData/DNA/clean/single/{long_read}.fastq.gz",
          merylDB="output/Genomics/1_HybridGenomeAssemblyWorkflow/3_AssemblyEvaluation/{assembler}/{genome}/winnowmap/merlyDB",
          repetitive_k15="output/Genomics/1_HybridGenomeAssemblyWorkflow/3_AssemblyEvaluation/{assembler}/{genome}/winnowmap/repetitive_k15.txt",
     output:
