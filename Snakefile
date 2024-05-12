@@ -386,7 +386,7 @@ rule winnowmap:
 #Structural Annotation
 rule prodigal:
     input:
-         genome="output/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/{assembler}/polca/{genome}.polished.fasta",
+         genome="output/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/{assembler}/{assembler}_polished_{genome}.fasta",
     output:
           gff="output/Genomics/2_GenomeAnnotationWorkflow/1_StructuralAnnotation/{assembler}/prodigal/{genome}.gff",
           faa="output/Genomics/2_GenomeAnnotationWorkflow/1_StructuralAnnotation/{assembler}/prodigal/{genome}.faa",
@@ -398,7 +398,7 @@ rule prodigal:
 rule train_glimmer_hmm:
     input:
          training_genes="resources/Train_GlimmerHMM/training_genes.fasta",
-         genome="output/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/{assembler}/polca/{genome}.polished.fasta"
+         genome="output/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/{assembler}/{assembler}_polished_{genome}.fasta"
     params:
           n=150,
           v=50
