@@ -1,16 +1,18 @@
 from snakemake.shell import shell
 
 contamination = snakemake.input.contamination
-pair_reads_1 = snakemake.input.pair_reads_1
-pair_reads_2 = snakemake.input.pair_reads_2
-single_reads = snakemake.input.single_reads
+ill_R1 = snakemake.input.ill_R1
+ill_R2 = snakemake.input.ill_R2
+long_reads = snakemake.input.long_reads
 
 paired = snakemake.params.get('paired', False)
 threads = snakemake.params.threads
 
 # Outputs for BAM files
-paired_reads = snakemake.output.paired_reads
-single_reads = snakemake.output.single_reads
+contaminated_short = snakemake.output.contaminated_short
+contaminated_long = snakemake.output.contaminated_long
+clean_ill = snakemake.output.clean_ill
+clean_long = snakemake.output.clean_long
 
 
 # Build the Bowtie2 index for the contamination reference
@@ -18,19 +20,29 @@ single_reads = snakemake.output.single_reads
 
 if paired:
     # Process Illumina paired-end reads
-    shell(f"bowtie2 -p {threads} -x {contamination}_index -1 {pair_reads_1} -2 {pair_reads_2} \
-          --no-head --no-sq | samtools view -bS - > {paired_reads}.bam")
-    shell(f"samtools sort -@ {threads} {paired_reads} -o {paired_reads}_sorted.bam")
-    shell(f"samtools index {paired_reads}_sorted.bam")
-    shell(f"samtools fastq -@ {threads} {paired_reads}_sorted.bam -o {paired_reads}.fastq")
-    shell(f"gzip -c {paired_reads}.fastq > {paired_reads}.fastq.gz")
+    # Map reads using Bowtie2 and save unmapped reads into separate files
+    shell(f"bowtie2 -p {threads} -x {contamination}_index -1 {ill_R1} -2 {ill_R2} \
+          --un-conc {clean_ill} \
+          --no-head --no-sq | samtools view -bS - > {contaminated_short}.bam")
+    # Sort the mapped reads BAM file
+    shell(f"samtools sort -@ {threads} {contaminated_short}.bam -o {contaminated_short}_sorted.bam")
+    # Index the sorted BAM file
+    shell(f"samtools index {contaminated_short}_sorted.bam")
+    # The unmapped reads are automatically saved by Bowtie2 using the --un-conc option in {clean}_R1 and {clean}_R2
+    # Optionally, if you want to compress these unmapped reads
+    shell(f"gzip -c {clean_ill}_R1 > {clean_ill}_R1.fastq.gz")
+    shell(f"gzip -c {clean_ill}_R2 > {clean_ill}_R2.fastq.gz")
+
 
 else:
-    # Process Pacbio and Nanopore reads
-    shell(f"bowtie2 -p {threads} -x {contamination}_index -U {single_reads} \
-          --no-head --no-sq | samtools view -bS - > {single_reads}.bam")
-    shell(f"samtools sort -@ {threads} {single_reads} -o {single_reads}_sorted.bam")
-    shell(f"samtools index {single_reads}_sorted.bam")
-    shell(f"samtools fastq -@ {threads} {single_reads}_sorted.bam -o {single_reads}.fastq")
-    shell(f"gzip -c {single_reads}.fastq > {single_reads}.fastq.gz")
+    # Align Nanopore reads and save unmapped reads
+    shell(f"bowtie2 -p {threads} -x {contamination}_index -U {long_reads} \
+          --un {clean_long} \
+          --no-head --no-sq | samtools view -bS - > {contaminated_long}.bam")
+
+    shell(f"samtools sort -@ {threads} {contaminated_long}.bam -o {contaminated_long}_sorted.bam")
+    shell(f"samtools index {contaminated_long}_sorted.bam")
+    shell(f"gzip -c {clean_long}_unmapped.fastq > {clean_long}_unmapped.fastq.gz")
+
+
 

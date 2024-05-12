@@ -227,10 +227,12 @@ rule bowtie2_index_cleaning_contamination:
 rule bowtie2_paired_reads_cleaning_contamination:
     input:
         contamination="resources/Contamination/all_contaminated.fasta",
-        pair_reads_1="resources/RawData/DNA/raw/{sample}_R1.fastq.gz",
-        pair_reads_2="resources/RawData/DNA/raw/{sample}_R2.fastq.gz",
+        ill_R1="resources/RawData/DNA/raw/{sample}_R1.fastq.gz",
+        ill_R2="resources/RawData/DNA/raw/{sample}_R2.fastq.gz",
     output:
-        paired_reads="resources/RawData/DNA/clean/paired/{sample}.fastq.gz",
+        clean_ill_R1="resources/RawData/DNA/clean/{sample}_R1.fastq.gz",
+        clean_ill_R2="resources/RawData/DNA/clean/{sample}_R2.fastq.gz",
+        contaminated_short= "resources/RawData/DNA/clean/contamination/{sample}.bam"
     params:
         threads=32,
         paired= True
@@ -242,9 +244,10 @@ rule bowtie2_paired_reads_cleaning_contamination:
 rule bowtie2_single_reads_cleaning_contamination:
     input:
         contamination="resources/Contamination/all_contaminated.fasta",
-        single_reads="resources/RawData/DNA/raw/{sample}.fastq.gz",
+        long_reads="resources/RawData/DNA/raw/{sample}.fastq.gz",
     output:
-        single_reads_bam="resources/RawData/DNA/clean/single/{sample}.fastq.gz",
+        clean_long="resources/RawData/DNA/clean/{sample}.fastq.gz",
+        contaminated_long= "resources/RawData/DNA/clean/contamination/{sample}.bam"
     params:
         threads=32,
         paired= False
