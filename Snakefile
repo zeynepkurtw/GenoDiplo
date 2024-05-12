@@ -283,7 +283,7 @@ rule masurca:
 
 rule polca:
     input:
-         assembly="output/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/{assembler}/{genome}.fasta",
+         assembly="output/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/{assembler}/{assembler}_{genome}.fasta",
          illumina_run1_R1="resources/RawData/DNA/clean/short/illumina_run1_R1.fastq.gz",
          illumina_run1_R2="resources/RawData/DNA/clean/short/illumina_run1_R2.fastq.gz",
          illumina_run2_R1="resources/RawData/DNA/clean/short/illumina_run2_R1.fastq.gz",
