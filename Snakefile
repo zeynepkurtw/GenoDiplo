@@ -32,28 +32,20 @@ rule all:
          expand("output/Genomics/1_HybridGenomeAssemblyWorkflow/3_AssemblyEvaluation/{assembler}/{genome}/quast_report/",
                 assembler=["flye", "masurca"],
                 genome=["Hexamita"]),
-         #bowtie2_paired_reads
+         #bowtie2_paired_reads_evaluation
          expand("output/Genomics/1_HybridGenomeAssemblyWorkflow/3_AssemblyEvaluation/{assembler}/{genome}/{process}/{run}.pair.bam",
                 assembler=["flye", "masurca"],
                 genome=["Hexamita"],
                 process=["clean"],
                 run=["illumina_run1", "illumina_run2", "illumina_run3"]),
-
-         #bowtie2_single_reads
-         # expand("output/Genomics/1_HybridGenomeAssemblyWorkflow/3_AssemblyEvaluation/{assembler}/{genome}/{process}/{run}.sin.bam",
-         #        assembler=["flye", "masurca"],
-         #       genome=["Hexamita"],
-         #      process=["clean"],
-         #   run=["illumina_run1", "illumina_run2", "illumina_run3"]),
-
-         #meryl
+         #meryl_evaluation
          expand("output/Genomics/1_HybridGenomeAssemblyWorkflow/3_AssemblyEvaluation/{assembler}/{genome}/winnowmap/merlyDB",
                 assembler=["flye", "masurca"],
                 genome=["Hexamita"]),
          expand("output/Genomics/1_HybridGenomeAssemblyWorkflow/3_AssemblyEvaluation/{assembler}/{genome}/winnowmap/repetitive_k15.txt",
                 assembler=["flye", "masurca"],
                 genome=["Hexamita"]),
-         #winnowmap
+         #winnowmap_evaluation
          expand("output/Genomics/1_HybridGenomeAssemblyWorkflow/3_AssemblyEvaluation/{assembler}/{genome}/{process}/winnowmap/{long_reads}.win.bam",
                 assembler=["flye", "masurca"],
                 genome=["Hexamita"],
@@ -315,7 +307,7 @@ rule quast:
     script:
           "scripts/Genomics/1_HybridGenomeAssemblyWorkflow/3_AssemblyEvaluation/AssemblyQualityCheck.py"
 
-"""
+
 rule bowtie2_biult_index_evaluation:
     input:
          "output/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/{assembler}/{assembly}.assembly.fasta"
@@ -346,39 +338,18 @@ rule bowtie2_evaluation:
              ".4.bt2",
              ".rev.1.bt2",
              ".rev.2.bt2"),
-         illumina_R1="resources/RawData/DNA/clean/paired/{run}_R1.clean.fastq.gz",
-         illumina_R2="resources/RawData/DNA/clean/paired/{run}_R2.clean.fastq.gz"
+            #illumina_R1="resources/RawData/DNA/clean/paired/{run}_R1.fastq.gz",
+            #illumina_R2="resources/RawData/DNA/clean/paired/{run}_R2.fastq.gz"
+            illumina_paired= "resources/RawData/DNA/clean/paired/{sample}.fastq.gz",
     output:
-          bam="output/Genomics/1_HybridGenomeAssemblyWorkflow/3_AssemblyEvaluation/{assembler}/{assembly}/{process}/{run}.pair.bam",
-          bai="output/Genomics/1_HybridGenomeAssemblyWorkflow/3_AssemblyEvaluation/{assembler}/{assembly}/{process}/{run}.pair.bai"
+          bam="output/Genomics/1_HybridGenomeAssemblyWorkflow/3_AssemblyEvaluation/{assembler}/{assembly}/{sample}.paired.bam",
+          bai="output/Genomics/1_HybridGenomeAssemblyWorkflow/3_AssemblyEvaluation/{assembler}/{assembly}/{sample}.paired.bai"
     params:
-          paired=True,
-          num_threads=30,
+          num_threads=32,
     conda:
          "env/genomics.yaml"
     script:
           "scripts/Genomics/1_HybridGenomeAssemblyWorkflow/3_AssemblyEvaluation/MapShortReadsToAssembly.py"
-
-rule bowtie2_single_reads:
-    input:
-        index=multiext(
-        "output/Genomics/1_HybridGenomeAssemblyWorkflow/3_AssemblyEvaluation/index_bt2/{assembler}/{assembly}",
-            ".1.bt2",
-            ".2.bt2",
-            ".3.bt2",
-            ".4.bt2",
-            ".rev.1.bt2",
-            ".rev.2.bt2"),
-        run="resources/RawData/DNA/clean/illumina/illumina_run1_R1.clean.fastq.gz",
-    output:
-        bam= "output/Genomics/1_HybridGenomeAssemblyWorkflow/3_AssemblyEvaluation/{assembler}/{assembly}/{process}/{run}.sin.bam",
-        bai= "output/Genomics/1_HybridGenomeAssemblyWorkflow/3_AssemblyEvaluation/{assembler}/{assembly}/{process}/{run}.sin.bai"
-    params:
-        num_threads = 30,
-    conda:
-        "env/genomics.yaml"
-    script:
-        "scripts/Genomics/1_HybridGenomeAssemblyWorkflow/3_AssemblyEvaluation/MapShortReadsToAssembly.py"""
 
 rule meryl:
     input:
