@@ -274,7 +274,7 @@ rule masurca:
     params:
           path="resources/RawData/DNA/clean/short/",
     output:
-          "output/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/masurca/{genome}.fasta"
+          "output/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/masurca/masurca_{genome}.fasta"
     conda:
          "env/genomics.yaml"
     script:
