@@ -24,7 +24,7 @@ rule all:
          expand("output/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/masurca/{genome}.fasta",
                 genome=["Hexamita"]),
          #polca
-         expand("output/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/{assembler}/polca/{genome}.fasta",
+         expand("output/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/{assembler}/polished.{genome}.fasta",
                 assembler=["flye", "masurca"],
                 genome=["Hexamita"]),
          #quast
@@ -291,7 +291,7 @@ rule polca:
          illumina_run3_R1="resources/RawData/DNA/clean/short/illumina_run3_R1.fastq.gz",
          illumina_run3_R2="resources/RawData/DNA/clean/short/illumina_run3_R2.fastq.gz",
     output:
-          polished_assembly="output/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/{assembler}/polca/{genome}.fasta"
+          polished_assembly="output/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/{assembler}/polished.{genome}.fasta"
     script:
           "scripts/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assemblers/Polishing.py"
 
