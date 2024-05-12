@@ -12,11 +12,11 @@ rule all:
          #expand("resources/RawData/DNA/clean/{DNAseq}.clean.fastq.gz",
          #       DNAseq=config["reads"]),
          #bowtie2_clean_paired_reads
-            expand("resources/RawData/DNA/clean/{short}_R1.fastq.gz",
-                   short=["illumina_run1", "illumina_run2", "illumina_run3"]),
+            expand("resources/RawData/DNA/clean/short/{sample}_R1.fastq.gz",
+                   sample=["illumina_run1", "illumina_run2", "illumina_run3"]),
          #bowtie2_clean_single_reads
-            expand("resources/RawData/DNA/clean/{long}.fastq.gz",
-                   long=["nanopore", "pacbio"]),
+            expand("resources/RawData/DNA/clean/long/{sample}.fastq.gz",
+                   sample=["nanopore", "pacbio"]),
          #flye
          expand("output/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/flye/{genome}.fasta",
                 genome=["Hexamita"]),
@@ -230,9 +230,9 @@ rule bowtie2_paired_reads_cleaning_contamination:
         ill_R1="resources/RawData/DNA/raw/{sample}_R1.fastq.gz",
         ill_R2="resources/RawData/DNA/raw/{sample}_R2.fastq.gz",
     output:
-        clean_ill_R1="resources/RawData/DNA/clean/{sample}_R1.fastq.gz",
-        clean_ill_R2="resources/RawData/DNA/clean/{sample}_R2.fastq.gz",
-        contaminated_short= "resources/RawData/DNA/clean/contamination/{sample}.bam"
+        clean_ill_R1="resources/RawData/DNA/clean/short/{sample}_R1.fastq.gz",
+        clean_ill_R2="resources/RawData/DNA/clean/short/{sample}_R2.fastq.gz",
+        contaminated_short= "resources/RawData/DNA/clean/short/contamination/{sample}.bam"
     params:
         threads=32,
         paired= True
@@ -246,8 +246,8 @@ rule bowtie2_single_reads_cleaning_contamination:
         contamination="resources/Contamination/all_contaminated.fasta",
         long_reads="resources/RawData/DNA/raw/{sample}.fastq.gz",
     output:
-        clean_long="resources/RawData/DNA/clean/{sample}.fastq.gz",
-        contaminated_long= "resources/RawData/DNA/clean/contamination/{sample}.bam"
+        clean_long="resources/RawData/DNA/clean/long/{sample}.fastq.gz",
+        contaminated_long= "resources/RawData/DNA/clean/long/contamination/{sample}.bam"
     params:
         threads=32,
         paired= False
@@ -259,7 +259,7 @@ rule bowtie2_single_reads_cleaning_contamination:
 #Assembly
 rule flye:
     input:
-         reads="resources/RawData/DNA/clean/single/nanopore.fastq.gz",
+         reads="resources/RawData/DNA/clean/long/nanopore.fastq.gz",
     params:
           genome_size="114m",
           threads=25,
@@ -274,7 +274,7 @@ rule masurca:
     input:
          config="resources/AssemblyConfig/assemble.sh"
     params:
-          path="resources/RawData/DNA/clean/paired/",
+          path="resources/RawData/DNA/clean/short/",
     output:
           "output/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/masurca/{genome}.fasta"
     conda:
@@ -285,12 +285,12 @@ rule masurca:
 rule polca:
     input:
          assembly="output/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/{assembler}/{genome}.fasta",
-         illumina_run1_R1="resources/RawData/DNA/clean/paired/illumina_run1_R1.fastq.gz",
-         illumina_run1_R2="resources/RawData/DNA/clean/paired/illumina_run1_R2.fastq.gz",
-         illumina_run2_R1="resources/RawData/DNA/clean/paired/illumina_run2_R1.fastq.gz",
-         illumina_run2_R2="resources/RawData/DNA/clean/paired/illumina_run2_R2.fastq.gz",
-         illumina_run3_R1="resources/RawData/DNA/clean/paired/illumina_run3_R1.fastq.gz",
-         illumina_run3_R2="resources/RawData/DNA/clean/paired/illumina_run3_R2.fastq.gz",
+         illumina_run1_R1="resources/RawData/DNA/clean/short/illumina_run1_R1.fastq.gz",
+         illumina_run1_R2="resources/RawData/DNA/clean/short/illumina_run1_R2.fastq.gz",
+         illumina_run2_R1="resources/RawData/DNA/clean/short/illumina_run2_R1.fastq.gz",
+         illumina_run2_R2="resources/RawData/DNA/clean/short/illumina_run2_R2.fastq.gz",
+         illumina_run3_R1="resources/RawData/DNA/clean/short/illumina_run3_R1.fastq.gz",
+         illumina_run3_R2="resources/RawData/DNA/clean/short/illumina_run3_R2.fastq.gz",
     output:
           polished_assembly="output/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/{assembler}/polca/{genome}.polished.fasta"
     script:
@@ -342,7 +342,7 @@ rule bowtie2_evaluation:
              ".rev.2.bt2"),
             #illumina_R1="resources/RawData/DNA/clean/paired/{run}_R1.fastq.gz",
             #illumina_R2="resources/RawData/DNA/clean/paired/{run}_R2.fastq.gz"
-            illumina_paired= "resources/RawData/DNA/clean/paired/{sample}.fastq.gz",
+            illumina_paired= "resources/RawData/DNA/clean/short/{sample}.fastq.gz",
     output:
           bam="output/Genomics/1_HybridGenomeAssemblyWorkflow/3_AssemblyEvaluation/{assembler}/{assembly}/{sample}.paired.bam",
           bai="output/Genomics/1_HybridGenomeAssemblyWorkflow/3_AssemblyEvaluation/{assembler}/{assembly}/{sample}.paired.bai"
@@ -370,7 +370,7 @@ rule meryl:
 rule winnowmap:
     input:
          genome="output/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/{assembler}/{genome}.fasta",
-         long_read="resources/RawData/DNA/clean/single/{long_read}.fastq.gz",
+         long_read="resources/RawData/DNA/clean/long/{long_read}.fastq.gz",
          merylDB="output/Genomics/1_HybridGenomeAssemblyWorkflow/3_AssemblyEvaluation/{assembler}/{genome}/winnowmap/merlyDB",
          repetitive_k15="output/Genomics/1_HybridGenomeAssemblyWorkflow/3_AssemblyEvaluation/{assembler}/{genome}/winnowmap/repetitive_k15.txt",
     output:
