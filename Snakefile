@@ -32,10 +32,10 @@ rule all:
                 assembler=["flye", "masurca"],
                 genome=["Hexamita"]),
          #bowtie2_paired_reads_evaluation
-         expand("output/Genomics/1_HybridGenomeAssemblyWorkflow/3_AssemblyEvaluation/{assembler}/{genome}/{run}.paired.bam",
+         expand("output/Genomics/1_HybridGenomeAssemblyWorkflow/3_AssemblyEvaluation/{assembler}/{genome}/{sample}.paired.bam",
                 assembler=["flye", "masurca"],
                 genome=["Hexamita"],
-                run=["illumina_run1", "illumina_run2", "illumina_run3"]),
+                sample=["illumina_run1", "illumina_run2", "illumina_run3"]),
          #meryl_evaluation
          expand("output/Genomics/1_HybridGenomeAssemblyWorkflow/3_AssemblyEvaluation/{assembler}/{genome}/winnowmap/merlyDB",
                 assembler=["flye", "masurca"],
@@ -338,9 +338,8 @@ rule bowtie2_evaluation:
              ".4.bt2",
              ".rev.1.bt2",
              ".rev.2.bt2"),
-            #illumina_R1="resources/RawData/DNA/clean/paired/{run}_R1.fastq.gz",
-            #illumina_R2="resources/RawData/DNA/clean/paired/{run}_R2.fastq.gz"
-            illumina_paired= "resources/RawData/DNA/clean/short/{sample}.fastq.gz",
+            illumina_R1="resources/RawData/DNA/clean/short/{sample}_R1.fastq.gz",
+            illumina_R2="resources/RawData/DNA/clean/short/{sample}_R2.fastq.gz"
     output:
           bam="output/Genomics/1_HybridGenomeAssemblyWorkflow/3_AssemblyEvaluation/{assembler}/{assembler}_polished_{genome}/{sample}.paired.bam",
           bai="output/Genomics/1_HybridGenomeAssemblyWorkflow/3_AssemblyEvaluation/{assembler}/{assembler}_polished_{genome}/{sample}.paired.bai"
