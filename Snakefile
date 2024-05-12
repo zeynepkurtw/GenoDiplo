@@ -19,11 +19,12 @@ rule all:
          #bwa
          #expand("resources/RawData/DNA/clean/{DNAseq}.clean.fastq.gz",
          #       DNAseq=config["reads"]),
-         #bowtie2_clean_reads
-            expand("resources/RawData/DNA/clean/{tech}/{sample}_sorted.bam",
-                   sample=["illumina_run1", "illumina_run2", "illumina_run3", "nanopore", "pacbio"],
-                   tech=["illumina", "nanopore", "pacbio"]),
-
+         #bowtie2_clean_paired_reads
+            expand("resources/RawData/DNA/clean/paired/{sample}_sorted.bam",
+                   sample=["illumina_run1", "illumina_run2", "illumina_run3"]),
+         #bowtie2_clean_single_reads
+            expand("resources/RawData/DNA/clean/single/{sample}_sorted.bam",
+                   sample=["nanopore", "pacbio"]),
          #flye
          expand("output/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/flye/{genome}.fasta",
                 genome=["Hexamita"]),
@@ -220,25 +221,54 @@ rule bwa:
           "scripts/Genomics/1_HybridGenomeAssemblyWorkflow/1_ReadsPreprocessing/ContaminationRemovalRawReads.py"
           """
 
-rule bowtie2_clean_reads:
+rule bowtie2_index:
+    input:
+        "resources/Contamination/all_contaminated.fasta"
+    output:
+        multiext(
+            "resources/Contamination/all_contaminated",
+            ".1.bt2",
+            ".2.bt2",
+            ".3.bt2",
+            ".4.bt2",
+            ".rev.1.bt2",
+            ".rev.2.bt2")
+    params:
+        outname="resources/Contamination/all_contaminated",
+        num_threads=32
+    conda:
+        "env/genomics.yaml"
+    shell:
+        'bowtie2-build {input} --threads {params.num_threads} {params.outname}'
+
+rule bowtie2_paired_reads:
     input:
         contamination="resources/Contamination/all_contaminated.fasta",
-        illumina_reads_1="resources/RawData/DNA/raw/illumina/{ill}_R1.fastq.gz",
-        illumina_reads_2="resources/RawData/DNA/raw/illumina/{ill}_R2.fastq.gz",
-        nanopore_reads="resources/RawData/DNA/raw/nanopore/{nano}.fastq.gz",
-        pacbio_reads="resources/RawData/DNA/raw/pacbio/{pac}.fastq.gz"
+        paired_reads_1="resources/RawData/DNA/raw/{sample}_R1.fastq.gz",
+        paired_reads_2="resources/RawData/DNA/raw/{sample}_R2.fastq.gz",
     output:
-        illumina_bam="resources/RawData/DNA/clean/illumina/{ill}_sorted.bam",
-        nanopore_bam="resources/RawData/DNA/clean/nanopore/{nano}_sorted.bam",
-        pacbio_bam="resources/RawData/DNA/clean/pacbio/{pac}_sorted.bam"
+        paired_reads_bam="resources/RawData/DNA/clean/paired/{sample}_sorted.bam",
     params:
-        threads=32
+        threads=32,
+        paired= True
     conda:
         "env/genomics.yaml"
     script:
-        "scripts/Genomics/1_HybridGenomeAssemblyWorkflow/1_ReadsPreprocessing/ContaminationRemovalRawReads2.py"
+        "scripts/Genomics/1_HybridGenomeAssemblyWorkflow/1_ReadsPreprocessing/ContaminationRemovalRawReads.py"
 
-
+rule bowtie2_single_reads:
+    input:
+        contamination="resources/Contamination/all_contaminated.fasta",
+        single_reads="resources/RawData/DNA/raw/{sample}.fastq.gz",
+    output:
+        single_reads_bam="resources/RawData/DNA/clean/single/{sample}_sorted.bam",
+    params:
+        threads=32,
+        paired= False
+    conda:
+        "env/genomics.yaml"
+    script:
+        "scripts/Genomics/1_HybridGenomeAssemblyWorkflow/1_ReadsPreprocessing/ContaminationRemovalRawReads.py"
 
 #Assembly
 rule flye:
