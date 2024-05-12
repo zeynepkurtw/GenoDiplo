@@ -146,7 +146,7 @@ Genomics Analysis
 #Reads Preprocessing
 rule fastqc_before_trimming:
     input:
-         input_dir = "resources/RawData/DNA/raw/illumina/",
+         input_dir = "resources/RawData/DNA/raw/",
     output:
           directory("output/Genomics/1_HybridGenomeAssemblyWorkflow/1_ReadsPreprocessing/fastqc"),
     params:
@@ -159,8 +159,8 @@ rule fastqc_before_trimming:
 
 rule trimmomatic:
     input:
-         r1="resources/RawData/DNA/raw/illumina/{run}_R1.fastq.gz",
-         r2="resources/RawData/DNA/raw/illumina/{run}_R2.fastq.gz"
+         r1="resources/RawData/DNA/raw/{run}_R1.fastq.gz",
+         r2="resources/RawData/DNA/raw/{run}_R2.fastq.gz"
     params:
             threads=32,
     output:
