@@ -335,6 +335,7 @@ rule bowtie2_biult_index_evaluation:
     shell:
          'bowtie2-build {input} --threads {params.num_threads} {params.outname}'
 
+"""
 rule bowtie2_evaluation:
     input:
          index=multiext(
@@ -358,7 +359,7 @@ rule bowtie2_evaluation:
     script:
           "scripts/Genomics/1_HybridGenomeAssemblyWorkflow/3_AssemblyEvaluation/MapShortReadsToAssembly.py"
 
-"""rule bowtie2_single_reads:
+rule bowtie2_single_reads:
     input:
         index=multiext(
         "output/Genomics/1_HybridGenomeAssemblyWorkflow/3_AssemblyEvaluation/index_bt2/{assembler}/{assembly}",
