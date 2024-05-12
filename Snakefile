@@ -323,7 +323,7 @@ rule quast:
     script:
           "scripts/Genomics/1_HybridGenomeAssemblyWorkflow/3_AssemblyEvaluation/AssemblyQualityCheck.py"
 
-rule bowtie2_biult_index:
+rule bowtie2_biult_index_evaluation:
     input:
          "output/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/{assembler}/{assembly}.assembly.fasta"
     output:
@@ -343,7 +343,7 @@ rule bowtie2_biult_index:
     shell:
          'bowtie2-build {input} --threads {params.num_threads} {params.outname}'
 
-rule bowtie2_paired_reads:
+rule bowtie2_evaluation:
     input:
          index=multiext(
              "output/Genomics/1_HybridGenomeAssemblyWorkflow/3_AssemblyEvaluation/index_bt2/{assembler}/{assembly}",
