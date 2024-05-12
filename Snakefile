@@ -33,10 +33,9 @@ rule all:
                 assembler=["flye", "masurca"],
                 genome=["Hexamita"]),
          #bowtie2_paired_reads_evaluation
-         expand("output/Genomics/1_HybridGenomeAssemblyWorkflow/3_AssemblyEvaluation/{assembler}/{genome}/{process}/{run}.pair.bam",
+         expand("output/Genomics/1_HybridGenomeAssemblyWorkflow/3_AssemblyEvaluation/{assembler}/{genome}/{run}.paired.bam",
                 assembler=["flye", "masurca"],
                 genome=["Hexamita"],
-                process=["clean"],
                 run=["illumina_run1", "illumina_run2", "illumina_run3"]),
          #meryl_evaluation
          expand("output/Genomics/1_HybridGenomeAssemblyWorkflow/3_AssemblyEvaluation/{assembler}/{genome}/winnowmap/merlyDB",
