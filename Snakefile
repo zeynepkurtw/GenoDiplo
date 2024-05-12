@@ -12,10 +12,10 @@ rule all:
          #expand("resources/RawData/DNA/clean/{DNAseq}.clean.fastq.gz",
          #       DNAseq=config["reads"]),
          #bowtie2_clean_paired_reads
-            expand("resources/RawData/DNA/clean/paired/{sample}.fastq.gz",
+            expand("resources/RawData/DNA/clean/{sample}_R1.fastq.gz",
                    sample=["illumina_run1", "illumina_run2", "illumina_run3"]),
          #bowtie2_clean_single_reads
-            expand("resources/RawData/DNA/clean/single/{sample}.fastq.gz",
+            expand("resources/RawData/DNA/clean/{sample}.fastq.gz",
                    sample=["nanopore", "pacbio"]),
          #flye
          expand("output/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/flye/{genome}.fasta",
