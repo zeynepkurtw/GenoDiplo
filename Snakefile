@@ -273,7 +273,7 @@ rule bowtie2_single_reads:
 #Assembly
 rule flye:
     input:
-         reads="resources/RawData/DNA/clean/nanopore/nanopore.clean.fastq.gz",
+         reads="resources/RawData/DNA/clean/single/nanopore.clean.fastq.gz",
     params:
           genome_size="114m",
           threads=25,
@@ -288,7 +288,7 @@ rule masurca:
     input:
          config="resources/AssemblyConfig/assemble.sh"
     params:
-          path="resources/RawData/DNA/clean/",
+          path="resources/RawData/DNA/clean/single/",
     output:
           "output/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/masurca/{genome}.fasta"
     conda:
@@ -299,12 +299,12 @@ rule masurca:
 rule polca:
     input:
          assembly="output/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/{assembler}/{genome}.fasta",
-         illumina_run1_R1="resources/RawData/DNA/clean/illumina/illumina_run1_R1.fastq.gz",
-         illumina_run1_R2="resources/RawData/DNA/clean/illumina/illumina_run1_R2.fastq.gz",
-         illumina_run2_R1="resources/RawData/DNA/clean/illumina/illumina_run2_R1.fastq.gz",
-         illumina_run2_R2="resources/RawData/DNA/clean/illumina/illumina_run2_R2.fastq.gz",
-         illumina_run3_R1="resources/RawData/DNA/clean/illumina/illumina_run3_R1.fastq.gz",
-         illumina_run3_R2="resources/RawData/DNA/clean/illumina/illumina_run3_R2.fastq.gz",
+         illumina_run1_R1="resources/RawData/DNA/clean/paired/illumina_run1_R1.fastq.gz",
+         illumina_run1_R2="resources/RawData/DNA/clean/paired/illumina_run1_R2.fastq.gz",
+         illumina_run2_R1="resources/RawData/DNA/clean/paired/illumina_run2_R1.fastq.gz",
+         illumina_run2_R2="resources/RawData/DNA/clean/paired/illumina_run2_R2.fastq.gz",
+         illumina_run3_R1="resources/RawData/DNA/clean/paired/illumina_run3_R1.fastq.gz",
+         illumina_run3_R2="resources/RawData/DNA/clean/paired/illumina_run3_R2.fastq.gz",
     output:
           polished_assembly="output/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/{assembler}/polca/{genome}.polished.fasta"
     script:
@@ -353,8 +353,8 @@ rule bowtie2_evaluation:
              ".4.bt2",
              ".rev.1.bt2",
              ".rev.2.bt2"),
-         illumina_R1="resources/RawData/DNA/clean/illumina/{run}_R1.clean.fastq.gz",
-         illumina_R2="resources/RawData/DNA/clean/illumina/{run}_R2.clean.fastq.gz"
+         illumina_R1="resources/RawData/DNA/clean/paired/{run}_R1.clean.fastq.gz",
+         illumina_R2="resources/RawData/DNA/clean/paired/{run}_R2.clean.fastq.gz"
     output:
           bam="output/Genomics/1_HybridGenomeAssemblyWorkflow/3_AssemblyEvaluation/{assembler}/{assembly}/{process}/{run}.pair.bam",
           bai="output/Genomics/1_HybridGenomeAssemblyWorkflow/3_AssemblyEvaluation/{assembler}/{assembly}/{process}/{run}.pair.bai"
