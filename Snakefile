@@ -3,7 +3,7 @@ configfile: "env/config.yaml"
 rule all:
     input:
          #fastqc
-        "output/Genomics/1_HybridGenomeAssemblyWorkflow/1_ReadsPreprocessing/fastqc",
+        "output/Genomics/1_HybridGenomeAssemblyWorkflow/1_ReadsPreprocessing/",
          #trimmomatic
          expand("output/Genomics/1_HybridGenomeAssemblyWorkflow/1_ReadsPreprocessing/trimmomatic/{run}_R1.unique.trimmed.fastq",
                 run=["illumina_run1", "illumina_run2", "illumina_run3"]),
@@ -126,7 +126,7 @@ rule fastqc_before_trimming:
     params:
         threads=32,
     output:
-        out_dir = directory("output/Genomics/1_HybridGenomeAssemblyWorkflow/1_ReadsPreprocessing/fastqc/"),
+        out_dir = directory("output/Genomics/1_HybridGenomeAssemblyWorkflow/1_ReadsPreprocessing/"),
     conda:
          "env/genomics.yaml",
     script:
