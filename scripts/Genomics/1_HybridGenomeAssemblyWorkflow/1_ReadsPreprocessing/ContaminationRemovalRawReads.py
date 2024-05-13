@@ -1,4 +1,5 @@
 from snakemake.shell import shell
+import os
 
 paired = snakemake.params.get('paired', False)
 threads = snakemake.params.threads
