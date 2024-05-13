@@ -122,11 +122,11 @@ Genomics Analysis
 #Reads Preprocessing
 rule fastqc_before_trimming:
     input:
-            input_dir = directory("resources/RawData/DNA/raw/"),
-    output:
-            out_dir = directory("output/Genomics/1_HybridGenomeAssemblyWorkflow/1_ReadsPreprocessing/fastqc"),
+        input_dir = directory("resources/RawData/DNA/raw/"),
     params:
         threads=32,
+    output:
+        out_dir = directory("output/Genomics/1_HybridGenomeAssemblyWorkflow/1_ReadsPreprocessing/fastqc/"),
     conda:
          "env/genomics.yaml",
     script:
