@@ -134,7 +134,6 @@ rule fastqc_before_trimming:
     script:
          "scripts/Genomics/1_HybridGenomeAssemblyWorkflow/1_ReadsPreprocessing/ReadQualityCheck.py"
 
-
 rule trimmomatic:
     input:
          r1="resources/RawData/DNA/raw/{run}_R1.fastq.gz",
@@ -161,7 +160,6 @@ rule fastqc_after_trimming:
          "env/genomics.yaml"
     script:
           "scripts/Genomics/1_HybridGenomeAssemblyWorkflow/1_ReadsPreprocessing/ReadQualityCheck2.py"
-
 
 #rule calculatereadmeanstdev
 
@@ -268,10 +266,11 @@ rule bowtie2_single_reads_cleaning_contamination:
 #Assembly
 rule flye:
     input:
-         reads="resources/RawData/DNA/clean/long/nanopore.fastq.gz",
+        reads="resources/RawData/DNA/clean/nanopore.fastq.gz",
+
     params:
-          genome_size="114m",
-          threads=25,
+      genome_size="114m",
+      threads=25,
     output:
           assembly="output/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/flye/flye_{genome}.fasta",
     conda:
@@ -283,7 +282,7 @@ rule masurca:
     input:
          config="resources/AssemblyConfig/assemble.sh"
     params:
-          path="resources/RawData/DNA/clean/short/",
+          path="resources/RawData/DNA/clean/",
     output:
           "output/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/masurca/masurca_{genome}.fasta"
     conda:
@@ -294,12 +293,12 @@ rule masurca:
 rule polca:
     input:
          assembly="output/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/{assembler}/{assembler}_{genome}.fasta",
-         illumina_run1_R1="resources/RawData/DNA/clean/short/illumina_run1_R1.fastq.gz",
-         illumina_run1_R2="resources/RawData/DNA/clean/short/illumina_run1_R2.fastq.gz",
-         illumina_run2_R1="resources/RawData/DNA/clean/short/illumina_run2_R1.fastq.gz",
-         illumina_run2_R2="resources/RawData/DNA/clean/short/illumina_run2_R2.fastq.gz",
-         illumina_run3_R1="resources/RawData/DNA/clean/short/illumina_run3_R1.fastq.gz",
-         illumina_run3_R2="resources/RawData/DNA/clean/short/illumina_run3_R2.fastq.gz",
+         illumina_run1_R1="resources/RawData/DNA/clean/illumina_run1_R1.fastq.gz",
+         illumina_run1_R2="resources/RawData/DNA/clean/illumina_run1_R2.fastq.gz",
+         illumina_run2_R1="resources/RawData/DNA/clean/illumina_run2_R1.fastq.gz",
+         illumina_run2_R2="resources/RawData/DNA/clean/illumina_run2_R2.fastq.gz",
+         illumina_run3_R1="resources/RawData/DNA/clean/illumina_run3_R1.fastq.gz",
+         illumina_run3_R2="resources/RawData/DNA/clean/illumina_run3_R2.fastq.gz",
     output:
           polished_assembly="output/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/{assembler}_polished_{genome}.fasta"
     script:
@@ -349,8 +348,8 @@ rule bowtie2_evaluation:
              ".4.bt2",
              ".rev.1.bt2",
              ".rev.2.bt2"),
-            ill_R1="resources/RawData/DNA/clean/short/{sample}_R1.fastq.gz",
-            ill_R2="resources/RawData/DNA/clean/short/{sample}_R2.fastq.gz"
+            ill_R1="resources/RawData/DNA/clean/{sample}_R1.fastq.gz",
+            ill_R2="resources/RawData/DNA/clean/{sample}_R2.fastq.gz"
     output:
           bam="output/Genomics/1_HybridGenomeAssemblyWorkflow/3_AssemblyEvaluation/{assembler}/{assembler}_polished_{genome}/{sample}.bam",
           bai="output/Genomics/1_HybridGenomeAssemblyWorkflow/3_AssemblyEvaluation/{assembler}/{assembler}_polished_{genome}/{sample}.bai"
@@ -378,7 +377,7 @@ rule meryl:
 rule winnowmap:
     input:
          genome="output/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/{assembler}/{assembler}_polished_{genome}.fasta",
-         long_read="resources/RawData/DNA/clean/long/{long_read}.fastq.gz",
+         long_read="resources/RawData/DNA/clean/{long_read}.fastq.gz",
          merylDB="output/Genomics/1_HybridGenomeAssemblyWorkflow/3_AssemblyEvaluation/{assembler}/{genome}/winnowmap/merlyDB",
          repetitive_k15="output/Genomics/1_HybridGenomeAssemblyWorkflow/3_AssemblyEvaluation/{assembler}/{genome}/winnowmap/repetitive_k15.txt",
     output:
