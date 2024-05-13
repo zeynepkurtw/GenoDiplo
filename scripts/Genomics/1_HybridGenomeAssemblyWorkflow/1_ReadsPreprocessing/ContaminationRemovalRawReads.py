@@ -5,12 +5,6 @@ paired = snakemake.params.get('paired', False)
 threads = snakemake.params.threads
 index = os.path.commonprefix(snakemake.input.index).rstrip(".")
 
-# Outputs for BAM files
-contaminated_short = snakemake.output.contaminated_short
-contaminated_long = snakemake.output.contaminated_long
-clean_ill = snakemake.output.clean_ill
-clean_long = snakemake.output.clean_long
-
 
 # Build the Bowtie2 index for the contamination reference
 #shell(f"bowtie2-build {contamination} {contamination}_index")
@@ -18,6 +12,8 @@ clean_long = snakemake.output.clean_long
 if paired:
     ill_R1 = snakemake.input.ill_R1
     ill_R2 = snakemake.input.ill_R2
+    contaminated_short = snakemake.output.contaminated_short
+    clean_ill = snakemake.output.clean_ill
     # Process Illumina paired-end reads
     # Map reads using Bowtie2 and save unmapped reads into separate files
     shell(f"bowtie2 -p {threads} -x {index} -1 {ill_R1} -2 {ill_R2} \
@@ -35,6 +31,8 @@ if paired:
 
 else:
     long_reads = snakemake.input.long_reads
+    contaminated_long = snakemake.output.contaminated_long
+    clean_long = snakemake.output.clean_long
     # Align Nanopore reads and save unmapped reads
     shell(f"bowtie2 -p {threads} -x {index} -U {long_reads} \
           --un {clean_long} \
