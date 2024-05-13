@@ -20,8 +20,8 @@ rule all:
          #   expand("resources/RawData/DNA/clean/long/{sample}.fastq.gz",
           #         sample=["nanopore", "pacbio"]),
          ##flye
-         #expand("output/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/flye/flye_{genome}.fasta",
-           #     genome=["Hexamita"]),
+         expand("output/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/flye/flye_{genome}.fasta",
+                genome=["Hexamita"]),
          #masurca
          #expand("output/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/masurca/masurca_{genome}.fasta",
           #      genome=["Hexamita"]),
