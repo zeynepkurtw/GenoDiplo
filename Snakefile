@@ -12,7 +12,7 @@ rule all:
          #ContaminationDetection.py
          #bwa_cleaning_contamination
          expand("resources/RawData/DNA/clean/{DNAseq}.fastq.gz",
-                DNAseq=config["DNAseq"]),
+                DNAseq=config["reads"]),
          #bowtie2_clean_paired_reads
         #    expand("resources/RawData/DNA/clean/short/{sample}_R1.fastq.gz",
            #        sample=["illumina_run1", "illumina_run2", "illumina_run3"]),
