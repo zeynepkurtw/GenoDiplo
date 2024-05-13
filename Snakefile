@@ -184,7 +184,7 @@ rule bwa_index:
 rule bwa_cleaning_contamination:
     input:
          contamination="resources/Contamination/all_contaminated.fasta",
-         raw_reads="resources/RawData/DNA/raw/{DNAseq}.fastq.gz"
+         raw_reads="resources/RawData/DNA/raw/short/{DNAseq}.fastq.gz"
     params:
           threads=32,
           paired=False
