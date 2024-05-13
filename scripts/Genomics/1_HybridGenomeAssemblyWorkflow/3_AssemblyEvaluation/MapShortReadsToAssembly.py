@@ -1,10 +1,9 @@
 from snakemake.shell import shell
-import os
 
 num_threads = snakemake.params.num_threads
 genome = snakemake.input.genome
-ill_R1 = snakemake.input.illumina_R1
-ill_R2 = snakemake.input.illumina_R2
+ill_R1 = snakemake.input.ill_R1
+ill_R2 = snakemake.input.ill_R2
 
 bam = snakemake.output.bam
 bai = snakemake.output.bai
