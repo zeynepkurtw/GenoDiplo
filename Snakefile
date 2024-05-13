@@ -220,7 +220,7 @@ rule bowtie2_index_cleaning_contamination:
 
 rule bowtie2_paired_reads_cleaning_contamination:
     input:
-        contamination="resources/Contamination/all_contaminated.fasta",
+        index="resources/Contamination/all_contaminated.fasta",
         ill_R1="resources/RawData/DNA/raw/{sample}_R1.fastq.gz",
         ill_R2="resources/RawData/DNA/raw/{sample}_R2.fastq.gz",
     output:
