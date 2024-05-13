@@ -308,7 +308,7 @@ rule bowtie2_biult_index_evaluation:
          "output/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/{assembler}/{assembler}_polished_{genome}.fasta"
     output:
           multiext(
-              "output/Genomics/1_HybridGenomeAssemblyWorkflow/3_AssemblyEvaluation/index_bt2/{assembler}/{assembler}_polished_{genome}.fasta",
+              "output/Genomics/1_HybridGenomeAssemblyWorkflow/3_AssemblyEvaluation/index_bt2/{assembler}/{assembler}_polished_{genome}",
               ".1.bt2",
               ".2.bt2",
               ".3.bt2",
