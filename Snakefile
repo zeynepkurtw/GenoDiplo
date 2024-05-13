@@ -103,14 +103,9 @@ rule all:
         #orthofinder_rerun
 
 
-
-
-
-
 #expand("output/2_cdhit/{sp}_{n}.cdhit", n=config["seq_identity"], sp=config["species"])
 #expand("output/7_tRNAscan/{sp}.tRNAscan",sp=["HIN", "muris", "wb", "spiro"]),
 #expand("output/7_tRNAscan/sensitive_search/{sp}.cov.tRNAscan",sp=[ "muris", "wb", "spiro"]),
-
 
 """
 Genomics Analysis
@@ -338,8 +333,8 @@ rule bowtie2_evaluation:
              ".4.bt2",
              ".rev.1.bt2",
              ".rev.2.bt2"),
-            illumina_R1="resources/RawData/DNA/clean/short/{sample}_R1.fastq.gz",
-            illumina_R2="resources/RawData/DNA/clean/short/{sample}_R2.fastq.gz"
+            ill_R1="resources/RawData/DNA/clean/short/{sample}_R1.fastq.gz",
+            ill_R2="resources/RawData/DNA/clean/short/{sample}_R2.fastq.gz"
     output:
           bam="output/Genomics/1_HybridGenomeAssemblyWorkflow/3_AssemblyEvaluation/{assembler}/{assembler}_polished_{genome}/{sample}.paired.bam",
           bai="output/Genomics/1_HybridGenomeAssemblyWorkflow/3_AssemblyEvaluation/{assembler}/{assembler}_polished_{genome}/{sample}.paired.bai"

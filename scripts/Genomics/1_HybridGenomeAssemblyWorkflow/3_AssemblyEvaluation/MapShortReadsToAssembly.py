@@ -1,12 +1,13 @@
 from snakemake.shell import shell
 import os
 
+num_threads = snakemake.params.num_threads
+genome = snakemake.input.genome
+ill_R1 = snakemake.input.illumina_R1
+ill_R2 = snakemake.input.illumina_R2
+
 bam = snakemake.output.bam
 bai = snakemake.output.bai
 
-num_threads = snakemake.params.num_threads
-index = os.path.commonprefix(snakemake.input.index).rstrip(".")
-illumina_paired = snakemake.input.illumina_paired
-
-shell(f"""bowtie2 -p {num_threads} {illumina_paired} -x {index} | samtools sort -o {bam}""")
+shell(f"""bowtie2 -p {num_threads} -1 {ill_R1} -2 {ill_R2} -x {genome}_index | samtools sort -o {bam}""")
 shell(f"""samtools index {bam} {bai}""")
