@@ -32,7 +32,7 @@ rule all:
                 assembler=["flye", "masurca"],
                 genome=["Hexamita"]),
          #bowtie2_paired_reads_evaluation
-         expand("output/Genomics/1_HybridGenomeAssemblyWorkflow/3_AssemblyEvaluation/{assembler}/{genome}/{sample}.paired.bam",
+         expand("output/Genomics/1_HybridGenomeAssemblyWorkflow/3_AssemblyEvaluation/{assembler}/{genome}/{sample}.bam",
                 assembler=["flye", "masurca"],
                 genome=["Hexamita"],
                 sample=["illumina_run1", "illumina_run2", "illumina_run3"]),
@@ -44,7 +44,7 @@ rule all:
                 assembler=["flye", "masurca"],
                 genome=["Hexamita"]),
          #winnowmap_evaluation
-         expand("output/Genomics/1_HybridGenomeAssemblyWorkflow/3_AssemblyEvaluation/{assembler}/{genome}/winnowmap/{long_reads}.win.bam",
+         expand("output/Genomics/1_HybridGenomeAssemblyWorkflow/3_AssemblyEvaluation/{assembler}/{genome}/winnowmap/{long_reads}.bam",
                 assembler=["flye", "masurca"],
                 genome=["Hexamita"],
                 long_reads=["nanopore", "pacbio"]),
