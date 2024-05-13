@@ -124,14 +124,14 @@ rule fastqc_before_trimming:
     input:
          input_dir = "resources/RawData/DNA/raw/",
     output:
-          directory("output/Genomics/1_HybridGenomeAssemblyWorkflow/1_ReadsPreprocessing/fastqc"),
+        directory("output/Genomics/1_HybridGenomeAssemblyWorkflow/1_ReadsPreprocessing/fastqc"),
     params:
-          threads=32,
-
+        threads=32,
     conda:
-         "env/genomics.yaml"
+         "env/genomics.yaml",
     script:
-          "scripts/Genomics/1_HybridGenomeAssemblyWorkflow/1_ReadsPreprocessing/ReadQualityCheck.py"
+         "scripts/Genomics/1_HybridGenomeAssemblyWorkflow/1_ReadsPreprocessing/ReadQualityCheck.py"
+
 
 rule trimmomatic:
     input:
