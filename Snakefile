@@ -336,10 +336,9 @@ rule bowtie2_evaluation:
             ill_R1="resources/RawData/DNA/clean/short/{sample}_R1.fastq.gz",
             ill_R2="resources/RawData/DNA/clean/short/{sample}_R2.fastq.gz"
     output:
-          bam="output/Genomics/1_HybridGenomeAssemblyWorkflow/3_AssemblyEvaluation/{assembler}/{assembler}_polished_{genome}/{sample}.bam",
-          bai="output/Genomics/1_HybridGenomeAssemblyWorkflow/3_AssemblyEvaluation/{assembler}/{assembler}_polished_{genome}/{sample}.bai"
+          genome_short="output/Genomics/1_HybridGenomeAssemblyWorkflow/3_AssemblyEvaluation/{assembler}/{assembler}_polished_{genome}/{sample}.bam",
     params:
-          num_threads=32,
+          threads=32,
     conda:
          "env/genomics.yaml"
     script:
