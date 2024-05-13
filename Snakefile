@@ -2,11 +2,13 @@ configfile: "env/config.yaml"
 
 rule all:
     input:
-         #fastqc
-        "output/Genomics/1_HybridGenomeAssemblyWorkflow/1_ReadsPreprocessing/fastqc_before_trimming",
+         #fastqc_before_trimming,
+        #"output/Genomics/1_HybridGenomeAssemblyWorkflow/1_ReadsPreprocessing/fastqc_before_trimming",
          #trimmomatic
          expand("output/Genomics/1_HybridGenomeAssemblyWorkflow/1_ReadsPreprocessing/trimmomatic/{run}_R1.unique.trimmed.fastq",
                 run=["illumina_run1", "illumina_run2", "illumina_run3"]),
+         #fastqc_after_trimming
+         #"output/Genomics/1_HybridGenomeAssemblyWorkflow/1_ReadsPreprocessing/fastqc_after_trimming",
          #ContaminationDetection.py
          #bwa
          #expand("resources/RawData/DNA/clean/{DNAseq}.clean.fastq.gz",
@@ -149,18 +151,17 @@ rule trimmomatic:
     script:
           "scripts/Genomics/1_HybridGenomeAssemblyWorkflow/1_ReadsPreprocessing/TrimIlluminaReads.py"
 
-"""rule fastqc_after_trimming:
+rule fastqc_after_trimming:
     input:
          r1="output/Genomics/1_HybridGenomeAssemblyWorkflow/1_ReadsPreprocessing/{seq}.unique.trimmed.fastq",
          r2="output/Genomics/1_HybridGenomeAssemblyWorkflow/1_ReadsPreprocessing/{seq}.duplicate.trimmed.fastq",
-         outdir="output/Genomics/1_HybridGenomeAssemblyWorkflow/1_ReadsPreprocessing"
     output:
-          html="output/Genomics/1_HybridGenomeAssemblyWorkflow/1_ReadsPreprocessing/{seq}.unique.trimmed_fastqc.html",
+          out_dir=directory("output/Genomics/1_HybridGenomeAssemblyWorkflow/1_ReadsPreprocessing/fastqc_after_trimming/"),
     conda:
          "env/genomics.yaml"
     script:
           "scripts/Genomics/1_HybridGenomeAssemblyWorkflow/1_ReadsPreprocessing/ReadQualityCheck2.py"
-          """
+
 
 #rule calculatereadmeanstdev
 """rule bwa_index:
