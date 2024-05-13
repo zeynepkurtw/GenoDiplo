@@ -3,7 +3,7 @@ import os
 
 paired = snakemake.params.get('paired', False)
 threads = snakemake.params.threads
-index = os.path.commonprefix([snakemake.input.index]).rstrip(".")
+index = os.path.commonprefix(snakemake.input.index).rstrip(".")
 
 if paired:
     ill_R1 = snakemake.input.ill_R1
