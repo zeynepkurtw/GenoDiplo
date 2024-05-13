@@ -3,8 +3,8 @@ pfam: [PF12799]
 RNAseq: [RNA-1_fastqc.zip, RNA-2_fastqc.zip]
 
 DNAseq: [pacbio.fastq.gz, nanopore.fastq.gz,
-      illumina_run1_R1.fastq.gz,illumina_run1_R2.fastq.gz,
-      #illumina_run2_R1.fastq.gz, illumina_run2_R2.fastq.gz,
+      #illumina_run1_R1.fastq.gz,illumina_run1_R2.fastq.gz,
+      illumina_run2_R1.fastq.gz, illumina_run2_R2.fastq.gz,
       illumina_run3_R1.fastq.gz, illumina_run3_R2.fastq.gz]
 
 reads: [pacbio, nanopore,
