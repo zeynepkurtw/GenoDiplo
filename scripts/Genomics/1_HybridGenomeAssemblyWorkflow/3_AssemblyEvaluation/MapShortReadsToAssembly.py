@@ -1,10 +1,10 @@
 from snakemake.shell import shell
+import os
 
-
-index = snakemake.input.index
 ill_R1 = snakemake.input.ill_R1
 ill_R2 = snakemake.input.ill_R2
 threads = snakemake.params.threads
+index = os.path.commonprefix(snakemake.input.index).rstrip(".")
 
 bam = snakemake.output.bam
 bai = snakemake.output.bai
