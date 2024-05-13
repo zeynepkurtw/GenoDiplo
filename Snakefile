@@ -220,7 +220,14 @@ rule bowtie2_index_cleaning_contamination:
 
 rule bowtie2_paired_reads_cleaning_contamination:
     input:
-        index="resources/Contamination/all_contaminated.fasta",
+        index=multiext(
+             "resources/Contamination/all_contaminated",
+             ".1.bt2",
+             ".2.bt2",
+             ".3.bt2",
+             ".4.bt2",
+             ".rev.1.bt2",
+             ".rev.2.bt2"),
         ill_R1="resources/RawData/DNA/raw/{sample}_R1.fastq.gz",
         ill_R2="resources/RawData/DNA/raw/{sample}_R2.fastq.gz",
     output:
@@ -237,7 +244,14 @@ rule bowtie2_paired_reads_cleaning_contamination:
 
 rule bowtie2_single_reads_cleaning_contamination:
     input:
-        contamination="resources/Contamination/all_contaminated.fasta",
+     index=multiext(
+         "resources/Contamination/all_contaminated",
+         ".1.bt2",
+         ".2.bt2",
+         ".3.bt2",
+         ".4.bt2",
+         ".rev.1.bt2",
+         ".rev.2.bt2"),
         long_reads="resources/RawData/DNA/raw/{sample}.fastq.gz",
     output:
         clean_long="resources/RawData/DNA/clean/long/{sample}.fastq.gz",
