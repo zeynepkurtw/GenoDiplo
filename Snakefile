@@ -10,9 +10,9 @@ rule all:
          #fastqc_after_trimming
          #"output/Genomics/1_HybridGenomeAssemblyWorkflow/1_ReadsPreprocessing/fastqc_after_trimming",
          #ContaminationDetection.py
-         #bwa
-         #expand("resources/RawData/DNA/clean/{DNAseq}.clean.fastq.gz",
-         #       DNAseq=config["reads"]),
+         #bwa_cleaning_contamination
+         expand("resources/RawData/DNA/clean/{DNAseq}.fastq.gz",
+                DNAseq=config["reads"]),
          #bowtie2_clean_paired_reads
             expand("resources/RawData/DNA/clean/short/{sample}_R1.fastq.gz",
                    sample=["illumina_run1", "illumina_run2", "illumina_run3"]),
@@ -164,7 +164,8 @@ rule fastqc_after_trimming:
 
 
 #rule calculatereadmeanstdev
-"""rule bwa_index:
+
+rule bwa_index:
     input:
         "resources/Contamination/all_contaminated.fasta"
     output:
@@ -180,25 +181,24 @@ rule fastqc_after_trimming:
     shell:
         'bwa index {input}'
 
-rule bwa:
+rule bwa_cleaning_contamination:
     input:
          contamination="resources/Contamination/all_contaminated.fasta",
          raw_reads="resources/RawData/DNA/raw/{DNAseq}.fastq.gz"
     params:
-          threads=32
+          threads=32,
+          paired=False
     output:
-          #raw_reads_unmapped="output/Genomics/1_HybridGenomeAssemblyWorkflow/1_ReadsPreprocessing/{read}.clean.bam",
-          #raw_reads_unmapped_sorted="output/Genomics/1_HybridGenomeAssemblyWorkflow/1_ReadsPreprocessing/{read}.clean.sorted.bam",
-          #raw_reads_unmapped_fastq="output/Genomics/1_HybridGenomeAssemblyWorkflow/1_ReadsPreprocessing/{read}.clean.fastq"
-          raw_reads_unmapped="resources/RawData/DNA/clean/{DNAseq}.clean.bam",
-          raw_reads_unmapped_sorted="resources/RawData/DNA/clean/{DNAseq}.clean.sorted.bam",
-          raw_reads_unmapped_fastq="resources/RawData/DNA/clean/{DNAseq}.clean.fastq.gz"
+          raw_reads_unmapped="resources/RawData/DNA/clean/{DNAseq}.bam",
+          raw_reads_unmapped_sorted="resources/RawData/DNA/clean/{DNAseq}.sorted.bam",
+          raw_reads_unmapped_fastq="resources/RawData/DNA/clean/{DNAseq}.fastq.gz"
     conda:
          "env/genomics.yaml"
     script:
-          "scripts/Genomics/1_HybridGenomeAssemblyWorkflow/1_ReadsPreprocessing/ContaminationRemovalRawReads.py"
-          """
+          "scripts/Genomics/1_HybridGenomeAssemblyWorkflow/1_ReadsPreprocessing/ContaminationRemovalRawReadsBWA.py"
 
+
+"""
 rule bowtie2_index_cleaning_contamination:
     input:
         "resources/Contamination/all_contaminated.fasta"
@@ -264,7 +264,7 @@ rule bowtie2_single_reads_cleaning_contamination:
         "env/genomics.yaml"
     script:
         "scripts/Genomics/1_HybridGenomeAssemblyWorkflow/1_ReadsPreprocessing/ContaminationRemovalRawReads.py"
-
+"""
 #Assembly
 rule flye:
     input:
