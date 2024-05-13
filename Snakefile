@@ -122,9 +122,9 @@ Genomics Analysis
 #Reads Preprocessing
 rule fastqc_before_trimming:
     input:
-         input_dir = "resources/RawData/DNA/raw/",
+            input_dir = directory("resources/RawData/DNA/raw/"),
     output:
-        directory("output/Genomics/1_HybridGenomeAssemblyWorkflow/1_ReadsPreprocessing/fastqc"),
+            out_dir = directory("output/Genomics/1_HybridGenomeAssemblyWorkflow/1_ReadsPreprocessing/fastqc"),
     params:
         threads=32,
     conda:
@@ -149,7 +149,7 @@ rule trimmomatic:
     script:
           "scripts/Genomics/1_HybridGenomeAssemblyWorkflow/1_ReadsPreprocessing/TrimIlluminaReads.py"
 
-rule fastqc_after_trimming:
+"""rule fastqc_after_trimming:
     input:
          r1="output/Genomics/1_HybridGenomeAssemblyWorkflow/1_ReadsPreprocessing/{seq}.unique.trimmed.fastq",
          r2="output/Genomics/1_HybridGenomeAssemblyWorkflow/1_ReadsPreprocessing/{seq}.duplicate.trimmed.fastq",
@@ -160,6 +160,7 @@ rule fastqc_after_trimming:
          "env/genomics.yaml"
     script:
           "scripts/Genomics/1_HybridGenomeAssemblyWorkflow/1_ReadsPreprocessing/ReadQualityCheck2.py"
+          """
 
 #rule calculatereadmeanstdev
 """rule bwa_index:

@@ -1,9 +1,9 @@
 from snakemake.shell import shell
 
 input_dir = snakemake.input.input_dir
-out = snakemake.output[0]
+out_dir = snakemake.output.out_dir
 
 #shell(f"cd {input_dir}")
 #shell(f"fastqc --threads 32 .")
 
-shell(f"fastqc --threads 32 {input_dir}/*.fastq.gz")
+shell(f"fastqc --threads 32 {input_dir}/*.fastq.gz -o {out_dir}")
