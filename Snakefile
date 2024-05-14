@@ -125,7 +125,7 @@ Genomics Analysis
 #Reads Preprocessing
 rule fastqc_before_trimming:
     input:
-        input_dir = directory("data/zeynep/HIN_data/DNA/raw/"),
+        input_dir = directory("/data/zeynep/HIN_data/DNA/raw/"),
     params:
         threads=32,
     output:
@@ -137,8 +137,8 @@ rule fastqc_before_trimming:
 
 rule trimmomatic:
     input:
-         r1="data/zeynep/HIN_data/DNA/raw/{run}_R1.fastq.gz",
-         r2="data/zeynep/HIN_data/DNA/raw/{run}_R2.fastq.gz"
+         r1="/data/zeynep/HIN_data/DNA/raw/{run}_R1.fastq.gz",
+         r2="/data/zeynep/HIN_data/DNA/raw/{run}_R2.fastq.gz"
     params:
             threads=32,
     output:
@@ -183,7 +183,7 @@ rule bwa_index:
 rule bwa_cleaning_contamination:
     input:
          contamination="resources/Contamination/all_contaminated.fasta",
-         raw_reads="data/zeynep/HIN_data/DNA/raw/{DNAseq}.fastq.gz"
+         raw_reads="/data/zeynep/HIN_data/DNA/raw/{DNAseq}.fastq.gz"
     params:
           threads=32,
           paired=False
