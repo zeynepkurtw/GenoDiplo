@@ -19,7 +19,7 @@ rule all:
          #bowtie2_clean_single_reads
          #   expand("/data/zeynep/HIN_data/DNA/clean/long/{sample}.fastq.gz",
           #         sample=["nanopore", "pacbio"]),
-""" 
+
         ##flye
          expand("output/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/flye/flye_{genome}.fasta",
                 genome=["Hexamita"]),
@@ -34,6 +34,7 @@ rule all:
          expand("output/Genomics/1_HybridGenomeAssemblyWorkflow/3_AssemblyEvaluation/{assembler}/{genome}/quast_report/",
                 assembler=["flye", "masurca"],
                 genome=["Hexamita"]),
+    """ 
          #bowtie2_paired_reads_evaluation
          expand("output/Genomics/1_HybridGenomeAssemblyWorkflow/3_AssemblyEvaluation/{assembler}/{assembler}_polished_{genome}/{sample}.bam",
                 assembler=["flye", "masurca"],
