@@ -1,3 +1,6 @@
+data_dir: /data/zeynep/HIN_data/
+
+
 pfam: [PF12799]
 
 RNAseq: [RNA-1_fastqc.zip, RNA-2_fastqc.zip]
@@ -26,3 +29,4 @@ illumina_run3: [illumina_run3_R1.fastq.gz, illumina_run3_R2.fastq.gz]
 
 nanopore: [nanopore]
 pacbio: [pacbio]
+

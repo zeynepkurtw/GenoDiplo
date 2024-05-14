@@ -5,19 +5,19 @@ rule all:
          #fastqc_before_trimming,
          #"output/Genomics/1_HybridGenomeAssemblyWorkflow/1_ReadsPreprocessing/fastqc_before_trimming",
          #trimmomatic
-         expand("output/Genomics/1_HybridGenomeAssemblyWorkflow/1_ReadsPreprocessing/trimmomatic/{run}_R1.unique.trimmed.fastq",
+         expand("/data/zeynep/HIN_data/DNA/trimmed/{run}_R1.unique.trimmed.fastq",
                 run=["illumina_run1", "illumina_run2", "illumina_run3"]),
          #fastqc_after_trimming
          #"output/Genomics/1_HybridGenomeAssemblyWorkflow/1_ReadsPreprocessing/fastqc_after_trimming",
          #ContaminationDetection.py
          #bwa_cleaning_contamination
-         expand("resources/RawData/DNA/clean/{DNAseq}.fastq.gz",
+         expand("/data/zeynep/HIN_data/DNA/clean/{DNAseq}.fastq.gz",
                 DNAseq=config["reads"]),
          #bowtie2_clean_paired_reads
-        #    expand("resources/RawData/DNA/clean/short/{sample}_R1.fastq.gz",
+        #    expand("/data/zeynep/HIN_data/DNA/clean/short/{sample}_R1.fastq.gz",
            #        sample=["illumina_run1", "illumina_run2", "illumina_run3"]),
          #bowtie2_clean_single_reads
-         #   expand("resources/RawData/DNA/clean/long/{sample}.fastq.gz",
+         #   expand("/data/zeynep/HIN_data/DNA/clean/long/{sample}.fastq.gz",
           #         sample=["nanopore", "pacbio"]),
 """ 
         ##flye
@@ -125,7 +125,7 @@ Genomics Analysis
 #Reads Preprocessing
 rule fastqc_before_trimming:
     input:
-        input_dir = directory("resources/RawData/DNA/raw/"),
+        input_dir = directory("data/zeynep/HIN_data/DNA/raw/"),
     params:
         threads=32,
     output:
@@ -137,15 +137,15 @@ rule fastqc_before_trimming:
 
 rule trimmomatic:
     input:
-         r1="resources/RawData/DNA/raw/{run}_R1.fastq.gz",
-         r2="resources/RawData/DNA/raw/{run}_R2.fastq.gz"
+         r1="data/zeynep/HIN_data/DNA/raw/{run}_R1.fastq.gz",
+         r2="data/zeynep/HIN_data/DNA/raw/{run}_R2.fastq.gz"
     params:
             threads=32,
     output:
-          r1_u="output/Genomics/1_HybridGenomeAssemblyWorkflow/1_ReadsPreprocessing/trimmomatic/{run}_R1.unique.trimmed.fastq",
-          r2_u="output/Genomics/1_HybridGenomeAssemblyWorkflow/1_ReadsPreprocessing/trimmomatic/{run}_R2.unique.trimmed.fastq",
-          r1_d="output/Genomics/1_HybridGenomeAssemblyWorkflow/1_ReadsPreprocessing/trimmomatic/{run}_R1.duplicate.trimmed.fastq",
-          r2_d="output/Genomics/1_HybridGenomeAssemblyWorkflow/1_ReadsPreprocessing/trimmomatic/{run}_R2.duplicate.trimmed.fastq"
+          r1_u="/data/zeynep/HIN_data/DNA/trimmed/{run}_R1.unique.trimmed.fastq",
+          r2_u="/data/zeynep/HIN_data/DNA/trimmed/{run}_R2.unique.trimmed.fastq",
+          r1_d="/data/zeynep/HIN_data/DNA/trimmed/{run}_R1.duplicate.trimmed.fastq",
+          r2_d="/data/zeynep/HIN_data/DNA/trimmed/{run}_R2.duplicate.trimmed.fastq"
     conda:
          "env/genomics.yaml"
     script:
@@ -183,14 +183,14 @@ rule bwa_index:
 rule bwa_cleaning_contamination:
     input:
          contamination="resources/Contamination/all_contaminated.fasta",
-         raw_reads="resources/RawData/DNA/raw/{DNAseq}.fastq.gz"
+         raw_reads="data/zeynep/HIN_data/DNA/raw/{DNAseq}.fastq.gz"
     params:
           threads=32,
           paired=False
     output:
-          raw_reads_unmapped="resources/RawData/DNA/clean/{DNAseq}.bam",
-          raw_reads_unmapped_sorted="resources/RawData/DNA/clean/{DNAseq}.sorted.bam",
-          raw_reads_unmapped_fastq="resources/RawData/DNA/clean/{DNAseq}.fastq.gz"
+          raw_reads_unmapped="/data/zeynep/HIN_data/DNA/clean/{DNAseq}.bam",
+          raw_reads_unmapped_sorted="/data/zeynep/HIN_data/DNA/clean/{DNAseq}.sorted.bam",
+          raw_reads_unmapped_fastq="/data/zeynep/HIN_data/DNA/clean/{DNAseq}.fastq.gz"
     conda:
          "env/genomics.yaml"
     script:
@@ -267,7 +267,7 @@ rule bowtie2_single_reads_cleaning_contamination:
 #Assembly
 rule flye:
     input:
-        reads="resources/RawData/DNA/clean/nanopore.fastq.gz",
+        reads="/data/zeynep/HIN_data/DNA/clean/nanopore.fastq.gz",
 
     params:
       genome_size="114m",
@@ -283,7 +283,7 @@ rule masurca:
     input:
          config="resources/AssemblyConfig/config.txt"
     params:
-          path="resources/RawData/DNA/clean/",
+          path="/data/zeynep/HIN_data/DNA/clean/",
     output:
           "output/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/masurca/masurca_{genome}.fasta"
     conda:
@@ -294,12 +294,12 @@ rule masurca:
 rule polca:
     input:
          assembly="output/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/{assembler}/{assembler}_{genome}.fasta",
-         illumina_run1_R1="resources/RawData/DNA/clean/illumina_run1_R1.fastq.gz",
-         illumina_run1_R2="resources/RawData/DNA/clean/illumina_run1_R2.fastq.gz",
-         illumina_run2_R1="resources/RawData/DNA/clean/illumina_run2_R1.fastq.gz",
-         illumina_run2_R2="resources/RawData/DNA/clean/illumina_run2_R2.fastq.gz",
-         illumina_run3_R1="resources/RawData/DNA/clean/illumina_run3_R1.fastq.gz",
-         illumina_run3_R2="resources/RawData/DNA/clean/illumina_run3_R2.fastq.gz",
+         illumina_run1_R1="/data/zeynep/HIN_data/DNA/clean/illumina_run1_R1.fastq.gz",
+         illumina_run1_R2="/data/zeynep/HIN_data/DNA/clean/illumina_run1_R2.fastq.gz",
+         illumina_run2_R1="/data/zeynep/HIN_data/DNA/clean/illumina_run2_R1.fastq.gz",
+         illumina_run2_R2="/data/zeynep/HIN_data/DNA/clean/illumina_run2_R2.fastq.gz",
+         illumina_run3_R1="/data/zeynep/HIN_data/DNA/clean/illumina_run3_R1.fastq.gz",
+         illumina_run3_R2="/data/zeynep/HIN_data/DNA/clean/illumina_run3_R2.fastq.gz",
     output:
           polished_assembly="output/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/{assembler}_polished_{genome}.fasta"
     script:
@@ -349,8 +349,8 @@ rule bowtie2_evaluation:
              ".4.bt2",
              ".rev.1.bt2",
              ".rev.2.bt2"),
-            ill_R1="resources/RawData/DNA/clean/{sample}_R1.fastq.gz",
-            ill_R2="resources/RawData/DNA/clean/{sample}_R2.fastq.gz"
+            ill_R1="/data/zeynep/HIN_data/DNA/clean/{sample}_R1.fastq.gz",
+            ill_R2="/data/zeynep/HIN_data/DNA/clean/{sample}_R2.fastq.gz"
     output:
           bam="output/Genomics/1_HybridGenomeAssemblyWorkflow/3_AssemblyEvaluation/{assembler}/{assembler}_polished_{genome}/{sample}.bam",
           bai="output/Genomics/1_HybridGenomeAssemblyWorkflow/3_AssemblyEvaluation/{assembler}/{assembler}_polished_{genome}/{sample}.bai"
@@ -378,7 +378,7 @@ rule meryl:
 rule winnowmap:
     input:
          genome="output/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/{assembler}/{assembler}_polished_{genome}.fasta",
-         long_read="resources/RawData/DNA/clean/{long_read}.fastq.gz",
+         long_read="/data/zeynep/HIN_data/DNA/clean/{long_read}.fastq.gz",
          merylDB="output/Genomics/1_HybridGenomeAssemblyWorkflow/3_AssemblyEvaluation/{assembler}/{genome}/winnowmap/merlyDB",
          repetitive_k15="output/Genomics/1_HybridGenomeAssemblyWorkflow/3_AssemblyEvaluation/{assembler}/{genome}/winnowmap/repetitive_k15.txt",
     output:
