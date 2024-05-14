@@ -3,7 +3,7 @@ configfile: "env/config.yaml"
 rule all:
     input:
          #fastqc_before_trimming,
-        #"output/Genomics/1_HybridGenomeAssemblyWorkflow/1_ReadsPreprocessing/fastqc_before_trimming",
+         #"output/Genomics/1_HybridGenomeAssemblyWorkflow/1_ReadsPreprocessing/fastqc_before_trimming",
          #trimmomatic
          expand("output/Genomics/1_HybridGenomeAssemblyWorkflow/1_ReadsPreprocessing/trimmomatic/{run}_R1.unique.trimmed.fastq",
                 run=["illumina_run1", "illumina_run2", "illumina_run3"]),
@@ -19,12 +19,13 @@ rule all:
          #bowtie2_clean_single_reads
          #   expand("resources/RawData/DNA/clean/long/{sample}.fastq.gz",
           #         sample=["nanopore", "pacbio"]),
-         ##flye
+""" 
+        ##flye
          expand("output/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/flye/flye_{genome}.fasta",
                 genome=["Hexamita"]),
          #masurca
-         #expand("output/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/masurca/masurca_{genome}.fasta",
-          #      genome=["Hexamita"]),
+         expand("output/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/masurca/masurca_{genome}.fasta",
+                genome=["Hexamita"]),
          #polca
          expand("output/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/{assembler}_polished_{genome}.fasta",
                 assembler=["flye", "masurca"],
@@ -103,7 +104,7 @@ rule all:
         #orthofinder
             #"output/ComparativeGenomics/2_SequenceSimilarityLevel/"
         #orthofinder_rerun
-
+"""
 
 #expand("output/2_cdhit/{sp}_{n}.cdhit", n=config["seq_identity"], sp=config["species"])
 #expand("output/7_tRNAscan/{sp}.tRNAscan",sp=["HIN", "muris", "wb", "spiro"]),
@@ -280,7 +281,7 @@ rule flye:
 
 rule masurca:
     input:
-         config="resources/AssemblyConfig/assemble.sh"
+         config="resources/AssemblyConfig/config.txt"
     params:
           path="resources/RawData/DNA/clean/",
     output:
