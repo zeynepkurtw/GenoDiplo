@@ -287,7 +287,7 @@ rule masurca:
          "env/genomics.yaml"
     script:
           "scripts/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assemblers/MasurcaAssembler.py"
-
+"""
 rule polca:
     input:
          assembly="output/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/{assembler}/{assembly}.fasta",
@@ -302,7 +302,7 @@ rule polca:
     output:
           polished_assembly="output/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/pilon/{assembler}/{assembly}_polished.fasta"
     script:
-          "scripts/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assemblers/Polishing.py"
+          "scripts/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assemblers/Polishing.py""""
 
 rule pilon:
     input:
