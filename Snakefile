@@ -19,9 +19,8 @@ rule all:
          #bowtie2_clean_single_reads
          #   expand("/data/zeynep/HIN_data/DNA/clean/long/{sample}.fastq.gz",
           #         sample=["nanopore", "pacbio"]),
-
         ##flye
-         "output/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/flye/"
+         "output/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/flye/",
          #masurca
          "output/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/masurca/"
          #polca
@@ -124,7 +123,7 @@ Genomics Analysis
 #Reads Preprocessing
 rule fastqc_before_trimming:
     input:
-        input_dir = directory("/data/zeynep/HIN_data/DNA/raw"),
+        input_dir = "/data/zeynep/HIN_data/DNA/raw",
     params:
         threads=32,
     output:
