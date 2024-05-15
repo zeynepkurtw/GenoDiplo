@@ -23,8 +23,8 @@ rule all:
          "output/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/flye/",
          #masurca
          #"output/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/masurca/",
-         #polca
-         expand("output/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/polca/{assembler}/{assembly}_polished.fasta",
+         #pilon
+         expand("output/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/pilon/{assembler}/{assembly}_polished.fasta",
                 assembler=["flye"],
                 assembly=["assembly"]),
          #quast
@@ -303,6 +303,22 @@ rule polca:
           polished_assembly="output/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/polca/{assembler}/{assembly}_polished.fasta"
     script:
           "scripts/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assemblers/Polishing.py"
+
+rule pilon:
+    input:
+        assembly="output/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/{assembler}/{assembly}.fasta",
+        illumina_run1_R1="/data/zeynep/HIN_data/DNA/clean/illumina_run1_R1.fastq.gz",
+        illumina_run1_R2="/data/zeynep/HIN_data/DNA/clean/illumina_run1_R2.fastq.gz",
+        illumina_run2_R1="/data/zeynep/HIN_data/DNA/clean/illumina_run2_R1.fastq.gz",
+        illumina_run2_R2="/data/zeynep/HIN_data/DNA/clean/illumina_run2_R2.fastq.gz",
+        illumina_run3_R1="/data/zeynep/HIN_data/DNA/clean/illumina_run3_R1.fastq.gz",
+        illumina_run3_R2="/data/zeynep/HIN_data/DNA/clean/illumina_run3_R2.fastq.gz"
+    params:
+        threads=32
+    output:
+        polished_assembly="output/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/pilon/{assembler}/{assembly}_polished.fasta"
+    script:
+        "scripts/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assemblers/Polishing.py"
 
 #Evaluation
 rule quast:

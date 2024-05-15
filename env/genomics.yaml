@@ -8,7 +8,7 @@ dependencies:
   - bioconda::bwa
   - bioconda::flye
   - bioconda::masurca
-  - bioconda::polca
+  - bioconda::pilon
   - bioconda::quast
   - bioconda::bowtie2
   - bioconda::samtools
