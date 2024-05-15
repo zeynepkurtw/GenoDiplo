@@ -3,12 +3,12 @@ configfile: "env/config.yaml"
 rule all:
     input:
          #fastqc_before_trimming,
-         "output/Genomics/1_HybridGenomeAssemblyWorkflow/1_ReadsPreprocessing/fastqc_before_trimming",
+         "output/Genomics/1_HybridGenomeAssemblyWorkflow/1_ReadsPreprocessing/",
          #trimmomatic
          expand("/data/zeynep/HIN_data/DNA/trimmed/{run}_R1.unique.trimmed.fastq",
                 run=["illumina_run1", "illumina_run2", "illumina_run3"]),
          #fastqc_after_trimming
-         "output/Genomics/1_HybridGenomeAssemblyWorkflow/1_ReadsPreprocessing/fastqc_after_trimming",
+         "output/Genomics/1_HybridGenomeAssemblyWorkflow/1_ReadsPreprocessing/",
          #ContaminationDetection.py
          #bwa_cleaning_contamination
          expand("/data/zeynep/HIN_data/DNA/clean/{DNAseq}.fastq.gz",
