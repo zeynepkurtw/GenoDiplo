@@ -7,7 +7,7 @@ illumina_run2_R1 = snakemake.input.illumina_run2_R1
 illumina_run2_R2 = snakemake.input.illumina_run2_R2
 illumina_run3_R1 = snakemake.input.illumina_run3_R1
 illumina_run3_R2 = snakemake.input.illumina_run3_R2
-threads = snakeamke.params.threads
+threads = snakemake.params.threads
 
 polished_assembly = snakemake.output.polished_assembly
 
