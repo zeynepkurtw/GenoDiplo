@@ -336,7 +336,7 @@ rule quast:
 
 rule bowtie2_biult_index_evaluation:
     input:
-         "output/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/{assembler}/{assembler}_polished_{genome}.fasta"
+         "output/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/pilon/{assembler}/{assembly}_polished.fasta"
     output:
           multiext(
               "output/Genomics/1_HybridGenomeAssemblyWorkflow/3_AssemblyEvaluation/index_bt2/{assembler}/{assembler}_polished_{genome}",
@@ -378,7 +378,7 @@ rule bowtie2_evaluation:
 
 rule meryl:
     input:
-         genome="output/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/{assembler}/{assembler}_polished_{genome}.fasta",
+         genome="output/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/pilon/{assembler}/{assembly}_polished.fasta",
     output:
           merylDB=directory("output/Genomics/1_HybridGenomeAssemblyWorkflow/3_AssemblyEvaluation/{assembler}/{genome}/winnowmap/merlyDB"),
           repetitive_k15="output/Genomics/1_HybridGenomeAssemblyWorkflow/3_AssemblyEvaluation/{assembler}/{genome}/winnowmap/repetitive_k15.txt",
@@ -392,7 +392,7 @@ rule meryl:
 
 rule winnowmap:
     input:
-         genome="output/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/{assembler}/{assembler}_polished_{genome}.fasta",
+         genome="output/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/pilon/{assembler}/{assembly}_polished.fasta",
          long_read="/data/zeynep/HIN_data/DNA/clean/{long_read}.fastq.gz",
          merylDB="output/Genomics/1_HybridGenomeAssemblyWorkflow/3_AssemblyEvaluation/{assembler}/{genome}/winnowmap/merlyDB",
          repetitive_k15="output/Genomics/1_HybridGenomeAssemblyWorkflow/3_AssemblyEvaluation/{assembler}/{genome}/winnowmap/repetitive_k15.txt",
@@ -411,7 +411,7 @@ rule winnowmap:
 #Structural Annotation
 rule prodigal:
     input:
-         genome="output/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/{assembler}/{assembler}_polished_{genome}.fasta",
+         genome="output/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/pilon/{assembler}/{assembly}_polished.fasta",
     output:
           gff="output/Genomics/2_GenomeAnnotationWorkflow/1_StructuralAnnotation/{assembler}/prodigal/{genome}.gff",
           faa="output/Genomics/2_GenomeAnnotationWorkflow/1_StructuralAnnotation/{assembler}/prodigal/{genome}.faa",
@@ -423,7 +423,7 @@ rule prodigal:
 rule train_glimmer_hmm:
     input:
          training_genes="resources/Train_GlimmerHMM/training_genes.fasta",
-         genome="output/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/{assembler}/{assembler}_polished_{genome}.fasta"
+         genome="output/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/pilon/{assembler}/{assembly}_polished.fasta"
     params:
           n=150,
           v=50
@@ -511,7 +511,7 @@ Comparative Genomics Analysis
 #Genome Structure Level
 rule build_database:
     input:
-         genome="output/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/{assembler}/{assembler}_polished_{genome}.fasta",
+         genome="output/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/pilon/{assembler}/{assembly}_polished.fasta",
     output:
           multiext("output/ComparativeGenomics/1_GenomeStructureLevel/{assembler}/{genome}_RModeler/{genome}_db",
                    ".nhr",
@@ -544,7 +544,7 @@ rule repeatmodeler:
 
 rule repeatmasker:
     input:
-         genome="output/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/{assembler}/{assembler}_polished_{genome}.fasta",
+         genome="output/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/pilon/{assembler}/{assembly}_polished.fasta",
          lib="output/ComparativeGenomics/1_GenomeStructureLevel/{assembler}/{genome}_RModeler/{genome}_db-families.fasta"
     output:
           directory("output/ComparativeGenomics/1_GenomeStructureLevel/{assembler}/{genome}_RMasker")
@@ -556,7 +556,7 @@ rule repeatmasker:
 
 rule tRNAscan:
     input:
-         genome="output/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/{assembler}/{assembler}_polished_{genome}.fasta"
+         genome="output/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/pilon/{assembler}/{assembly}_polished.fasta"
     params: threads=8
     output:
           tRNA="output/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/{assembler}/{genome}.tRNAscan",
@@ -569,7 +569,7 @@ rule tRNAscan:
 
 rule tRNAscan_cov:
     input:
-         genome="output/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/{assembler}/{assembler}_polished_{genome}.fasta"
+         genome="output/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/pilon/{assembler}/{assembly}_polished.fasta"
     params: threads=8
     output:
           tRNA="output/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/{assembler}/sensitive_search/{genome}.tRNAscan_cov",
@@ -581,7 +581,7 @@ rule tRNAscan_cov:
 
 rule barrnap:
     input:
-         genome="output/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/{assembler}/{assembler}_polished_{genome}.fasta"
+         genome="output/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/pilon/{assembler}/{assembly}_polished.fasta"
     output:
           gff="output/ComparativeGenomics/1_GenomeStructureLevel/{assembler}/{genome}.rrna.gff",
     conda:
@@ -591,7 +591,7 @@ rule barrnap:
 
 rule cdhit:
     input:
-        genome = "output/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/{assembler}/{assembler}_polished_{genome}.fasta"
+        genome = "output/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/pilon/{assembler}/{assembly}_polished.fasta"
     params:
         threads=8
     output: "output/ComparativeGenomics/1_GenomeStructureLevel/{assembler}/{genome}_{n}.cdhit"
