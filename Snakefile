@@ -309,7 +309,7 @@ rule quast:
     input:
          assembly="output/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/polca/{assembler}/{assembly}_polished.fasta",
     params:
-          threads=2
+          threads=32
     output:
           report_dir=directory("output/Genomics/1_HybridGenomeAssemblyWorkflow/3_AssemblyEvaluation/{assembler}/{assembly}_quast/")
     conda:
