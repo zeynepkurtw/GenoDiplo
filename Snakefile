@@ -127,7 +127,7 @@ rule fastqc_before_trimming:
     params:
         threads=32,
     output:
-        out_dir = directory("output/Genomics/1_HybridGenomeAssemblyWorkflow/1_ReadsPreprocessing/fastqc_before_trimming/"),
+        out_dir = directory("output/Genomics/1_HybridGenomeAssemblyWorkflow/1_ReadsPreprocessing/"),
     conda:
          "env/genomics.yaml",
     script:
@@ -155,7 +155,7 @@ rule fastqc_after_trimming:
     params:
         threads=32,
     output:
-          out_dir=directory("output/Genomics/1_HybridGenomeAssemblyWorkflow/1_ReadsPreprocessing/fastqc_after_trimming/"),
+          out_dir=directory("output/Genomics/1_HybridGenomeAssemblyWorkflow/1_ReadsPreprocessing/"),
     conda:
          "env/genomics.yaml"
     script:
