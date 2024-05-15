@@ -27,13 +27,13 @@ rule all:
          expand("output/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/masurca/masurca_{genome}.fasta",
                 genome=["Hexamita"]),
          #polca
-         expand("output/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/{assembler}/{assembler}_polished_{genome}.fasta",
-                assembler=["flye", "masurca"],
-                genome=["Hexamita"]),
+         #expand("output/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/{assembler}/{assembler}_polished_{genome}.fasta",
+          #      assembler=["flye", "masurca"],
+           #     genome=["Hexamita"]),
          #quast
-         expand("output/Genomics/1_HybridGenomeAssemblyWorkflow/3_AssemblyEvaluation/{assembler}/{genome}/quast_report/",
-                assembler=["flye", "masurca"],
-                genome=["Hexamita"]),
+        # expand("output/Genomics/1_HybridGenomeAssemblyWorkflow/3_AssemblyEvaluation/{assembler}/{genome}/quast_report/",
+         #       assembler=["flye", "masurca"],
+          #      genome=["Hexamita"]),
     """ 
          #bowtie2_paired_reads_evaluation
          expand("output/Genomics/1_HybridGenomeAssemblyWorkflow/3_AssemblyEvaluation/{assembler}/{assembler}_polished_{genome}/{sample}.bam",
@@ -287,7 +287,7 @@ rule masurca:
     params:
           path="/data/zeynep/HIN_data/DNA/clean/",
     output:
-          "output/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/masurca/masurca_{genome}.fasta"
+          out_dir=directory("output/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/masurca/")
     conda:
          "env/genomics.yaml"
     script:
