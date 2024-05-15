@@ -154,8 +154,7 @@ rule trimmomatic:
 
 rule fastqc_after_trimming:
     input:
-         r1="/data/zeynep/HIN_data/DNA/trimmed/{seq}.unique.trimmed.fastq",
-         r2="/data/zeynep/HIN_data/DNA/trimmed/{seq}.duplicate.trimmed.fastq",
+         input_dir="/data/zeynep/HIN_data/DNA/trimmed"
     params:
         threads=32,
     output:
@@ -163,7 +162,7 @@ rule fastqc_after_trimming:
     conda:
          "env/genomics.yaml"
     script:
-          "scripts/Genomics/1_HybridGenomeAssemblyWorkflow/1_ReadsPreprocessing/ReadQualityCheck2.py"
+          "scripts/Genomics/1_HybridGenomeAssemblyWorkflow/1_ReadsPreprocessing/ReadQualityCheck.py"
 
 #rule calculatereadmeanstdev
 
