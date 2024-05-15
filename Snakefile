@@ -22,15 +22,15 @@ rule all:
         ##flye
          "output/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/flye/",
          #masurca
-         #"output/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/masurca/",
+         "output/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/masurca/",
          #pilon
-         expand("output/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/pilon/{assembler}/{assembly}_polished.fasta",
-                assembler=["flye"],
-                assembly=["assembly"]),
+         #expand("output/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/pilon/{assembler}/{assembly}_polished.fasta",
+            #    assembler=["flye"],
+             #   assembly=["assembly"]),
          #quast
-         expand("output/Genomics/1_HybridGenomeAssemblyWorkflow/3_AssemblyEvaluation/{assembler}/{assembly}_quast/",
-                assembler=["flye"],
-                assembly=["assembly"]),
+         #expand("output/Genomics/1_HybridGenomeAssemblyWorkflow/3_AssemblyEvaluation/{assembler}/{assembly}_quast/",
+          #      assembler=["flye"],
+           #     assembly=["assembly"]),
     """ 
          #bowtie2_paired_reads_evaluation
          expand("output/Genomics/1_HybridGenomeAssemblyWorkflow/3_AssemblyEvaluation/{assembler}/{assembler}_polished_{genome}/{sample}.bam",
