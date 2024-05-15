@@ -195,7 +195,6 @@ rule bwa_cleaning_contamination:
     script:
           "scripts/Genomics/1_HybridGenomeAssemblyWorkflow/1_ReadsPreprocessing/ContaminationRemovalRawReadsBWA.py"
 
-
 """
 rule bowtie2_index_cleaning_contamination:
     input:
@@ -267,7 +266,6 @@ rule bowtie2_single_reads_cleaning_contamination:
 rule flye:
     input:
         reads="/data/zeynep/HIN_data/DNA/clean/nanopore.fastq.gz",
-
     params:
       genome_size="114m",
       threads=32,
