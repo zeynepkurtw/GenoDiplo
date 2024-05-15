@@ -1,5 +1,4 @@
 /resources/RawData/DNA/raw/
 /resources/Contamination/all_contaminated.fasta/
 /.snakemake/
-/.snakemake/
 /.snakemake/log/
