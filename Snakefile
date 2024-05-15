@@ -126,7 +126,7 @@ Genomics Analysis
 #Reads Preprocessing
 rule fastqc_before_trimming:
     input:
-        input_dir = directory("/data/zeynep/HIN_data/DNA/raw/"),
+        input_dir = directory("/data/zeynep/HIN_data/DNA/raw"),
     params:
         threads=32,
     output:
@@ -154,8 +154,10 @@ rule trimmomatic:
 
 rule fastqc_after_trimming:
     input:
-         r1="output/Genomics/1_HybridGenomeAssemblyWorkflow/1_ReadsPreprocessing/{seq}.unique.trimmed.fastq",
-         r2="output/Genomics/1_HybridGenomeAssemblyWorkflow/1_ReadsPreprocessing/{seq}.duplicate.trimmed.fastq",
+         r1="/data/zeynep/HIN_data/DNA/trimmed/{seq}.unique.trimmed.fastq",
+         r2="/data/zeynep/HIN_data/DNA/trimmed/{seq}.duplicate.trimmed.fastq",
+    params:
+        threads=32,
     output:
           out_dir=directory("output/Genomics/1_HybridGenomeAssemblyWorkflow/1_ReadsPreprocessing/fastqc_after_trimming/"),
     conda:
@@ -272,9 +274,9 @@ rule flye:
 
     params:
       genome_size="114m",
-      threads=25,
+      threads=32,
     output:
-          assembly="output/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/flye/flye_{genome}.fasta",
+          out_dir=directory("output/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/flye/"),
     conda:
          "env/genomics.yaml"
     script:
