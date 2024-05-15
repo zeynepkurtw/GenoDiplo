@@ -21,13 +21,13 @@ rule all:
           #         sample=["nanopore", "pacbio"]),
 
         ##flye
-         expand("output/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/flye/flye_{genome}.fasta",
+         expand("output/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/flye/",
                 genome=["Hexamita"]),
          #masurca
          expand("output/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/masurca/masurca_{genome}.fasta",
                 genome=["Hexamita"]),
          #polca
-         expand("output/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/{assembler}_polished_{genome}.fasta",
+         expand("output/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/{assembler}/{assembler}_polished_{genome}.fasta",
                 assembler=["flye", "masurca"],
                 genome=["Hexamita"]),
          #quast
@@ -311,7 +311,7 @@ rule polca:
 #Evaluation
 rule quast:
     input:
-         assembly="output/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/{assembler}_polished_{genome}.fasta",
+         assembly="output/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/{assembler}/{assembler}_polished_{genome}.fasta",
     params:
           threads=2
     output:
