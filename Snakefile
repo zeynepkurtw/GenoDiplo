@@ -21,11 +21,9 @@ rule all:
           #         sample=["nanopore", "pacbio"]),
 
         ##flye
-         expand("output/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/flye/",
-                genome=["Hexamita"]),
+         "output/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/flye/"
          #masurca
-         expand("output/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/masurca/masurca_{genome}.fasta",
-                genome=["Hexamita"]),
+         "output/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/masurca/"
          #polca
          #expand("output/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/{assembler}/{assembler}_polished_{genome}.fasta",
           #      assembler=["flye", "masurca"],
