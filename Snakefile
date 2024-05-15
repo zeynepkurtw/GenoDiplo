@@ -26,11 +26,11 @@ rule all:
          #polca
          expand("output/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/{assembler}/polca/{assembly}_polished.fasta",
                 assembler=["flye"],
-                assembly=["Hexamita"]),
+                assembly=["assembly"]),
          #quast
          expand("output/Genomics/1_HybridGenomeAssemblyWorkflow/3_AssemblyEvaluation/{assembler}/{assembly}_quast/",
                 assembler=["flye"],
-                assembly=["Hexamita"]),
+                assembly=["assembly"]),
     """ 
          #bowtie2_paired_reads_evaluation
          expand("output/Genomics/1_HybridGenomeAssemblyWorkflow/3_AssemblyEvaluation/{assembler}/{assembler}_polished_{genome}/{sample}.bam",
