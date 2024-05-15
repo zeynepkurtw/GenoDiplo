@@ -7,11 +7,12 @@ illumina_run2_R1 = snakemake.input.illumina_run2_R1
 illumina_run2_R2 = snakemake.input.illumina_run2_R2
 illumina_run3_R1 = snakemake.input.illumina_run3_R1
 illumina_run3_R2 = snakemake.input.illumina_run3_R2
+threads = snakeamke.params.threads
 
 polished_assembly = snakemake.output.polished_assembly
 
 shell(f"""polca.sh -a {assembly} -r \
-'{illumina_run1_R1} {illumina_run1_R2}
+{illumina_run1_R1} {illumina_run1_R2}
 {illumina_run2_R1} {illumina_run2_R2}
-{illumina_run3_R1} {illumina_run3_R2}' \
--t 30""")
+{illumina_run3_R1} {illumina_run3_R2} \
+-t {threads}""")

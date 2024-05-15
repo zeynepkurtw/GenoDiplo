@@ -297,6 +297,8 @@ rule polca:
          illumina_run2_R2="/data/zeynep/HIN_data/DNA/clean/illumina_run2_R2.fastq.gz",
          illumina_run3_R1="/data/zeynep/HIN_data/DNA/clean/illumina_run3_R1.fastq.gz",
          illumina_run3_R2="/data/zeynep/HIN_data/DNA/clean/illumina_run3_R2.fastq.gz",
+    params:
+        threads=32
     output:
           polished_assembly="output/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/polca/{assembler}/{assembly}_polished.fasta"
     script:
