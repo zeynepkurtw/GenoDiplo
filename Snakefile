@@ -307,7 +307,7 @@ rule polca:
 #Evaluation
 rule quast:
     input:
-         assembly="output/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/{assembler}/polca/{assembly}_polished.fasta",
+         assembly="output/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/polca/{assembler}/{assembly}_polished.fasta",
     params:
           threads=2
     output:
