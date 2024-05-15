@@ -3,7 +3,7 @@ DATA
 PE = aa 236 240 /data/zeynep/HIN_data/DNA/clean/illumina_run1_R1.fastq.gz /data/zeynep/HIN_data/DNA/clean/illumina_run1_R2.fastq.gz
 PE = ab 229 232 /data/zeynep/HIN_data/DNA/clean/illumina_run2_R1.fastq.gz /data/zeynep/HIN_data/DNA/clean/illumina_run2_R2.fastq.gz
 PE = ac 235 238 /data/zeynep/HIN_data/DNA/clean/illumina_run3_R1.fastq.gz /data/zeynep/HIN_data/DNA/clean/illumina_run3_R2.fastq.gz
-PACBIO = /data/zeynep/HIN_data/DNA/clean/nanopore.fastq.gz #or pacbio or both
+PACBIO = /data/zeynep/HIN_data/DNA/clean/pacbio.fastq.gz
 END
 
 PARAMETERS
