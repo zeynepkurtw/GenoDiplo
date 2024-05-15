@@ -22,15 +22,15 @@ rule all:
         ##flye
          "output/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/flye/",
          #masurca
-         "output/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/masurca/"
+         #"output/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/masurca/",
          #polca
-         #expand("output/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/{assembler}/{assembler}_polished_{genome}.fasta",
-          #      assembler=["flye", "masurca"],
-           #     genome=["Hexamita"]),
+         expand("output/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/{assembler}/polca/{assembly}_polished.fasta",
+                assembler=["flye"],
+                assembly=["Hexamita"]),
          #quast
-        # expand("output/Genomics/1_HybridGenomeAssemblyWorkflow/3_AssemblyEvaluation/{assembler}/{genome}/quast_report/",
-         #       assembler=["flye", "masurca"],
-          #      genome=["Hexamita"]),
+         expand("output/Genomics/1_HybridGenomeAssemblyWorkflow/3_AssemblyEvaluation/{assembler}/{assembly}_quast/",
+                assembler=["flye"],
+                assembly=["Hexamita"]),
     """ 
          #bowtie2_paired_reads_evaluation
          expand("output/Genomics/1_HybridGenomeAssemblyWorkflow/3_AssemblyEvaluation/{assembler}/{assembler}_polished_{genome}/{sample}.bam",
@@ -282,7 +282,7 @@ rule masurca:
     input:
          config="resources/AssemblyConfig/config.txt"
     params:
-          path="/data/zeynep/HIN_data/DNA/clean/",
+          path="output/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/masurca/",
     output:
           out_dir=directory("output/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/masurca/")
     conda:
@@ -292,7 +292,7 @@ rule masurca:
 
 rule polca:
     input:
-         assembly="output/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/{assembler}/{assembler}_{genome}.fasta",
+         assembly="output/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/{assembler}/{assembly}.fasta",
          illumina_run1_R1="/data/zeynep/HIN_data/DNA/clean/illumina_run1_R1.fastq.gz",
          illumina_run1_R2="/data/zeynep/HIN_data/DNA/clean/illumina_run1_R2.fastq.gz",
          illumina_run2_R1="/data/zeynep/HIN_data/DNA/clean/illumina_run2_R1.fastq.gz",
@@ -300,18 +300,18 @@ rule polca:
          illumina_run3_R1="/data/zeynep/HIN_data/DNA/clean/illumina_run3_R1.fastq.gz",
          illumina_run3_R2="/data/zeynep/HIN_data/DNA/clean/illumina_run3_R2.fastq.gz",
     output:
-          polished_assembly="output/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/{assembler}_polished_{genome}.fasta"
+          polished_assembly="output/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/{assembler}/polca/{assembly}_polished.fasta"
     script:
           "scripts/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assemblers/Polishing.py"
 
 #Evaluation
 rule quast:
     input:
-         assembly="output/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/{assembler}/{assembler}_polished_{genome}.fasta",
+         assembly="output/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/{assembler}/polca/{assembly}_polished.fasta",
     params:
           threads=2
     output:
-          report_dir=directory("output/Genomics/1_HybridGenomeAssemblyWorkflow/3_AssemblyEvaluation/{assembler}/{genome}/quast_report/")
+          report_dir=directory("output/Genomics/1_HybridGenomeAssemblyWorkflow/3_AssemblyEvaluation/{assembler}/{assembly}_quast/")
     conda:
          "env/genomics.yaml"
     script:
