@@ -2,3 +2,4 @@
 /resources/Contamination/all_contaminated.fasta/
 /.snakemake/
 /.snakemake/log/
+/output/
