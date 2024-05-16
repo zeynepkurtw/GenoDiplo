@@ -32,11 +32,10 @@ rule all:
                 assembler=["flye", "masurca/flye.mr.83.17.15.0.02"],
                 long_reads=["nanopore", "pacbio"]),
          #pilon
-         expand("output/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/pilon/{assembler}/{assembly}_polished.fasta",
-                assembler=["flye", "masurca/flye.mr.83.17.15.0.02"],
-                assembly=["assembly"]),
+         expand("output/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/pilon/{assembler}/assembly_polished.fasta",
+                assembler=["flye", "masurca/flye.mr.83.17.15.0.02"]),
          #quast
-         expand("output/Genomics/1_HybridGenomeAssemblyWorkflow/3_AssemblyEvaluation/{assembler}/quast/{assembly}/",
+         expand("output/Genomics/1_HybridGenomeAssemblyWorkflow/3_AssemblyEvaluation/quast/{assembler}/",
                 assembler=["flye"],
                 assembly=["assembly"]),
 """  #prodigal
