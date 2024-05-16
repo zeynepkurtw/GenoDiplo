@@ -39,7 +39,7 @@ rule all:
          expand("output/Genomics/1_HybridGenomeAssemblyWorkflow/3_AssemblyEvaluation/{assembler}/{assembly}_quast/",
                 assembler=["flye"],
                 assembly=["assembly"]),
-        #prodigal
+"""  #prodigal
          expand("output/Genomics/2_GenomeAnnotationWorkflow/1_StructuralAnnotation/{assembler}/prodigal/genome.gff",
                 assembler=["flye", "masurca"]),
          #glimmerhmm
