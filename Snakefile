@@ -19,7 +19,7 @@ rule all:
          #bowtie2_paired_reads_evaluation
          expand("output/Genomics/1_HybridGenomeAssemblyWorkflow/3_AssemblyEvaluation/{assembler}/bowtie2/{sample}.bam",
                 assembler=["flye", "masurca/flye.mr.83.17.15.0.02"],
-                sample=["illumina_run1", "illumina_run2", "illumina_run3"]),
+                sample=["illumina_run2", "illumina_run3"]), #illumina_run1 excluded (R2=6Gb, R1=477Mb)
          #meryl_evaluation
          expand("output/Genomics/1_HybridGenomeAssemblyWorkflow/3_AssemblyEvaluation/{assembler}/winnowmap/merlyDB",
                 assembler=["flye", "masurca/flye.mr.83.17.15.0.02"],
