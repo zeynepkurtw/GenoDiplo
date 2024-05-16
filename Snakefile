@@ -459,7 +459,7 @@ rule interproscan:
           "scripts/Genomics/2_DualGenomeAnnotationWorkflow/2_FunctionalAnnotation/Interproscan.py"
 
 
-Comparative Genomics Analysis
+"""Comparative Genomics Analysis
     1: Genome Structure Level
         -Repeat Analysis
         -RNA annotation
@@ -472,7 +472,7 @@ Comparative Genomics Analysis
         -Domain schematics
         -Domian length distribution
 
-
+"""
 
 #Genome Structure Level
 rule build_database_repeatmodeler:
