@@ -1,0 +1,267 @@
+rule fastqc_before_trimming:
+    input:
+        input_dir = "/data/zeynep/HIN_data/DNA/raw",
+    params:
+        threads=32,
+    output:
+        out_dir = directory("output/Genomics/1_Assembly/1_ReadsPreprocessing/fastqc_before_trimming/"),
+    conda:
+         "env/genomics.yaml",
+    script:
+         "scripts/Genomics/1_Assembly/1_ReadsPreprocessing/ReadQualityCheck.py"
+
+rule trimmomatic:
+    input:
+         r1="/data/zeynep/HIN_data/DNA/raw/{run}_R1.fastq.gz",
+         r2="/data/zeynep/HIN_data/DNA/raw/{run}_R2.fastq.gz"
+    params:
+            threads=32,
+    output:
+          r1_u="/data/zeynep/HIN_data/DNA/trimmed/{run}_R1.unique.trimmed.fastq",
+          r2_u="/data/zeynep/HIN_data/DNA/trimmed/{run}_R2.unique.trimmed.fastq",
+          r1_d="/data/zeynep/HIN_data/DNA/trimmed/{run}_R1.duplicate.trimmed.fastq",
+          r2_d="/data/zeynep/HIN_data/DNA/trimmed/{run}_R2.duplicate.trimmed.fastq"
+    conda:
+         "env/genomics.yaml"
+    script:
+          "scripts/Genomics/1_Assembly/1_ReadsPreprocessing/TrimIlluminaReads.py"
+
+rule fastqc_after_trimming:
+    input:
+         input_dir="/data/zeynep/HIN_data/DNA/trimmed"
+    params:
+        threads=32,
+    output:
+          out_dir=directory("output/Genomics/1_Assembly/1_ReadsPreprocessing/fastqc_after_trimming/"),
+    conda:
+         "env/genomics.yaml"
+    script:
+          "scripts/Genomics/1_Assembly/1_ReadsPreprocessing/ReadQualityCheck.py"
+
+#rule calculatereadmeanstdev
+
+rule bwa_index:
+    input:
+        "resources/Contamination/all_contaminated.fasta"
+    output:
+        multiext(
+            "resources/Contamination/all_contaminated",
+            ".amb",
+            ".ann",
+            ".bwt",
+            ".pac",
+            ".sa")
+    conda:
+         "env/genomics.yaml"
+    shell:
+        'bwa index {input}'
+
+rule bwa_cleaning_contamination:
+    input:
+         contamination="resources/Contamination/all_contaminated.fasta",
+         raw_reads="/data/zeynep/HIN_data/DNA/raw/{DNAseq}.fastq.gz"
+    params:
+          threads=32,
+          paired=False
+    output:
+          raw_reads_unmapped="/data/zeynep/HIN_data/DNA/clean/{DNAseq}.bam",
+          raw_reads_unmapped_sorted="/data/zeynep/HIN_data/DNA/clean/{DNAseq}.sorted.bam",
+          raw_reads_unmapped_fastq="/data/zeynep/HIN_data/DNA/clean/{DNAseq}.fastq.gz"
+    conda:
+         "env/genomics.yaml"
+    script:
+          "scripts/Genomics/1_Assembly/1_ReadsPreprocessing/ContaminationRemovalRawReadsBWA.py"
+
+"""
+rule bowtie2_index_cleaning_contamination:
+    input:
+        "resources/Contamination/all_contaminated.fasta"
+    output:
+        multiext(
+            "resources/Contamination/all_contaminated",
+            ".1.bt2",
+            ".2.bt2",
+            ".3.bt2",
+            ".4.bt2",
+            ".rev.1.bt2",
+            ".rev.2.bt2")
+    params:
+        outname="resources/Contamination/all_contaminated",
+        num_threads=32
+    conda:
+        "env/genomics.yaml"
+    shell:
+        'bowtie2-build {input} --threads {params.num_threads} {params.outname}'
+
+rule bowtie2_paired_reads_cleaning_contamination:
+    input:
+        index=multiext(
+             "resources/Contamination/all_contaminated",
+             ".1.bt2",
+             ".2.bt2",
+             ".3.bt2",
+             ".4.bt2",
+             ".rev.1.bt2",
+             ".rev.2.bt2"),
+        ill_R1="resources/RawData/DNA/raw/{sample}_R1.fastq.gz",
+        ill_R2="resources/RawData/DNA/raw/{sample}_R2.fastq.gz",
+    output:
+        clean_ill_R1="resources/RawData/DNA/clean/short/{sample}_R1.fastq.gz",
+        clean_ill_R2="resources/RawData/DNA/clean/short/{sample}_R2.fastq.gz",
+        contaminated_short= "resources/RawData/DNA/clean/short/contamination/{sample}.bam"
+    params:
+        threads=32,
+        paired= True
+    conda:
+        "env/genomics.yaml"
+    script:
+        "scripts/Genomics/1_Assembly/1_ReadsPreprocessing/ContaminationRemovalRawReads.py"
+
+rule bowtie2_single_reads_cleaning_contamination:
+    input:
+     index=multiext(
+         "resources/Contamination/all_contaminated",
+         ".1.bt2",
+         ".2.bt2",
+         ".3.bt2",
+         ".4.bt2",
+         ".rev.1.bt2",
+         ".rev.2.bt2"),
+        long_reads="resources/RawData/DNA/raw/{sample}.fastq.gz",
+    output:
+        clean_long="resources/RawData/DNA/clean/long/{sample}.fastq.gz",
+        contaminated_long= "resources/RawData/DNA/clean/long/contamination/{sample}.bam"
+    params:
+        threads=32,
+        paired= False
+    conda:
+        "env/genomics.yaml"
+    script:
+        "scripts/Genomics/1_Assembly/1_ReadsPreprocessing/ContaminationRemovalRawReads.py"
+"""
+#Assembly
+rule flye:
+    input:
+        reads="/data/zeynep/HIN_data/DNA/clean/nanopore.fastq.gz",
+    params:
+      genome_size="114m",
+      threads=32,
+    output:
+          out_dir=directory("output/Genomics/1_Assembly/2_Assembly/flye/"),
+    conda:
+         "env/genomics.yaml"
+    script:
+          "scripts/Genomics/1_Assembly/2_Assemblers/FlyeAssembler.py"
+
+rule masurca:
+    input:
+         config="resources/AssemblyConfig/config.txt"
+    params:
+          path="output/Genomics/1_Assembly/2_Assembly/masurca/",
+    output:
+          out_dir=directory("output/Genomics/1_Assembly/2_Assembly/masurca/")
+    conda:
+         "env/genomics.yaml"
+    script:
+          "scripts/Genomics/1_Assembly/2_Assemblers/MasurcaAssembler.py"
+
+rule bowtie2_biult_index_evaluation:
+    input:
+         "output/Genomics/1_Assembly/2_Assembly/{assembler}/assembly.fasta"
+    output:
+          multiext(
+              "output/Genomics/1_Assembly/3_AssemblyEvaluation/{assembler}/bowtie2/index_bt2/assembly",
+              ".1.bt2",
+              ".2.bt2",
+              ".3.bt2",
+              ".4.bt2",
+              ".rev.1.bt2",
+              ".rev.2.bt2")
+    params:
+          outname="output/Genomics/1_Assembly/3_AssemblyEvaluation/{assembler}/bowtie2/index_bt2/assembly",
+          num_threads=30
+    conda:
+         "env/genomics.yaml"
+    shell:
+         'bowtie2-build {input} --threads {params.num_threads} {params.outname}'
+
+rule bowtie2_evaluation:
+    input:
+         index=multiext(
+             "output/Genomics/1_Assembly/3_AssemblyEvaluation/{assembler}/bowtie2/index_bt2/assembly",
+             ".1.bt2",
+             ".2.bt2",
+             ".3.bt2",
+             ".4.bt2",
+             ".rev.1.bt2",
+             ".rev.2.bt2"),
+            ill_R1="/data/zeynep/HIN_data/DNA/clean/{sample}_R1.fastq.gz",
+            ill_R2="/data/zeynep/HIN_data/DNA/clean/{sample}_R2.fastq.gz"
+    output:
+          bam="output/Genomics/1_Assembly/3_AssemblyEvaluation/{assembler}/bowtie2/{sample}.bam",
+          bai="output/Genomics/1_Assembly/3_AssemblyEvaluation/{assembler}/bowtie2/{sample}.bai"
+    params:
+          threads=32,
+    conda:
+         "env/genomics.yaml"
+    script:
+          "scripts/Genomics/1_Assembly/3_AssemblyEvaluation/MapShortReadsToAssembly.py"
+
+rule meryl:
+    input:
+         genome="output/Genomics/1_Assembly/2_Assembly/{assembler}/assembly.fasta",
+    output:
+          merylDB=directory("output/Genomics/1_Assembly/3_AssemblyEvaluation/{assembler}/winnowmap/merlyDB"),
+          repetitive_k15="output/Genomics/1_Assembly/3_AssemblyEvaluation/{assembler}/winnowmap/repetitive_k15.txt",
+    params:
+          num_threads=30,
+          nanopore=True
+    conda:
+         "env/genomics.yaml"
+    script:
+          "scripts/Genomics/1_Assembly/3_AssemblyEvaluation/CalculateKmerLongReads.py"
+
+rule winnowmap:
+    input:
+         genome="output/Genomics/1_Assembly/2_Assembly/{assembler}/assembly.fasta",
+         long_read="/data/zeynep/HIN_data/DNA/clean/{long_read}.fastq.gz",
+         merylDB="output/Genomics/1_Assembly/3_AssemblyEvaluation/{assembler}/winnowmap/merlyDB",
+         repetitive_k15="output/Genomics/1_Assembly/3_AssemblyEvaluation/{assembler}/winnowmap/repetitive_k15.txt",
+    output:
+          bam="output/Genomics/1_Assembly/3_AssemblyEvaluation/{assembler}/winnowmap/{long_read}.bam",
+          bai="output/Genomics/1_Assembly/3_AssemblyEvaluation/{assembler}/winnowmap/{long_read}.bai"
+    params:
+          num_threads=32,
+          nanopore=True
+    conda:
+         "env/genomics.yaml"
+    script:
+          "scripts/Genomics/1_Assembly/3_AssemblyEvaluation/MapLongReadsToAssembly.py"
+
+rule pilon:
+    input:
+        assembly="output/Genomics/1_Assembly/2_Assembly/{assembler}/assembly.fasta",
+        #illumina_run1="output/Genomics/1_Assembly/3_AssemblyEvaluation/{assembler}/bowtie2/illumina_run1.bam",
+        illumina_run2="output/Genomics/1_Assembly/3_AssemblyEvaluation/{assembler}/bowtie2/illumina_run2.bam",
+        illumina_run3="output/Genomics/1_Assembly/3_AssemblyEvaluation/{assembler}/bowtie2/illumina_run3.bam"
+    params:
+        threads=32
+    output:
+        polished_assembly="output/Genomics/1_Assembly/2_Assembly/pilon/{assembler}/assembly_polished.fasta"
+    conda:
+         "env/genomics.yaml"
+    script:
+        "scripts/Genomics/1_Assembly/2_Assemblers/Polishing.py"
+
+#Evaluation
+rule quast:
+    input:
+         assembly="output/Genomics/1_Assembly/2_Assembly/pilon/{assembler}/assembly_polished.fasta",
+    params:
+          threads=32
+    output:
+          report_dir=directory("output/Genomics/1_Assembly/3_AssemblyEvaluation/quast/{assembler}/")
+    conda:
+         "env/genomics.yaml"
+    script:
+          "scripts/Genomics/1_Assembly/3_AssemblyEvaluation/AssemblyQualityCheck.py"

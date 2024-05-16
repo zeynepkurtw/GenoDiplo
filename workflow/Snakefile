@@ -1,0 +1,104 @@
+configfile: "config/config.yaml"
+
+include: "rules/1_assembly.smk"
+include: "rules/2_annotation.smk"
+include: "rules/3_genome_level.smk"
+include: "rules/4_homology_level.smk"
+include: "rules/5_domain_level.smk"
+
+rule all:
+    input:
+         #fastqc_before_trimming,
+         "output/Genomics/1_Assembly/1_Preprocessing/fastqc_before_trimming",
+         #trimmomatic
+         expand("/data/zeynep/HIN_data/DNA/trimmed/{run}_R1.unique.trimmed.fastq",
+                run=["illumina_run1", "illumina_run2", "illumina_run3"]),
+         #fastqc_after_trimming
+         "output/Genomics/1_Assembly/1_Preprocessing/fastqc_after_trimming",
+         #ContaminationDetection.py
+         #bwa_cleaning_contamination
+         expand("/data/zeynep/HIN_data/DNA/clean/{DNAseq}.fastq.gz",
+                DNAseq=config["reads"]),
+         ##flye
+         "output/Genomics/1_Assembly/2_Assembly/flye/",
+         #masurca
+         "output/Genomics/1_Assembly/2_Assembly/masurca/",
+         #bowtie2_paired_reads_evaluation
+         expand("output/Genomics/1_Assembly/3_Evaluation/{assembler}/bowtie2/{sample}.bam",
+                assembler=["flye", "masurca/flye.mr.83.17.15.0.02"],
+                sample=["illumina_run2", "illumina_run3"]),#illumina_run1 excluded (R2=6Gb, R1=477Mb)
+         #meryl_evaluation
+         expand("output/Genomics/1_Assembly/3_Evaluation/{assembler}/winnowmap/merlyDB",
+                assembler=["flye", "masurca/flye.mr.83.17.15.0.02"],
+                genome=["Hexamita"]),
+         expand("output/Genomics/1_Assembly/3_Evaluation/{assembler}/winnowmap/repetitive_k15.txt",
+                assembler=["flye", "masurca/flye.mr.83.17.15.0.02"],
+                genome=["Hexamita"]),
+         #winnowmap_evaluation
+         expand("output/Genomics/1_Assembly/3_Evaluation/{assembler}/winnowmap/{long_reads}.bam",
+                assembler=["flye", "masurca/flye.mr.83.17.15.0.02"],
+                long_reads=["nanopore", "pacbio"]),
+         #pilon
+         expand("output/Genomics/1_Assembly/2_Assembly/pilon/{assembler}/assembly_polished.fasta",
+                assembler=["flye", "masurca/flye.mr.83.17.15.0.02"]),
+         #quast
+         expand("output/Genomics/1_Assembly/3_Evaluation/quast/{assembler}/",
+                assembler=["flye"],
+                assembly=["assembly"]),
+
+"""  #prodigal
+         expand("output/Genomics/2_Annotation/1_Structural/{assembler}/prodigal/genome.gff",
+                assembler=["flye", "masurca"]),
+         #glimmerhmm
+         expand("output/Genomics/2_Annotation/1_Structural/{assembler}/glimmerhmm/genome.faa",
+                assembler=["flye", "masurca"]),
+         #diamond_blastp
+       #  expand("output/Genomics/2_Annotation/2_Functional/{assembler}/{annotation}/genome_diplomonads.blastp",
+        #        annotation=["glimmerhmm"],
+         #       assembler=["flye", "masurca"]),
+         #eggnogmapper
+         expand("output/Genomics/2_Annotation/2_Functional/{assembler}/{annotation}/eggnogmapper_results.tsv",
+                annotation=["glimmerhmm"],
+                assembler=["flye", "masurca"]),
+         #interproscan
+         expand("output/Genomics/2_Annotation/2_Functional/{assembler}/{annotation}/interproscan_results.tsv",
+                annotation=["glimmerhmm"],
+                assembler=["flye", "masurca"]),
+        #repeatmodeler
+         expand("output/ComparativeGenomics/1_GenomeStructureLevel/{assembler}/RModeler/genome_db-families.fasta",
+                assembler=["flye", "masurca"]),
+        #repeatmasker
+            expand("output/ComparativeGenomics/1_GenomeStructureLevel/{assembler}/RMasker",
+                   assembler=["flye", "masurca"]),
+        #tRNAscan
+            expand("output/Genomics/1_Assembly/2_Assembly/{assembler}/genome.tRNAscan",
+                   assembler=["flye", "masurca"]),
+        #tRNAscan_cov
+            expand("output/Genomics/1_Assembly/2_Assembly/{assembler}/sensitive_search/genome.tRNAscan_cov",
+                   assembler=["flye", "masurca"]),
+        #barrnap
+            expand("output/ComparativeGenomics/1_GenomeStructureLevel/{assembler}/genome.rrna.gff",
+                   assembler=["flye", "masurca"]),
+        #cdhit
+            expand("output/ComparativeGenomics/1_GenomeStructureLevel/{assembler}/genome_{n}.cdhit",
+                   assembler=["flye", "masurca"],
+                   n=[0.70, 0.75, 0.80, 0.85, 0.90, 0.95, 1]),
+        #orthofinder
+            #"output/ComparativeGenomics/2_SequenceSimilarityLevel/"
+        #orthofinder_rerun
+
+
+#expand("output/2_cdhit/{sp}_{n}.cdhit", n=config["seq_identity"], sp=config["species"])
+#expand("output/7_tRNAscan/{sp}.tRNAscan",sp=["HIN", "muris", "wb", "spiro"]),
+#expand("output/7_tRNAscan/sensitive_search/{sp}.cov.tRNAscan",sp=[ "muris", "wb", "spiro"]),
+
+
+Genomics Analysis
+    1: Hybrid Genome Assembly Workflow 
+        -Reads Preprocessing
+        -Assembly
+        -Evaluation
+    2: Genome Annotation Workflow
+        -Structural Annotation
+        -Functional Annotation
+"""
