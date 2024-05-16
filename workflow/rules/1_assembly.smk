@@ -4,7 +4,7 @@ rule fastqc_before_trimming:
     params:
         threads=32,
     output:
-        out_dir = directory("output/Genomics/1_Assembly/1_ReadsPreprocessing/fastqc_before_trimming/"),
+        out_dir = directory("results/Genomics/1_Assembly/1_ReadsPreprocessing/fastqc_before_trimming/"),
     conda:
          "env/genomics.yaml",
     script:
@@ -32,7 +32,7 @@ rule fastqc_after_trimming:
     params:
         threads=32,
     output:
-          out_dir=directory("output/Genomics/1_Assembly/1_ReadsPreprocessing/fastqc_after_trimming/"),
+          out_dir=directory("results/Genomics/1_Assembly/1_ReadsPreprocessing/fastqc_after_trimming/"),
     conda:
          "env/genomics.yaml"
     script:
@@ -147,7 +147,7 @@ rule flye:
       genome_size="114m",
       threads=32,
     output:
-          out_dir=directory("output/Genomics/1_Assembly/2_Assembly/flye/"),
+          out_dir=directory("results/Genomics/1_Assembly/2_Assembly/flye/"),
     conda:
          "env/genomics.yaml"
     script:
@@ -157,9 +157,9 @@ rule masurca:
     input:
          config="resources/AssemblyConfig/config.txt"
     params:
-          path="output/Genomics/1_Assembly/2_Assembly/masurca/",
+          path="results/Genomics/1_Assembly/2_Assembly/masurca/",
     output:
-          out_dir=directory("output/Genomics/1_Assembly/2_Assembly/masurca/")
+          out_dir=directory("results/Genomics/1_Assembly/2_Assembly/masurca/")
     conda:
          "env/genomics.yaml"
     script:
@@ -167,10 +167,10 @@ rule masurca:
 
 rule bowtie2_biult_index_evaluation:
     input:
-         "output/Genomics/1_Assembly/2_Assembly/{assembler}/assembly.fasta"
+         "results/Genomics/1_Assembly/2_Assembly/{assembler}/assembly.fasta"
     output:
           multiext(
-              "output/Genomics/1_Assembly/3_AssemblyEvaluation/{assembler}/bowtie2/index_bt2/assembly",
+              "results/Genomics/1_Assembly/3_AssemblyEvaluation/{assembler}/bowtie2/index_bt2/assembly",
               ".1.bt2",
               ".2.bt2",
               ".3.bt2",
@@ -178,7 +178,7 @@ rule bowtie2_biult_index_evaluation:
               ".rev.1.bt2",
               ".rev.2.bt2")
     params:
-          outname="output/Genomics/1_Assembly/3_AssemblyEvaluation/{assembler}/bowtie2/index_bt2/assembly",
+          outname="results/Genomics/1_Assembly/3_AssemblyEvaluation/{assembler}/bowtie2/index_bt2/assembly",
           num_threads=30
     conda:
          "env/genomics.yaml"
@@ -188,7 +188,7 @@ rule bowtie2_biult_index_evaluation:
 rule bowtie2_evaluation:
     input:
          index=multiext(
-             "output/Genomics/1_Assembly/3_AssemblyEvaluation/{assembler}/bowtie2/index_bt2/assembly",
+             "results/Genomics/1_Assembly/3_AssemblyEvaluation/{assembler}/bowtie2/index_bt2/assembly",
              ".1.bt2",
              ".2.bt2",
              ".3.bt2",
@@ -198,8 +198,8 @@ rule bowtie2_evaluation:
             ill_R1="/data/zeynep/HIN_data/DNA/clean/{sample}_R1.fastq.gz",
             ill_R2="/data/zeynep/HIN_data/DNA/clean/{sample}_R2.fastq.gz"
     output:
-          bam="output/Genomics/1_Assembly/3_AssemblyEvaluation/{assembler}/bowtie2/{sample}.bam",
-          bai="output/Genomics/1_Assembly/3_AssemblyEvaluation/{assembler}/bowtie2/{sample}.bai"
+          bam="results/Genomics/1_Assembly/3_AssemblyEvaluation/{assembler}/bowtie2/{sample}.bam",
+          bai="results/Genomics/1_Assembly/3_AssemblyEvaluation/{assembler}/bowtie2/{sample}.bai"
     params:
           threads=32,
     conda:
@@ -209,10 +209,10 @@ rule bowtie2_evaluation:
 
 rule meryl:
     input:
-         genome="output/Genomics/1_Assembly/2_Assembly/{assembler}/assembly.fasta",
+         genome="results/Genomics/1_Assembly/2_Assembly/{assembler}/assembly.fasta",
     output:
-          merylDB=directory("output/Genomics/1_Assembly/3_AssemblyEvaluation/{assembler}/winnowmap/merlyDB"),
-          repetitive_k15="output/Genomics/1_Assembly/3_AssemblyEvaluation/{assembler}/winnowmap/repetitive_k15.txt",
+          merylDB=directory("results/Genomics/1_Assembly/3_AssemblyEvaluation/{assembler}/winnowmap/merlyDB"),
+          repetitive_k15="results/Genomics/1_Assembly/3_AssemblyEvaluation/{assembler}/winnowmap/repetitive_k15.txt",
     params:
           num_threads=30,
           nanopore=True
@@ -223,13 +223,13 @@ rule meryl:
 
 rule winnowmap:
     input:
-         genome="output/Genomics/1_Assembly/2_Assembly/{assembler}/assembly.fasta",
+         genome="results/Genomics/1_Assembly/2_Assembly/{assembler}/assembly.fasta",
          long_read="/data/zeynep/HIN_data/DNA/clean/{long_read}.fastq.gz",
-         merylDB="output/Genomics/1_Assembly/3_AssemblyEvaluation/{assembler}/winnowmap/merlyDB",
-         repetitive_k15="output/Genomics/1_Assembly/3_AssemblyEvaluation/{assembler}/winnowmap/repetitive_k15.txt",
+         merylDB="results/Genomics/1_Assembly/3_AssemblyEvaluation/{assembler}/winnowmap/merlyDB",
+         repetitive_k15="results/Genomics/1_Assembly/3_AssemblyEvaluation/{assembler}/winnowmap/repetitive_k15.txt",
     output:
-          bam="output/Genomics/1_Assembly/3_AssemblyEvaluation/{assembler}/winnowmap/{long_read}.bam",
-          bai="output/Genomics/1_Assembly/3_AssemblyEvaluation/{assembler}/winnowmap/{long_read}.bai"
+          bam="results/Genomics/1_Assembly/3_AssemblyEvaluation/{assembler}/winnowmap/{long_read}.bam",
+          bai="results/Genomics/1_Assembly/3_AssemblyEvaluation/{assembler}/winnowmap/{long_read}.bai"
     params:
           num_threads=32,
           nanopore=True
@@ -240,14 +240,14 @@ rule winnowmap:
 
 rule pilon:
     input:
-        assembly="output/Genomics/1_Assembly/2_Assembly/{assembler}/assembly.fasta",
-        #illumina_run1="output/Genomics/1_Assembly/3_AssemblyEvaluation/{assembler}/bowtie2/illumina_run1.bam",
-        illumina_run2="output/Genomics/1_Assembly/3_AssemblyEvaluation/{assembler}/bowtie2/illumina_run2.bam",
-        illumina_run3="output/Genomics/1_Assembly/3_AssemblyEvaluation/{assembler}/bowtie2/illumina_run3.bam"
+        assembly="results/Genomics/1_Assembly/2_Assembly/{assembler}/assembly.fasta",
+        #illumina_run1="results/Genomics/1_Assembly/3_AssemblyEvaluation/{assembler}/bowtie2/illumina_run1.bam",
+        illumina_run2="results/Genomics/1_Assembly/3_AssemblyEvaluation/{assembler}/bowtie2/illumina_run2.bam",
+        illumina_run3="results/Genomics/1_Assembly/3_AssemblyEvaluation/{assembler}/bowtie2/illumina_run3.bam"
     params:
         threads=32
     output:
-        polished_assembly="output/Genomics/1_Assembly/2_Assembly/pilon/{assembler}/assembly_polished.fasta"
+        polished_assembly="results/Genomics/1_Assembly/2_Assembly/pilon/{assembler}/assembly_polished.fasta"
     conda:
          "env/genomics.yaml"
     script:
@@ -256,11 +256,11 @@ rule pilon:
 #Evaluation
 rule quast:
     input:
-         assembly="output/Genomics/1_Assembly/2_Assembly/pilon/{assembler}/assembly_polished.fasta",
+         assembly="results/Genomics/1_Assembly/2_Assembly/pilon/{assembler}/assembly_polished.fasta",
     params:
           threads=32
     output:
-          report_dir=directory("output/Genomics/1_Assembly/3_AssemblyEvaluation/quast/{assembler}/")
+          report_dir=directory("results/Genomics/1_Assembly/3_AssemblyEvaluation/quast/{assembler}/")
     conda:
          "env/genomics.yaml"
     script:

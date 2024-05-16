@@ -2,7 +2,7 @@ rule orthofinder:
     input:
          proteome="resources/Orthofinder/sp/"
     output:
-        directory('output/ComparativeGenomics/2_SequenceSimilarityLevel/')
+        directory('results/ComparativeGenomics/2_SequenceSimilarityLevel/')
     conda:
          "env/genomics.yaml"
     script:
@@ -11,9 +11,9 @@ rule orthofinder:
 rule orthofinder_rerun:
     input:
          new_sp="resources/Orthofinder/new_sp",
-         old_sp="output/Genomics/3_ComparativeGenomicsAnalysis/2_SequenceSimilarityLevel/{assembler}/{annotation}/OrthoFinder/{results}/WorkingDirectory/"
+         old_sp="results/Genomics/3_ComparativeGenomicsAnalysis/2_SequenceSimilarityLevel/{assembler}/{annotation}/OrthoFinder/{results}/WorkingDirectory/"
     output:
-          directory('output/Genomics/3_ComparativeGenomicsAnalysis/2_SequenceSimilarityLevel/{assembler}/{annotation}/{results}/new_sp')
+          directory('results/Genomics/3_ComparativeGenomicsAnalysis/2_SequenceSimilarityLevel/{assembler}/{annotation}/{results}/new_sp')
     conda:
          "env/genomics.yaml"
     script:

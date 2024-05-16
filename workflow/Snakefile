@@ -43,7 +43,7 @@ rule all:
                 assembler=["flye", "masurca/flye.mr.83.17.15.0.02"]),
          #quast
          expand("results/Genomics/1_Assembly/3_Evaluation/quast/{assembler}/",
-                assembler=["flye"],
+                assembler=["flye", "masurca/flye.mr.83.17.15.0.02"],
                 assembly=["assembly"]),
 
 """  #prodigal

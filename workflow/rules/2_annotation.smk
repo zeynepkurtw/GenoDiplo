@@ -1,10 +1,10 @@
 rule prodigal:
     input:
-         genome="output/Genomics/1_Assembly/2_Assembly/pilon/{assembler}/assembly_polished.fasta",
+         genome="results/Genomics/1_Assembly/2_Assembly/pilon/{assembler}/assembly_polished.fasta",
     output:
-          gff="output/Genomics/2_Annotation/1_Structural/prodigal/{assembler}/genome.gff",
-          faa="output/Genomics/2_Annotation/1_Structural/prodigal/{assembler}/genome.faa",
-          ffn="output/Genomics/2_Annotation/1_Structural/prodigal/{assembler}/genome.ffn",
+          gff="results/Genomics/2_Annotation/1_Structural/prodigal/{assembler}/genome.gff",
+          faa="results/Genomics/2_Annotation/1_Structural/prodigal/{assembler}/genome.faa",
+          ffn="results/Genomics/2_Annotation/1_Structural/prodigal/{assembler}/genome.ffn",
     conda:
          "envs/genomics.yaml"
     script:
@@ -12,13 +12,13 @@ rule prodigal:
 rule glimmerhmm:
     input:
         training_genes="resources/Train_GlimmerHMM/training_genes.fasta",
-        genome= "output/Genomics/1_Assembly/2_Assembly/pilon/{assembler}/assembly_polished.fasta",
+        genome= "results/Genomics/1_Assembly/2_Assembly/pilon/{assembler}/assembly_polished.fasta",
     params:
           n=150,
           v=50
     output:
-        trained_genes = "output/Genomics/2_Annotation/1_Structural/glimmerhmm/{assembler}/genome_trained_genes.hmm",
-        gff="output/Genomics/2_Annotation/1_Structural/{assembler}/genome.gff",
+        trained_genes = "results/Genomics/2_Annotation/1_Structural/glimmerhmm/{assembler}/genome_trained_genes.hmm",
+        gff="results/Genomics/2_Annotation/1_Structural/{assembler}/genome.gff",
     conda:
         "envs/genomics.yaml"
     script:
@@ -27,9 +27,9 @@ rule glimmerhmm:
 #Functional Annotation
 rule makeblastdb:
     input:
-        "output/Genomics/2_Annotation/1_Structural/{assembler}/{annotation}/genome.faa"
+        "results/Genomics/2_Annotation/1_Structural/{assembler}/{annotation}/genome.faa"
     output:
-        multiext("output/Genomics/2_Annotation/1_Structural/{assembler}/{annotation}/genome",
+        multiext("results/Genomics/2_Annotation/1_Structural/{assembler}/{annotation}/genome",
             ".ndb",
             ".nhr",
             ".nin",
@@ -38,7 +38,7 @@ rule makeblastdb:
             ".ntf",
             ".nto")
     params:
-        outname="output/{type}/db/{db}"
+        outname="results/{type}/db/{db}"
     conda:
         "envss/blast.yaml"
     shell:
@@ -46,9 +46,9 @@ rule makeblastdb:
 
 rule diamond_blastp:
     input:
-         genome="output/Genomics/2_Annotation/1_Structural/{assembler}/{annotation}/genome.faa"
+         genome="results/Genomics/2_Annotation/1_Structural/{assembler}/{annotation}/genome.faa"
     output:
-          "output/Genomics/2_Annotation/2_Functional/{assembler}/{annotation}/genome_diplomonads.blastp"
+          "results/Genomics/2_Annotation/2_Functional/{assembler}/{annotation}/genome_diplomonads.blastp"
     params:
           db_prefix="path/to/database_prefix",
           outfmt=6,
@@ -62,13 +62,13 @@ rule diamond_blastp:
           "scripts/Genomics/2_Annotation/2_Functional/Diamond.py"
 rule eggnogmapper:
     input:
-         proteome="output/Genomics/2_Annotation/1_Structural/{assembler}/{annotation}/genome.faa"
+         proteome="results/Genomics/2_Annotation/1_Structural/{assembler}/{annotation}/genome.faa"
     output:
-          "output/Genomics/2_Annotation/2_Functional/{assembler}/{annotation}/eggnogmapper_results.tsv"
+          "results/Genomics/2_Annotation/2_Functional/{assembler}/{annotation}/eggnogmapper_results.tsv"
     params:
           threads=32,
           diamond="diamond",
-          outdir="output/Genomics/2_Annotation/2_Functional/{assembler}/{annotation}/",
+          outdir="results/Genomics/2_Annotation/2_Functional/{assembler}/{annotation}/",
           datadir="path/to/data",
 
     conda:
@@ -77,9 +77,9 @@ rule eggnogmapper:
           "scripts/Genomics/2_Annotation/2_Functional/Eggnogmapper.py"
 rule interproscan:
     input:
-         proteome="output/Genomics/2_Annotation/1_Structural/{assembler}/{annotation}/genome.faa"
+         proteome="results/Genomics/2_Annotation/1_Structural/{assembler}/{annotation}/genome.faa"
     output:
-          "output/Genomics/2_Annotation/2_Functional/{assembler}/{annotation}/interproscan_results.tsv"
+          "results/Genomics/2_Annotation/2_Functional/{assembler}/{annotation}/interproscan_results.tsv"
     params:
           threads=32,
     conda:
