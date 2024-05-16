@@ -79,7 +79,7 @@ rule all:
         #orthofinder
             #"output/ComparativeGenomics/2_SequenceSimilarityLevel/"
         #orthofinder_rerun
-"""
+
 
 #expand("output/2_cdhit/{sp}_{n}.cdhit", n=config["seq_identity"], sp=config["species"])
 #expand("output/7_tRNAscan/{sp}.tRNAscan",sp=["HIN", "muris", "wb", "spiro"]),
@@ -264,23 +264,6 @@ rule masurca:
          "env/genomics.yaml"
     script:
           "scripts/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assemblers/MasurcaAssembler.py"
-"""
-rule polca:
-    input:
-         assembly="output/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/{assembler}/{assembly}.fasta",
-         illumina_run1_R1="/data/zeynep/HIN_data/DNA/clean/illumina_run1_R1.fastq.gz",
-         illumina_run1_R2="/data/zeynep/HIN_data/DNA/clean/illumina_run1_R2.fastq.gz",
-         illumina_run2_R1="/data/zeynep/HIN_data/DNA/clean/illumina_run2_R1.fastq.gz",
-         illumina_run2_R2="/data/zeynep/HIN_data/DNA/clean/illumina_run2_R2.fastq.gz",
-         illumina_run3_R1="/data/zeynep/HIN_data/DNA/clean/illumina_run3_R1.fastq.gz",
-         illumina_run3_R2="/data/zeynep/HIN_data/DNA/clean/illumina_run3_R2.fastq.gz",
-    params:
-        threads=32
-    output:
-          polished_assembly="output/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/pilon/{assembler}/{assembly}_polished.fasta"
-    script:
-          "scripts/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assemblers/Polishing.py"
-          """
 
 rule bowtie2_biult_index_evaluation:
     input:
@@ -475,7 +458,7 @@ rule interproscan:
     script:
           "scripts/Genomics/2_DualGenomeAnnotationWorkflow/2_FunctionalAnnotation/Interproscan.py"
 
-"""
+
 Comparative Genomics Analysis
     1: Genome Structure Level
         -Repeat Analysis
@@ -489,7 +472,7 @@ Comparative Genomics Analysis
         -Domain schematics
         -Domian length distribution
 
-"""
+
 
 #Genome Structure Level
 rule build_database_repeatmodeler:
