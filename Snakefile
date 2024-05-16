@@ -24,9 +24,9 @@ rule all:
          #masurca
          "output/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/masurca/",
          #pilon
-         #expand("output/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/pilon/{assembler}/{assembly}_polished.fasta",
-            #    assembler=["flye"],
-             #   assembly=["assembly"]),
+         expand("output/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/pilon/{assembler}/{assembly}_polished.fasta",
+                assembler=["flye", "masurca"],
+                assembly=["assembly"]),
          #quast
          #expand("output/Genomics/1_HybridGenomeAssemblyWorkflow/3_AssemblyEvaluation/{assembler}/{assembly}_quast/",
           #      assembler=["flye"],
