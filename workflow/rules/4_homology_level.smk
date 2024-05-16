@@ -4,7 +4,7 @@ rule orthofinder:
     output:
         directory('results/ComparativeGenomics/2_SequenceSimilarityLevel/')
     conda:
-         "env/genomics.yaml"
+         "envs/genomics.yaml"
     script:
           "scripts/ComparativeGenomics/2_SequenceSimilarityLevel/Orthofinder.py"
 
@@ -15,7 +15,7 @@ rule orthofinder_rerun:
     output:
           directory('results/Genomics/3_ComparativeGenomicsAnalysis/2_SequenceSimilarityLevel/{assembler}/{annotation}/{results}/new_sp')
     conda:
-         "env/genomics.yaml"
+         "envs/genomics.yaml"
     script:
           "scripts/ComparativeGenomics/2_SequenceSimilarityLevel/Orthofinder_rerun.py"
 
