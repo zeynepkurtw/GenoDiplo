@@ -6,7 +6,7 @@ rule fastqc_before_trimming:
     output:
         out_dir = directory("results/Genomics/1_Assembly/1_ReadsPreprocessing/fastqc_before_trimming/"),
     conda:
-         "workflow/envs/genomics.yaml",
+         "envs/genomics.yaml",
     script:
          "scripts/Genomics/1_Assembly/1_ReadsPreprocessing/ReadQualityCheck.py"
 
@@ -22,7 +22,7 @@ rule trimmomatic:
           r1_d="/data/zeynep/HIN_data/DNA/trimmed/{run}_R1.duplicate.trimmed.fastq",
           r2_d="/data/zeynep/HIN_data/DNA/trimmed/{run}_R2.duplicate.trimmed.fastq"
     conda:
-         "workflow/envs/genomics.yaml"
+         "envs/genomics.yaml"
     script:
           "scripts/Genomics/1_Assembly/1_ReadsPreprocessing/TrimIlluminaReads.py"
 
@@ -34,7 +34,7 @@ rule fastqc_after_trimming:
     output:
           out_dir=directory("results/Genomics/1_Assembly/1_ReadsPreprocessing/fastqc_after_trimming/"),
     conda:
-         "workflow/envs/genomics.yaml"
+         "envs/genomics.yaml"
     script:
           "scripts/Genomics/1_Assembly/1_ReadsPreprocessing/ReadQualityCheck.py"
 
@@ -52,7 +52,7 @@ rule bwa_index:
             ".pac",
             ".sa")
     conda:
-         "workflow/envs/genomics.yaml"
+         "envs/genomics.yaml"
     shell:
         'bwa index {input}'
 
@@ -68,7 +68,7 @@ rule bwa_cleaning_contamination:
           raw_reads_unmapped_sorted="/data/zeynep/HIN_data/DNA/clean/{DNAseq}.sorted.bam",
           raw_reads_unmapped_fastq="/data/zeynep/HIN_data/DNA/clean/{DNAseq}.fastq.gz"
     conda:
-         "workflow/envs/genomics.yaml"
+         "envs/genomics.yaml"
     script:
           "scripts/Genomics/1_Assembly/1_ReadsPreprocessing/ContaminationRemovalRawReadsBWA.py"
 
@@ -89,7 +89,7 @@ rule bowtie2_index_cleaning_contamination:
         outname="resources/Contamination/all_contaminated",
         num_threads=32
     conda:
-        "workflow/envs/genomics.yaml"
+        "envs/genomics.yaml"
     shell:
         'bowtie2-build {input} --threads {params.num_threads} {params.outname}'
 
@@ -113,7 +113,7 @@ rule bowtie2_paired_reads_cleaning_contamination:
         threads=32,
         paired= True
     conda:
-        "workflow/envs/genomics.yaml"
+        "envs/genomics.yaml"
     script:
         "scripts/Genomics/1_Assembly/1_ReadsPreprocessing/ContaminationRemovalRawReads.py"
 
@@ -135,7 +135,7 @@ rule bowtie2_single_reads_cleaning_contamination:
         threads=32,
         paired= False
     conda:
-        "workflow/envs/genomics.yaml"
+        "envs/genomics.yaml"
     script:
         "scripts/Genomics/1_Assembly/1_ReadsPreprocessing/ContaminationRemovalRawReads.py"
 """
@@ -149,7 +149,7 @@ rule flye:
     output:
           out_dir=directory("results/Genomics/1_Assembly/2_Assembly/flye/"),
     conda:
-         "workflow/envs/genomics.yaml"
+         "envs/genomics.yaml"
     script:
           "scripts/Genomics/1_Assembly/2_Assemblers/FlyeAssembler.py"
 
@@ -161,7 +161,7 @@ rule masurca:
     output:
           out_dir=directory("results/Genomics/1_Assembly/2_Assembly/masurca/")
     conda:
-         "workflow/envs/genomics.yaml"
+         "envs/genomics.yaml"
     script:
           "scripts/Genomics/1_Assembly/2_Assemblers/MasurcaAssembler.py"
 
@@ -181,7 +181,7 @@ rule bowtie2_biult_index_evaluation:
           outname="results/Genomics/1_Assembly/3_Evaluation/{assembler}/bowtie2/index_bt2/assembly",
           num_threads=30
     conda:
-         "workflow/envs/genomics.yaml"
+         "envs/genomics.yaml"
     shell:
          'bowtie2-build {input} --threads {params.num_threads} {params.outname}'
 
@@ -203,7 +203,7 @@ rule bowtie2_evaluation:
     params:
           threads=32,
     conda:
-         "workflow/envs/genomics.yaml"
+         "envs/genomics.yaml"
     script:
           "scripts/Genomics/1_Assembly/3_Evaluation/MapShortReadsToAssembly.py"
 
@@ -217,7 +217,7 @@ rule meryl:
           num_threads=30,
           nanopore=True
     conda:
-         "workflow/envs/genomics.yaml"
+         "envs/genomics.yaml"
     script:
           "scripts/Genomics/1_Assembly/3_Evaluation/CalculateKmerLongReads.py"
 
@@ -234,7 +234,7 @@ rule winnowmap:
           num_threads=32,
           nanopore=True
     conda:
-         "workflow/envs/genomics.yaml"
+         "envs/genomics.yaml"
     script:
           "scripts/Genomics/1_Assembly/3_Evaluation/MapLongReadsToAssembly.py"
 
@@ -249,7 +249,7 @@ rule pilon:
     output:
         polished_assembly="results/Genomics/1_Assembly/2_Assembly/pilon/{assembler}/assembly_polished.fasta"
     conda:
-         "workflow/envs/genomics.yaml"
+         "envs/genomics.yaml"
     script:
         "scripts/Genomics/1_Assembly/2_Assemblers/Polishing.py"
 
@@ -262,6 +262,6 @@ rule quast:
     output:
           report_dir=directory("results/Genomics/1_Assembly/3_Evaluation/quast/{assembler}/")
     conda:
-         "workflow/envs/genomics.yaml"
+         "envs/genomics.yaml"
     script:
           "scripts/Genomics/1_Assembly/3_Evaluation/AssemblyQualityCheck.py"
