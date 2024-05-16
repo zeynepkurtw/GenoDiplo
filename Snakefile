@@ -1,39 +1,23 @@
 configfile: "env/config.yaml"
-
 rule all:
     input:
-         #fastqc_before_trimming,
+       #fastqc_before_trimming,
          "output/Genomics/1_HybridGenomeAssemblyWorkflow/1_ReadsPreprocessing/fastqc_before_trimming",
          #trimmomatic
          expand("/data/zeynep/HIN_data/DNA/trimmed/{run}_R1.unique.trimmed.fastq",
                 run=["illumina_run1", "illumina_run2", "illumina_run3"]),
          #fastqc_after_trimming
-         "output/Genomics/1_HybridGenomeAssemblyWorkflow/1_ReadsPreprocessing/fastqc_after_trimming",
+            "output/Genomics/1_HybridGenomeAssemblyWorkflow/1_ReadsPreprocessing/fastqc_after_trimming",
          #ContaminationDetection.py
          #bwa_cleaning_contamination
          expand("/data/zeynep/HIN_data/DNA/clean/{DNAseq}.fastq.gz",
                 DNAseq=config["reads"]),
-         #bowtie2_clean_paired_reads
-        #    expand("/data/zeynep/HIN_data/DNA/clean/short/{sample}_R1.fastq.gz",
-           #        sample=["illumina_run1", "illumina_run2", "illumina_run3"]),
-         #bowtie2_clean_single_reads
-         #   expand("/data/zeynep/HIN_data/DNA/clean/long/{sample}.fastq.gz",
-          #         sample=["nanopore", "pacbio"]),
         ##flye
          "output/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/flye/",
          #masurca
-         "output/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/masurca/",
-         #pilon
-         #expand("output/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/pilon/{assembler}/{assembly}_polished.fasta",
-          #      assembler=["flye", "masurca/flye.mr.83.17.15.0.02"],
-           #     assembly=["assembly"]),
-         #quast
-         #expand("output/Genomics/1_HybridGenomeAssemblyWorkflow/3_AssemblyEvaluation/{assembler}/{assembly}_quast/",
-          #      assembler=["flye"],
-           #     assembly=["assembly"]),
-
+          "output/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/masurca/",
          #bowtie2_paired_reads_evaluation
-         expand("output/Genomics/1_HybridGenomeAssemblyWorkflow/3_AssemblyEvaluation/{assembler}/{sample}.bam",
+         expand("output/Genomics/1_HybridGenomeAssemblyWorkflow/3_AssemblyEvaluation/{assembler}/bowtie2/{sample}.bam",
                 assembler=["flye", "masurca/flye.mr.83.17.15.0.02"],
                 sample=["illumina_run1", "illumina_run2", "illumina_run3"]),
          #meryl_evaluation
@@ -47,55 +31,50 @@ rule all:
          expand("output/Genomics/1_HybridGenomeAssemblyWorkflow/3_AssemblyEvaluation/{assembler}/winnowmap/{long_reads}.bam",
                 assembler=["flye", "masurca/flye.mr.83.17.15.0.02"],
                 long_reads=["nanopore", "pacbio"]),
-    """ 
-         #prodigal
-         expand("output/Genomics/2_GenomeAnnotationWorkflow/1_StructuralAnnotation/{assembler}/prodigal/{genome}.gff",
-                assembler=["flye", "masurca"],
-                genome=["Hexamita"]),
+         #pilon
+         expand("output/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/pilon/{assembler}/{assembly}_polished.fasta",
+                assembler=["flye", "masurca/flye.mr.83.17.15.0.02"],
+                assembly=["assembly"]),
+         #quast
+         expand("output/Genomics/1_HybridGenomeAssemblyWorkflow/3_AssemblyEvaluation/{assembler}/{assembly}_quast/",
+                assembler=["flye"],
+                assembly=["assembly"]),
+        #prodigal
+         expand("output/Genomics/2_GenomeAnnotationWorkflow/1_StructuralAnnotation/{assembler}/prodigal/genome.gff",
+                assembler=["flye", "masurca"]),
          #glimmerhmm
-         expand("output/Genomics/2_GenomeAnnotationWorkflow/1_StructuralAnnotation/{assembler}/glimmerhmm/{genome}.faa",
-                assembler=["flye", "masurca"],
-                genome=["Hexamita"]),
+         expand("output/Genomics/2_GenomeAnnotationWorkflow/1_StructuralAnnotation/{assembler}/glimmerhmm/genome.faa",
+                assembler=["flye", "masurca"]),
          #diamond_blastp
-         expand("output/Genomics/2_DualGenomeAnnotationWorkflow/2_FunctionalAnnotation/{assembler}/{annotation}/{genome}_diplomonads.blastp",
-                assembler=["flye"],
-                annotation=["glimmerhmm"],
-                genome=["Hexamita"]),
+       #  expand("output/Genomics/2_DualGenomeAnnotationWorkflow/2_FunctionalAnnotation/{assembler}/{annotation}/genome_diplomonads.blastp",
+        #        annotation=["glimmerhmm"],
+         #       assembler=["flye", "masurca"]),
          #eggnogmapper
-         expand("output/Genomics/2_DualGenomeAnnotationWorkflow/2_FunctionalAnnotation/{assembler}/{annotation}/{genome}_eggnogmapper_results.tsv",
-                assembler=["flye"],
+         expand("output/Genomics/2_DualGenomeAnnotationWorkflow/2_FunctionalAnnotation/{assembler}/{annotation}/eggnogmapper_results.tsv",
                 annotation=["glimmerhmm"],
-                genome=["Hexamita"]),
+                assembler=["flye", "masurca"]),
          #interproscan
-         expand("output/Genomics/2_DualGenomeAnnotationWorkflow/2_FunctionalAnnotation/{assembler}/{annotation}/{genome}_diplomonads_interproscan_results.tsv",
-                assembler=["flye"],
+         expand("output/Genomics/2_DualGenomeAnnotationWorkflow/2_FunctionalAnnotation/{assembler}/{annotation}/interproscan_results.tsv",
                 annotation=["glimmerhmm"],
-                genome=["Hexamita"]),
-
+                assembler=["flye", "masurca"]),
         #repeatmodeler
-         expand("output/ComparativeGenomics/1_GenomeStructureLevel/{assembler}/{genome}_RModeler/{genome}_db-families.fasta",
-               assembler=["flye"],
-               genome=["Hexamita"]),
+         expand("output/ComparativeGenomics/1_GenomeStructureLevel/{assembler}/RModeler/genome_db-families.fasta",
+                assembler=["flye", "masurca"]),
         #repeatmasker
-            expand("output/ComparativeGenomics/1_GenomeStructureLevel/{assembler}/{genome}_RMasker",
-                assembler=["flye"],
-                genome=["Hexamita"]),
+            expand("output/ComparativeGenomics/1_GenomeStructureLevel/{assembler}/RMasker",
+                   assembler=["flye", "masurca"]),
         #tRNAscan
-            expand("output/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/{assembler}/{genome}.tRNAscan",
-                assembler=["flye"],
-                genome=["Hexamita"]),
+            expand("output/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/{assembler}/genome.tRNAscan",
+                   assembler=["flye", "masurca"]),
         #tRNAscan_cov
-            expand("output/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/{assembler}/sensitive_search/{genome}.tRNAscan_cov",
-                assembler=["flye"],
-                genome=["Hexamita"]),
+            expand("output/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/{assembler}/sensitive_search/genome.tRNAscan_cov",
+                   assembler=["flye", "masurca"]),
         #barrnap
-            expand("output/ComparativeGenomics/1_GenomeStructureLevel/{assembler}/{genome}.rrna.gff",
-                assembler=["flye"],
-                genome=["Hexamita"]),
+            expand("output/ComparativeGenomics/1_GenomeStructureLevel/{assembler}/genome.rrna.gff",
+                   assembler=["flye", "masurca"]),
         #cdhit
-            expand("output/ComparativeGenomics/1_GenomeStructureLevel/{assembler}/{genome}_{n}.cdhit",
-                assembler=["flye"],
-                genome=["Hexamita"],
+            expand("output/ComparativeGenomics/1_GenomeStructureLevel/{assembler}/genome_{n}.cdhit",
+                   assembler=["flye", "masurca"],
                    n=[0.70, 0.75, 0.80, 0.85, 0.90, 0.95, 1]),
         #orthofinder
             #"output/ComparativeGenomics/2_SequenceSimilarityLevel/"
@@ -106,7 +85,7 @@ rule all:
 #expand("output/7_tRNAscan/{sp}.tRNAscan",sp=["HIN", "muris", "wb", "spiro"]),
 #expand("output/7_tRNAscan/sensitive_search/{sp}.cov.tRNAscan",sp=[ "muris", "wb", "spiro"]),
 
-"""
+
 Genomics Analysis
     1: Hybrid Genome Assembly Workflow 
         -Reads Preprocessing
@@ -192,8 +171,6 @@ rule bwa_cleaning_contamination:
          "env/genomics.yaml"
     script:
           "scripts/Genomics/1_HybridGenomeAssemblyWorkflow/1_ReadsPreprocessing/ContaminationRemovalRawReadsBWA.py"
-
-rule bwa_polishing:
 
 """
 rule bowtie2_index_cleaning_contamination:
@@ -305,44 +282,12 @@ rule polca:
           "scripts/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assemblers/Polishing.py"
           """
 
-rule pilon:
-    input:
-        assembly="output/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/{assembler}/{assembly}.fasta",
-        illumina_run1_R1="/data/zeynep/HIN_data/DNA/clean/illumina_run1_R1.fastq.gz",
-        illumina_run1_R2="/data/zeynep/HIN_data/DNA/clean/illumina_run1_R2.fastq.gz",
-        illumina_run2_R1="/data/zeynep/HIN_data/DNA/clean/illumina_run2_R1.fastq.gz",
-        illumina_run2_R2="/data/zeynep/HIN_data/DNA/clean/illumina_run2_R2.fastq.gz",
-        illumina_run3_R1="/data/zeynep/HIN_data/DNA/clean/illumina_run3_R1.fastq.gz",
-        illumina_run3_R2="/data/zeynep/HIN_data/DNA/clean/illumina_run3_R2.fastq.gz"
-    params:
-        threads=32
-    output:
-        polished_assembly="output/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/pilon/{assembler}/{assembly}_polished.fasta"
-    conda:
-         "env/genomics.yaml"
-    script:
-        "scripts/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assemblers/Polishing.py"
-
-#Evaluation
-rule quast:
-    input:
-         assembly="output/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/pilon/{assembler}/{assembly}_polished.fasta",
-    params:
-          threads=32
-    output:
-          report_dir=directory("output/Genomics/1_HybridGenomeAssemblyWorkflow/3_AssemblyEvaluation/{assembler}/{assembly}_quast/")
-    conda:
-         "env/genomics.yaml"
-    script:
-          "scripts/Genomics/1_HybridGenomeAssemblyWorkflow/3_AssemblyEvaluation/AssemblyQualityCheck.py"
-
-
 rule bowtie2_biult_index_evaluation:
     input:
          "output/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/{assembler}/assembly.fasta"
     output:
           multiext(
-              "output/Genomics/1_HybridGenomeAssemblyWorkflow/3_AssemblyEvaluation/index_bt2/{assembler}/assembly",
+              "output/Genomics/1_HybridGenomeAssemblyWorkflow/3_AssemblyEvaluation/{assembler}/bowtie2/index_bt2/assembly",
               ".1.bt2",
               ".2.bt2",
               ".3.bt2",
@@ -350,7 +295,7 @@ rule bowtie2_biult_index_evaluation:
               ".rev.1.bt2",
               ".rev.2.bt2")
     params:
-          outname="output/Genomics/1_HybridGenomeAssemblyWorkflow/3_AssemblyEvaluation/index_bt2/{assembler}/assembly",
+          outname="output/Genomics/1_HybridGenomeAssemblyWorkflow/3_AssemblyEvaluation/{assembler}/bowtie2/index_bt2/assembly",
           num_threads=30
     conda:
          "env/genomics.yaml"
@@ -360,7 +305,7 @@ rule bowtie2_biult_index_evaluation:
 rule bowtie2_evaluation:
     input:
          index=multiext(
-             "output/Genomics/1_HybridGenomeAssemblyWorkflow/3_AssemblyEvaluation/index_bt2/{assembler}/assembly",
+             "output/Genomics/1_HybridGenomeAssemblyWorkflow/3_AssemblyEvaluation/{assembler}/bowtie2/index_bt2/assembly",
              ".1.bt2",
              ".2.bt2",
              ".3.bt2",
@@ -370,8 +315,8 @@ rule bowtie2_evaluation:
             ill_R1="/data/zeynep/HIN_data/DNA/clean/{sample}_R1.fastq.gz",
             ill_R2="/data/zeynep/HIN_data/DNA/clean/{sample}_R2.fastq.gz"
     output:
-          bam="output/Genomics/1_HybridGenomeAssemblyWorkflow/3_AssemblyEvaluation/{assembler}/{sample}.bam",
-          bai="output/Genomics/1_HybridGenomeAssemblyWorkflow/3_AssemblyEvaluation/{assembler}/{sample}.bai"
+          bam="output/Genomics/1_HybridGenomeAssemblyWorkflow/3_AssemblyEvaluation/{assembler}/bowtie2/{sample}.bam",
+          bai="output/Genomics/1_HybridGenomeAssemblyWorkflow/3_AssemblyEvaluation/{assembler}/bowtie2/{sample}.bai"
     params:
           threads=32,
     conda:
@@ -410,53 +355,88 @@ rule winnowmap:
     script:
           "scripts/Genomics/1_HybridGenomeAssemblyWorkflow/3_AssemblyEvaluation/MapLongReadsToAssembly.py"
 
+rule pilon:
+    input:
+        assembly="output/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/{assembler}/assembly.fasta",
+        illumina_run1="output/Genomics/1_HybridGenomeAssemblyWorkflow/3_AssemblyEvaluation/{assembler}/illumina_run1.bam",
+        illumina_run2="output/Genomics/1_HybridGenomeAssemblyWorkflow/3_AssemblyEvaluation/{assembler}/illumina_run2.bam",
+        illumina_run3="output/Genomics/1_HybridGenomeAssemblyWorkflow/3_AssemblyEvaluation/{assembler}/illumina_run3.bam"
+    params:
+        threads=32
+    output:
+        polished_assembly="output/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/pilon/{assembler}/assembly_polished.fasta"
+    conda:
+         "env/genomics.yaml"
+    script:
+        "scripts/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assemblers/Polishing.py"
+
+#Evaluation
+rule quast:
+    input:
+         assembly="output/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/pilon/{assembler}/assembly_polished.fasta",
+    params:
+          threads=32
+    output:
+          report_dir=directory("output/Genomics/1_HybridGenomeAssemblyWorkflow/3_AssemblyEvaluation/quast/{assembler}/")
+    conda:
+         "env/genomics.yaml"
+    script:
+          "scripts/Genomics/1_HybridGenomeAssemblyWorkflow/3_AssemblyEvaluation/AssemblyQualityCheck.py"
+
+
 #Genome Annotation Workflow
 #Structural Annotation
 rule prodigal:
     input:
-         genome="output/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/pilon/{assembler}/{assembly}_polished.fasta",
+         genome="output/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/pilon/{assembler}/assembly_polished.fasta",
     output:
-          gff="output/Genomics/2_GenomeAnnotationWorkflow/1_StructuralAnnotation/{assembler}/prodigal/{genome}.gff",
-          faa="output/Genomics/2_GenomeAnnotationWorkflow/1_StructuralAnnotation/{assembler}/prodigal/{genome}.faa",
-          ffn="output/Genomics/2_GenomeAnnotationWorkflow/1_StructuralAnnotation/{assembler}/prodigal/{genome}.ffn",
+          gff="output/Genomics/2_GenomeAnnotationWorkflow/1_StructuralAnnotation/prodigal/{assembler}/genome.gff",
+          faa="output/Genomics/2_GenomeAnnotationWorkflow/1_StructuralAnnotation/prodigal/{assembler}/genome.faa",
+          ffn="output/Genomics/2_GenomeAnnotationWorkflow/1_StructuralAnnotation/prodigal/{assembler}/genome.ffn",
     conda:
          "env/genomics.yaml"
     script:
           "scripts/Genomics/2_DualGenomeAnnotationWorkflow/1_StructuralAnnotation/ProdigalAnnotation.py"
-rule train_glimmer_hmm:
+rule glimmerhmm:
     input:
-         training_genes="resources/Train_GlimmerHMM/training_genes.fasta",
-         genome="output/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/pilon/{assembler}/{assembly}_polished.fasta"
+        training_genes="resources/Train_GlimmerHMM/training_genes.fasta",
+        genome= "output/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/pilon/{assembler}/assembly_polished.fasta",
     params:
           n=150,
           v=50
     output:
-          trained_genes="output/Genomics/2_DualGenomeAnnotationWorkflow/1_StructuralAnnotation/{assembler}/glimmerhmm/{genome}_trained_genes.hmm",
-          gff="output/Genomics/2_GenomeAnnotationWorkflow/1_StructuralAnnotation/{assembler}/glimmerhmm/{genome}.gff",
-          faa="output/Genomics/2_GenomeAnnotationWorkflow/1_StructuralAnnotation/{assembler}/glimmerhmm/{genome}.faa",
-          ffn="output/Genomics/2_GenomeAnnotationWorkflow/1_StructuralAnnotation/{assembler}/glimmerhmm/{genome}.ffn"
-    conda:
-         "env/genomics.yaml"
-    script:
-          "scripts/Genomics/2_DualGenomeAnnotationWorkflow/1_StructuralAnnotation/GlimmerHMMAnnotation.py"
-"""rule glimmerhmm:
-    input:
-        genome="output/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/{assembler}/{genome}.fasta",
-    output:
-        gff="output/Genomics/2_GenomeAnnotationWorkflow/1_StructuralAnnotation/{assembler}/{genome}.gff",
-        faa="output/Genomics/2_GenomeAnnotationWorkflow/1_StructuralAnnotation/{assembler}/{genome}.faa",
-        ffn="output/Genomics/2_GenomeAnnotationWorkflow/1_StructuralAnnotation/{assembler}/{genome}.ffn"
+        trained_genes = "output/Genomics/2_DualGenomeAnnotationWorkflow/1_StructuralAnnotation/glimmerhmm/{assembler}/genome_trained_genes.hmm",
+        gff="output/Genomics/2_GenomeAnnotationWorkflow/1_StructuralAnnotation/{assembler}/genome.gff",
     conda:
         "env/genomics.yaml"
     script:
-        "scripts/Genomics/2_DualGenomeAnnotationWorkflow/1_StructuralAnnotation/GlimmerHMMAnnotation.py"""
+        "scripts/Genomics/2_DualGenomeAnnotationWorkflow/1_StructuralAnnotation/GlimmerHMMAnnotation.py"
 
 #Functional Annotation
+rule makeblastdb:
+    input:
+        "output/Genomics/2_DualGenomeAnnotationWorkflow/1_StructuralAnnotation/{assembler}/{annotation}/genome.faa"
+    output:
+        multiext("output/Genomics/2_GenomeAnnotationWorkflow/1_StructuralAnnotation/{assembler}/{annotation}/genome",
+            ".ndb",
+            ".nhr",
+            ".nin",
+            ".not",
+            ".nsq",
+            ".ntf",
+            ".nto")
+    params:
+        outname="output/{type}/db/{db}"
+    conda:
+        "envs/blast.yaml"
+    shell:
+        'makeblastdb -dbtype nucl -in {input} -out {params.outname}'
+
 rule diamond_blastp:
     input:
-         genome="output/Genomics/2_GenomeAnnotationWorkflow/1_StructuralAnnotation/{assembler}/{annotation}/{genome}.faa"
+         genome="output/Genomics/2_DualGenomeAnnotationWorkflow/1_StructuralAnnotation/{assembler}/{annotation}/genome.faa"
     output:
-          "output/Genomics/2_DualGenomeAnnotationWorkflow/2_FunctionalAnnotation/{assembler}/{annotation}/{genome}_diplomonads.blastp"
+          "output/Genomics/2_DualGenomeAnnotationWorkflow/2_FunctionalAnnotation/{assembler}/{annotation}/genome_diplomonads.blastp"
     params:
           db_prefix="path/to/database_prefix",
           outfmt=6,
@@ -470,9 +450,9 @@ rule diamond_blastp:
           "scripts/Genomics/2_DualGenomeAnnotationWorkflow/2_FunctionalAnnotation/Diamond.py"
 rule eggnogmapper:
     input:
-         proteome="output/Genomics/2_GenomeAnnotationWorkflow/1_StructuralAnnotation/{assembler}/{annotation}/{genome}.faa"
+         proteome="output/Genomics/2_DualGenomeAnnotationWorkflow/1_StructuralAnnotation/{assembler}/{annotation}/genome.faa"
     output:
-          "output/Genomics/2_DualGenomeAnnotationWorkflow/2_FunctionalAnnotation/{assembler}/{annotation}/{genome}_eggnogmapper_results.tsv"
+          "output/Genomics/2_DualGenomeAnnotationWorkflow/2_FunctionalAnnotation/{assembler}/{annotation}/eggnogmapper_results.tsv"
     params:
           threads=32,
           diamond="diamond",
@@ -485,9 +465,9 @@ rule eggnogmapper:
           "scripts/Genomics/2_DualGenomeAnnotationWorkflow/2_FunctionalAnnotation/Eggnogmapper.py"
 rule interproscan:
     input:
-         proteome="output/Genomics/2_GenomeAnnotationWorkflow/1_StructuralAnnotation/{assembler}/{annotation}/{genome}.faa"
+         proteome="output/Genomics/2_DualGenomeAnnotationWorkflow/1_StructuralAnnotation/{assembler}/{annotation}/genome.faa"
     output:
-          "output/Genomics/2_DualGenomeAnnotationWorkflow/2_FunctionalAnnotation/{assembler}/{annotation}/{genome}_diplomonads_interproscan_results.tsv"
+          "output/Genomics/2_DualGenomeAnnotationWorkflow/2_FunctionalAnnotation/{assembler}/{annotation}/interproscan_results.tsv"
     params:
           threads=32,
     conda:
@@ -512,11 +492,11 @@ Comparative Genomics Analysis
 """
 
 #Genome Structure Level
-rule build_database:
+rule build_database_repeatmodeler:
     input:
-         genome="output/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/pilon/{assembler}/{assembly}_polished.fasta",
+         genome="output/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/pilon/{assembler}/assembly_polished.fasta",
     output:
-          multiext("output/ComparativeGenomics/1_GenomeStructureLevel/{assembler}/{genome}_RModeler/{genome}_db",
+          multiext("output/ComparativeGenomics/1_GenomeStructureLevel/{assembler}/RModeler/genome_db",
                    ".nhr",
                    ".nnd",
                    ".nin",
@@ -525,7 +505,7 @@ rule build_database:
                    ".nsq",
                    ".translation")
     params:
-          db_name="output/ComparativeGenomics/1_GenomeStructureLevel/{assembler}/{genome}_RModeler/{genome}_db"
+          db_name="output/ComparativeGenomics/1_GenomeStructureLevel/{assembler}/RModeler/genome_db"
     conda:
          "env/genomics.yaml"
     script:
@@ -533,11 +513,11 @@ rule build_database:
 
 rule repeatmodeler:
     input:
-         db="output/ComparativeGenomics/1_GenomeStructureLevel/{assembler}/{genome}_RModeler/{genome}_db.nhr"
+         db="output/ComparativeGenomics/1_GenomeStructureLevel/{assembler}/RModeler/genome_db.nhr"
     output:
-          "output/ComparativeGenomics/1_GenomeStructureLevel/{assembler}/{genome}_RModeler/{genome}_db-families.fasta"
+          "output/ComparativeGenomics/1_GenomeStructureLevel/{assembler}/RModeler/genome_db-families.fasta"
     params:
-          db_name="output/ComparativeGenomics/1_GenomeStructureLevel/{assembler}/{genome}_RModeler/{genome}_db",
+          db_name="output/ComparativeGenomics/1_GenomeStructureLevel/{assembler}/RModeler/genome_db",
           threads = 8,
           engine="ncbi"
     conda:
@@ -547,10 +527,10 @@ rule repeatmodeler:
 
 rule repeatmasker:
     input:
-         genome="output/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/pilon/{assembler}/{assembly}_polished.fasta",
-         lib="output/ComparativeGenomics/1_GenomeStructureLevel/{assembler}/{genome}_RModeler/{genome}_db-families.fasta"
+         genome="output/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/pilon/{assembler}/assembly_polished.fasta",
+         lib="output/ComparativeGenomics/1_GenomeStructureLevel/{assembler}/RModeler/genome_db-families.fasta"
     output:
-          directory("output/ComparativeGenomics/1_GenomeStructureLevel/{assembler}/{genome}_RMasker")
+          directory("output/ComparativeGenomics/1_GenomeStructureLevel/{assembler}/RMasker")
     conda:
          "env/genomics.yaml"
     threads: 32
@@ -559,12 +539,12 @@ rule repeatmasker:
 
 rule tRNAscan:
     input:
-         genome="output/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/pilon/{assembler}/{assembly}_polished.fasta"
+         genome="output/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/pilon/{assembler}/assembly_polished.fasta"
     params: threads=8
     output:
-          tRNA="output/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/{assembler}/{genome}.tRNAscan",
-          stats="output/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/{assembler}/{genome}.stats",
-          gff="output/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/{assembler}/{genome}.gff"
+          tRNA="output/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/{assembler}/genome.tRNAscan",
+          stats="output/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/{assembler}/genome.stats",
+          gff="output/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/{assembler}/genome.gff"
     conda:
          "env/genomics.yaml"
     script:
@@ -572,11 +552,11 @@ rule tRNAscan:
 
 rule tRNAscan_cov:
     input:
-         genome="output/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/pilon/{assembler}/{assembly}_polished.fasta"
+         genome="output/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/pilon/{assembler}/assembly_polished.fasta"
     params: threads=8
     output:
-          tRNA="output/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/{assembler}/sensitive_search/{genome}.tRNAscan_cov",
-          stats="output/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/{assembler}/sensitive_search/{genome}.stats_cov"
+          tRNA="output/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/{assembler}/sensitive_search/genome.tRNAscan_cov",
+          stats="output/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/{assembler}/sensitive_search/genome.stats_cov"
     conda:
          "env/genomics.yaml"
     script:
@@ -584,9 +564,9 @@ rule tRNAscan_cov:
 
 rule barrnap:
     input:
-         genome="output/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/pilon/{assembler}/{assembly}_polished.fasta"
+         genome="output/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/pilon/{assembler}/assembly_polished.fasta"
     output:
-          gff="output/ComparativeGenomics/1_GenomeStructureLevel/{assembler}/{genome}.rrna.gff",
+          gff="output/ComparativeGenomics/1_GenomeStructureLevel/{assembler}/genome.rrna.gff",
     conda:
          "env/genomics.yaml"
     script:
@@ -594,10 +574,10 @@ rule barrnap:
 
 rule cdhit:
     input:
-        genome = "output/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/pilon/{assembler}/{assembly}_polished.fasta"
+        genome = "output/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/pilon/{assembler}/assembly_polished.fasta"
     params:
         threads=8
-    output: "output/ComparativeGenomics/1_GenomeStructureLevel/{assembler}/{genome}_{n}.cdhit"
+    output: "output/ComparativeGenomics/1_GenomeStructureLevel/{assembler}/genome_{n}.cdhit"
     conda:
          "env/genomics.yaml"
     script:
