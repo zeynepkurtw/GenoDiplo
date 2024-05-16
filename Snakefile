@@ -24,32 +24,32 @@ rule all:
          #masurca
          "output/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/masurca/",
          #pilon
-         expand("output/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/pilon/{assembler}/{assembly}_polished.fasta",
-                assembler=["flye", "masurca/flye.mr.83.17.15.0.02"],
-                assembly=["assembly"]),
+         #expand("output/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/pilon/{assembler}/{assembly}_polished.fasta",
+          #      assembler=["flye", "masurca/flye.mr.83.17.15.0.02"],
+           #     assembly=["assembly"]),
          #quast
          #expand("output/Genomics/1_HybridGenomeAssemblyWorkflow/3_AssemblyEvaluation/{assembler}/{assembly}_quast/",
           #      assembler=["flye"],
            #     assembly=["assembly"]),
-    """ 
+
          #bowtie2_paired_reads_evaluation
          expand("output/Genomics/1_HybridGenomeAssemblyWorkflow/3_AssemblyEvaluation/{assembler}/{assembler}_polished_{genome}/{sample}.bam",
-                assembler=["flye", "masurca"],
+                assembler=["flye", "masurca/flye.mr.83.17.15.0.02"],
                 genome=["Hexamita"],
                 sample=["illumina_run1", "illumina_run2", "illumina_run3"]),
          #meryl_evaluation
          expand("output/Genomics/1_HybridGenomeAssemblyWorkflow/3_AssemblyEvaluation/{assembler}/{genome}/winnowmap/merlyDB",
-                assembler=["flye", "masurca"],
+                assembler=["flye", "masurca/flye.mr.83.17.15.0.02"],
                 genome=["Hexamita"]),
          expand("output/Genomics/1_HybridGenomeAssemblyWorkflow/3_AssemblyEvaluation/{assembler}/{genome}/winnowmap/repetitive_k15.txt",
-                assembler=["flye", "masurca"],
+                assembler=["flye", "masurca/flye.mr.83.17.15.0.02"],
                 genome=["Hexamita"]),
          #winnowmap_evaluation
          expand("output/Genomics/1_HybridGenomeAssemblyWorkflow/3_AssemblyEvaluation/{assembler}/{genome}/winnowmap/{long_reads}.bam",
-                assembler=["flye", "masurca"],
+                assembler=["flye", "masurca/flye.mr.83.17.15.0.02"],
                 genome=["Hexamita"],
                 long_reads=["nanopore", "pacbio"]),
-
+    """ 
          #prodigal
          expand("output/Genomics/2_GenomeAnnotationWorkflow/1_StructuralAnnotation/{assembler}/prodigal/{genome}.gff",
                 assembler=["flye", "masurca"],
@@ -194,6 +194,8 @@ rule bwa_cleaning_contamination:
          "env/genomics.yaml"
     script:
           "scripts/Genomics/1_HybridGenomeAssemblyWorkflow/1_ReadsPreprocessing/ContaminationRemovalRawReadsBWA.py"
+
+rule bwa_polishing:
 
 """
 rule bowtie2_index_cleaning_contamination:
