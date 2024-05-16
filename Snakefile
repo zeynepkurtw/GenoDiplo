@@ -37,18 +37,15 @@ rule all:
                 assembler=["flye", "masurca/flye.mr.83.17.15.0.02"],
                 sample=["illumina_run1", "illumina_run2", "illumina_run3"]),
          #meryl_evaluation
-         expand("output/Genomics/1_HybridGenomeAssemblyWorkflow/3_AssemblyEvaluation/{assembler}/{assembly}/winnowmap/merlyDB",
+         expand("output/Genomics/1_HybridGenomeAssemblyWorkflow/3_AssemblyEvaluation/{assembler}/winnowmap/merlyDB",
                 assembler=["flye", "masurca/flye.mr.83.17.15.0.02"],
-                assembly=["assembly"],
                 genome=["Hexamita"]),
-         expand("output/Genomics/1_HybridGenomeAssemblyWorkflow/3_AssemblyEvaluation/{assembler}/{assembly}/winnowmap/repetitive_k15.txt",
+         expand("output/Genomics/1_HybridGenomeAssemblyWorkflow/3_AssemblyEvaluation/{assembler}/winnowmap/repetitive_k15.txt",
                 assembler=["flye", "masurca/flye.mr.83.17.15.0.02"],
-                assembly=["assembly"],
                 genome=["Hexamita"]),
          #winnowmap_evaluation
-         expand("output/Genomics/1_HybridGenomeAssemblyWorkflow/3_AssemblyEvaluation/{assembler}/{assembly}/winnowmap/{long_reads}.bam",
+         expand("output/Genomics/1_HybridGenomeAssemblyWorkflow/3_AssemblyEvaluation/{assembler}/winnowmap/{long_reads}.bam",
                 assembler=["flye", "masurca/flye.mr.83.17.15.0.02"],
-                assembly=["assembly"],
                 long_reads=["nanopore", "pacbio"]),
     """ 
          #prodigal
