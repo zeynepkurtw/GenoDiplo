@@ -1,3 +1,0 @@
-WorkflowError in file /Users/zeyku390/PycharmProjects/GenoDiplo/Snakefile, line 69:
-Duplicate output file pattern in rule trimmomatic. First two duplicate for entries r1_u and r2_u.
-  File "/Users/zeyku390/PycharmProjects/GenoDiplo/Snakefile", line 69, in <module>

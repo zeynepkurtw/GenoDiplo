@@ -1,3 +1,0 @@
-WildcardError in file /Users/zeyku390/PycharmProjects/GenoDiplo/Snakefile, line 33:
-No values given for wildcard 'reads'.
-  File "/Users/zeyku390/PycharmProjects/GenoDiplo/Snakefile", line 33, in <module>

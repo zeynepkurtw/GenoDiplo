@@ -340,7 +340,7 @@ rule winnowmap:
 rule pilon:
     input:
         assembly="output/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/{assembler}/assembly.fasta",
-        illumina_run1="output/Genomics/1_HybridGenomeAssemblyWorkflow/3_AssemblyEvaluation/{assembler}/bowtie2/illumina_run1.bam",
+        #illumina_run1="output/Genomics/1_HybridGenomeAssemblyWorkflow/3_AssemblyEvaluation/{assembler}/bowtie2/illumina_run1.bam",
         illumina_run2="output/Genomics/1_HybridGenomeAssemblyWorkflow/3_AssemblyEvaluation/{assembler}/bowtie2/illumina_run2.bam",
         illumina_run3="output/Genomics/1_HybridGenomeAssemblyWorkflow/3_AssemblyEvaluation/{assembler}/bowtie2/illumina_run3.bam"
     params:

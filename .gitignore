@@ -4,3 +4,5 @@
 /.snakemake/log/
 /output/
 /output/Genomics/
+/output/Genomics/2_DualGenomeAnnotationWorkflow/
+/.snakemake/
