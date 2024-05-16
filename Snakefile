@@ -318,6 +318,8 @@ rule pilon:
         threads=32
     output:
         polished_assembly="output/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/pilon/{assembler}/{assembly}_polished.fasta"
+    conda:
+         "env/genomics.yaml"
     script:
         "scripts/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assemblers/Polishing.py"
 
