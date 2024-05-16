@@ -33,9 +33,8 @@ rule all:
            #     assembly=["assembly"]),
 
          #bowtie2_paired_reads_evaluation
-         expand("output/Genomics/1_HybridGenomeAssemblyWorkflow/3_AssemblyEvaluation/{assembler}/{assembly}/{sample}.bam",
+         expand("output/Genomics/1_HybridGenomeAssemblyWorkflow/3_AssemblyEvaluation/{assembler}/{sample}.bam",
                 assembler=["flye", "masurca/flye.mr.83.17.15.0.02"],
-                assembly=["assembly"],
                 sample=["illumina_run1", "illumina_run2", "illumina_run3"]),
          #meryl_evaluation
          expand("output/Genomics/1_HybridGenomeAssemblyWorkflow/3_AssemblyEvaluation/{assembler}/{assembly}/winnowmap/merlyDB",
@@ -343,10 +342,10 @@ rule quast:
 
 rule bowtie2_biult_index_evaluation:
     input:
-         "output/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/{assembler}/{assembly}.fasta"
+         "output/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/{assembler}/assembly.fasta"
     output:
           multiext(
-              "output/Genomics/1_HybridGenomeAssemblyWorkflow/3_AssemblyEvaluation/index_bt2/{assembler}/{assembly}.fasta",
+              "output/Genomics/1_HybridGenomeAssemblyWorkflow/3_AssemblyEvaluation/index_bt2/{assembler}/assembly",
               ".1.bt2",
               ".2.bt2",
               ".3.bt2",
@@ -354,7 +353,7 @@ rule bowtie2_biult_index_evaluation:
               ".rev.1.bt2",
               ".rev.2.bt2")
     params:
-          outname="output/Genomics/1_HybridGenomeAssemblyWorkflow/3_AssemblyEvaluation/index_bt2/{assembler}/{assembly}.fasta",
+          outname="output/Genomics/1_HybridGenomeAssemblyWorkflow/3_AssemblyEvaluation/index_bt2/{assembler}/assembly",
           num_threads=30
     conda:
          "env/genomics.yaml"
@@ -364,7 +363,7 @@ rule bowtie2_biult_index_evaluation:
 rule bowtie2_evaluation:
     input:
          index=multiext(
-             "output/Genomics/1_HybridGenomeAssemblyWorkflow/3_AssemblyEvaluation/index_bt2/{assembler}/{assembly}.fasta",
+             "output/Genomics/1_HybridGenomeAssemblyWorkflow/3_AssemblyEvaluation/index_bt2/{assembler}/assembly",
              ".1.bt2",
              ".2.bt2",
              ".3.bt2",
@@ -374,8 +373,8 @@ rule bowtie2_evaluation:
             ill_R1="/data/zeynep/HIN_data/DNA/clean/{sample}_R1.fastq.gz",
             ill_R2="/data/zeynep/HIN_data/DNA/clean/{sample}_R2.fastq.gz"
     output:
-          bam="output/Genomics/1_HybridGenomeAssemblyWorkflow/3_AssemblyEvaluation/{assembler}/{assembler}/{assembly}/{sample}.bam",
-          bai="output/Genomics/1_HybridGenomeAssemblyWorkflow/3_AssemblyEvaluation/{assembler}/{assembler}/{assembly}/{sample}.bai"
+          bam="output/Genomics/1_HybridGenomeAssemblyWorkflow/3_AssemblyEvaluation/{assembler}/{sample}.bam",
+          bai="output/Genomics/1_HybridGenomeAssemblyWorkflow/3_AssemblyEvaluation/{assembler}/{sample}.bai"
     params:
           threads=32,
     conda:
@@ -385,10 +384,10 @@ rule bowtie2_evaluation:
 
 rule meryl:
     input:
-         genome="output/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/{assembler}/{assembly}.fasta",
+         genome="output/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/{assembler}/assembly.fasta",
     output:
-          merylDB=directory("output/Genomics/1_HybridGenomeAssemblyWorkflow/3_AssemblyEvaluation/{assembler}/{assembly}/winnowmap/merlyDB"),
-          repetitive_k15="output/Genomics/1_HybridGenomeAssemblyWorkflow/3_AssemblyEvaluation/{assembler}/{assembly}/winnowmap/repetitive_k15.txt",
+          merylDB=directory("output/Genomics/1_HybridGenomeAssemblyWorkflow/3_AssemblyEvaluation/{assembler}/winnowmap/merlyDB"),
+          repetitive_k15="output/Genomics/1_HybridGenomeAssemblyWorkflow/3_AssemblyEvaluation/{assembler}/winnowmap/repetitive_k15.txt",
     params:
           num_threads=30,
           nanopore=True
@@ -399,13 +398,13 @@ rule meryl:
 
 rule winnowmap:
     input:
-         genome="output/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/pilon/{assembler}/{assembly}.fasta",
+         genome="output/Genomics/1_HybridGenomeAssemblyWorkflow/2_Assembly/{assembler}/assembly.fasta",
          long_read="/data/zeynep/HIN_data/DNA/clean/{long_read}.fastq.gz",
-         merylDB="output/Genomics/1_HybridGenomeAssemblyWorkflow/3_AssemblyEvaluation/{assembler}/{assembly}/winnowmap/merlyDB",
-         repetitive_k15="output/Genomics/1_HybridGenomeAssemblyWorkflow/3_AssemblyEvaluation/{assembler}/{assembly}/winnowmap/repetitive_k15.txt",
+         merylDB="output/Genomics/1_HybridGenomeAssemblyWorkflow/3_AssemblyEvaluation/{assembler}/winnowmap/merlyDB",
+         repetitive_k15="output/Genomics/1_HybridGenomeAssemblyWorkflow/3_AssemblyEvaluation/{assembler}/winnowmap/repetitive_k15.txt",
     output:
-          bam="output/Genomics/1_HybridGenomeAssemblyWorkflow/3_AssemblyEvaluation/{assembler}/{assembly}winnowmap/{long_read}.bam",
-          bai="output/Genomics/1_HybridGenomeAssemblyWorkflow/3_AssemblyEvaluation/{assembler}/{assembly}winnowmap/{long_read}.bai"
+          bam="output/Genomics/1_HybridGenomeAssemblyWorkflow/3_AssemblyEvaluation/{assembler}/winnowmap/{long_read}.bam",
+          bai="output/Genomics/1_HybridGenomeAssemblyWorkflow/3_AssemblyEvaluation/{assembler}/winnowmap/{long_read}.bai"
     params:
           num_threads=32,
           nanopore=True
