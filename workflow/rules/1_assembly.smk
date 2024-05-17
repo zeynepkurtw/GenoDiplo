@@ -192,8 +192,8 @@ rule bwa_evaluation_paired:
             ".bwt",
             ".pac",
             ".sa"),
-         ill_R1="/data/zeynep/HIN_data/DNA/clean/{sample}.fastq.gz",
-         ill_R2="/data/zeynep/HIN_data/DNA/clean/{sample}.fastq.gz"
+         ill_R1="/data/zeynep/HIN_data/DNA/clean/{sample}_R1.fastq.gz",
+         ill_R2="/data/zeynep/HIN_data/DNA/clean/{sample}_R1.fastq.gz"
     params:
           threads=32,
           paired=True

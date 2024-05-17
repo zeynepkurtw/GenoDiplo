@@ -17,11 +17,11 @@ rule all:
          "results/Genomics/1_Assembly/1_Preprocessing/fastqc_after_trimming",
          #ContaminationDetection.py
          #bwa_cleaning_contamination
-      #   expand("/data/zeynep/HIN_data/DNA/clean/{reads}.fastq.gz",
-       #         reads=["pacbio","nanopore",
-       #  "illumina_run1_R1","illumina_run1_R2",
-        # "illumina_run2_R1","illumina_run2_R2",
-        # "illumina_run3_R1","illumina_run3_R2"]),
+         expand("/data/zeynep/HIN_data/DNA/clean/{reads}.fastq.gz",
+               reads=["pacbio","nanopore",
+         "illumina_run1_R1","illumina_run1_R2",
+         "illumina_run2_R1","illumina_run2_R2",
+         "illumina_run3_R1","illumina_run3_R2"]),
          ##flye
          "results/Genomics/1_Assembly/2_Assembly/flye/",
          #masurca
