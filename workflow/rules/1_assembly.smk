@@ -185,7 +185,7 @@ rule bowtie2_biult_index_evaluation:
     shell:
          'bowtie2-build {input} --threads {params.num_threads} {params.outname}'
 
-rule bowtie2_evaluation:
+rule bowtie2_evaluation_paired:
     input:
          index=multiext(
              "results/Genomics/1_Assembly/3_Evaluation/{assembler}/bowtie2/index_bt2/assembly",
@@ -198,14 +198,38 @@ rule bowtie2_evaluation:
             ill_R1="/data/zeynep/HIN_data/DNA/clean/{sample}_R1.fastq.gz",
             ill_R2="/data/zeynep/HIN_data/DNA/clean/{sample}_R2.fastq.gz"
     output:
-          bam="results/Genomics/1_Assembly/3_Evaluation/{assembler}/bowtie2/{sample}.bam",
-          bai="results/Genomics/1_Assembly/3_Evaluation/{assembler}/bowtie2/{sample}.bai"
+          bam="results/Genomics/1_Assembly/3_Evaluation/{assembler}/bowtie2/{sample}_paired.bam",
+          bai="results/Genomics/1_Assembly/3_Evaluation/{assembler}/bowtie2/{sample}_paired.bai"
     params:
           threads=32,
+          paired= True
     conda:
          "envs/genomics.yaml"
     script:
           "scripts/Genomics/1_Assembly/3_Evaluation/MapShortReadsToAssembly.py"
+
+rule bowtie2_evaluation_single:
+    input:
+         index=multiext(
+             "results/Genomics/1_Assembly/3_Evaluation/{assembler}/bowtie2/index_bt2/assembly",
+             ".1.bt2",
+             ".2.bt2",
+             ".3.bt2",
+             ".4.bt2",
+             ".rev.1.bt2",
+             ".rev.2.bt2"),
+         single="/data/zeynep/HIN_data/DNA/clean/{sample}.fastq.gz",
+    output:
+          bam="results/Genomics/1_Assembly/3_Evaluation/{assembler}/bowtie2/{sample}_single.bam",
+          bai="results/Genomics/1_Assembly/3_Evaluation/{assembler}/bowtie2/{sample}_single.bai"
+    params:
+          threads=32,
+          paired=False
+    conda:
+         "envs/genomics.yaml"
+    script:
+          "scripts/Genomics/1_Assembly/3_Evaluation/MapShortReadsToAssembly.py"
+
 
 rule meryl:
     input:
