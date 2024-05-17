@@ -198,8 +198,8 @@ rule bwa_evaluation_paired:
           threads=32,
           paired=True
     output:
-        bam = "results/Genomics/1_Assembly/3_Evaluation/{assembler}/bwa/{sample}_paired.bam",
-        bai = "results/Genomics/1_Assembly/3_Evaluation/{assembler}/bwa/{sample}_paired.bai"
+        bam = "results/Genomics/1_Assembly/3_Evaluation/{assembler}/bwa/paired/{sample}.bam",
+        bai = "results/Genomics/1_Assembly/3_Evaluation/{assembler}/bwa/paired/{sample}.bai"
     conda:
          "envs/genomics.yaml"
     script:
@@ -218,8 +218,8 @@ rule bwa_evaluation_single:
           threads=32,
           paired=False
     output:
-        bam = "results/Genomics/1_Assembly/3_Evaluation/{assembler}/bwa/{sample}_single.bam",
-        bai = "results/Genomics/1_Assembly/3_Evaluation/{assembler}/bwa/{sample}_single.bai"
+        bam = "results/Genomics/1_Assembly/3_Evaluation/{assembler}/bwa/single/{sample}.bam",
+        bai = "results/Genomics/1_Assembly/3_Evaluation/{assembler}/bwa/single/{sample}.bai"
     conda:
          "envs/genomics.yaml"
     script:

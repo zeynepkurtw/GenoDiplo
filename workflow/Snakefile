@@ -24,11 +24,11 @@ rule all:
          #masurca
          "results/Genomics/1_Assembly/2_Assembly/masurca/",
          #bwa_paired_reads_evaluation
-         expand("results/Genomics/1_Assembly/3_Evaluation/{assembler}/bwa/{sample}_paired.bam",
+         expand("results/Genomics/1_Assembly/3_Evaluation/{assembler}/bwa/paired/{sample}.bam",
                 assembler=["flye", "masurca/flye.mr.83.17.15.0.02"],
                 sample=["illumina_run2", "illumina_run3"]), #illumina_run1 excluded (R2=6Gb, R1=477Mb)
         #bwa_paired_reads_evaluation
-         expand("results/Genomics/1_Assembly/3_Evaluation/{assembler}/bwa/{sample}_single.bam",
+         expand("results/Genomics/1_Assembly/3_Evaluation/{assembler}/bwa/single/{sample}.bam",
                assembler=["flye", "masurca/flye.mr.83.17.15.0.02"],
                 sample=["illumina_run1_R2"]),
          expand("results/Genomics/1_Assembly/3_Evaluation/{assembler}/winnowmap/merlyDB",
