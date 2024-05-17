@@ -170,12 +170,15 @@ rule bwa_index_evaluation:
         "results/Genomics/1_Assembly/2_Assembly/{assembler}/assembly.fasta"
     output:
         multiext(
-            "results/Genomics/1_Assembly/3_Evaluation/{assembler}/bwa/assembly.fasta",
+            "results/Genomics/1_Assembly/3_Evaluation/{assembler}/bwa/bwa_index/assembly",
             ".amb",
             ".ann",
             ".bwt",
             ".pac",
             ".sa")
+    params:
+        outname = "results/Genomics/1_Assembly/3_Evaluation/{assembler}/bwa/bwa_index/assembly",
+        num_threads = 32
     conda:
          "envs/genomics.yaml"
     shell:
@@ -183,7 +186,12 @@ rule bwa_index_evaluation:
 
 rule bwa_evaluation_paired:
     input:
-         genome="results/Genomics/1_Assembly/3_Evaluation/{assembler}/bwa/assembly.fasta",
+         index=multiext("results/Genomics/1_Assembly/3_Evaluation/{assembler}/bwa/bwa_index/assembly",
+            ".amb",
+            ".ann",
+            ".bwt",
+            ".pac",
+            ".sa"),
          ill_R1="/data/zeynep/HIN_data/DNA/clean/{sample}.fastq.gz",
          ill_R2="/data/zeynep/HIN_data/DNA/clean/{sample}.fastq.gz"
     params:
@@ -199,9 +207,13 @@ rule bwa_evaluation_paired:
 
 rule bwa_evaluation_single:
     input:
-         genome="results/Genomics/1_Assembly/3_Evaluation/{assembler}/bwa/assembly.fasta",
+         index=multiext("results/Genomics/1_Assembly/3_Evaluation/{assembler}/bwa/bwa_index/assembly",
+                        ".amb",
+                        ".ann",
+                        ".bwt",
+                        ".pac",
+                        ".sa"),
          single="/data/zeynep/HIN_data/DNA/clean/{sample}.fastq.gz",
-
     params:
           threads=32,
           paired=False
