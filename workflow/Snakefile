@@ -42,12 +42,12 @@ rule all:
                 assembler=["flye", "masurca/flye.mr.83.17.15.0.02"],
                 long_reads=["nanopore", "pacbio"]),
          #pilon
-         expand("results/Genomics/1_Assembly/2_Assembly/pilon/{assembler}/assembly_polished.fasta",
-                assembler=["flye", "masurca/flye.mr.83.17.15.0.02"]),
+       #  expand("results/Genomics/1_Assembly/2_Assembly/pilon/{assembler}/assembly_polished.fasta",
+        #        assembler=["flye", "masurca/flye.mr.83.17.15.0.02"]),
          #quast
-         expand("results/Genomics/1_Assembly/3_Evaluation/quast/{assembler}/",
-                assembler=["flye", "masurca/flye.mr.83.17.15.0.02"],
-                assembly=["assembly"]),
+       #  expand("results/Genomics/1_Assembly/3_Evaluation/quast/{assembler}/",
+        #        assembler=["flye", "masurca/flye.mr.83.17.15.0.02"],
+         #       assembly=["assembly"]),
 
 """  #prodigal
          expand("results/Genomics/2_Annotation/1_Structural/{assembler}/prodigal/genome.gff",
