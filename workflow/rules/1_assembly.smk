@@ -265,9 +265,9 @@ rule winnowmap:
 rule pilon:
     input:
         assembly="results/Genomics/1_Assembly/2_Assembly/{assembler}/assembly.fasta",
-        #illumina_run1="results/Genomics/1_Assembly/3_Evaluation/{assembler}/bowtie2/illumina_run1.bam",
-        illumina_run2="results/Genomics/1_Assembly/3_Evaluation/{assembler}/bowtie2/illumina_run2.bam",
-        illumina_run3="results/Genomics/1_Assembly/3_Evaluation/{assembler}/bowtie2/illumina_run3.bam"
+        illumina_run1="results/Genomics/1_Assembly/3_Evaluation/{assembler}/bowtie2/illumina_run1_R2_single.bam",
+        illumina_run2="results/Genomics/1_Assembly/3_Evaluation/{assembler}/bowtie2/illumina_run2_paired.bam",
+        illumina_run3="results/Genomics/1_Assembly/3_Evaluation/{assembler}/bowtie2/illumina_run3_paired.bam"
     params:
         threads=32
     output:
