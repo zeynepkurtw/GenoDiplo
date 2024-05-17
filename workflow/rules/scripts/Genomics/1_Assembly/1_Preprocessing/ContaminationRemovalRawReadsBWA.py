@@ -16,6 +16,6 @@ shell(f"bwa mem -t {threads} {contamination} {raw_reads} | samtools view -b -f 4
 
 shell(f"samtools sort -@ {threads} {raw_reads_unmapped} -o {raw_reads_unmapped_sorted}")
 shell(f"samtools index -@ {threads} {raw_reads_unmapped_sorted}")
-#shell(f"samtools fastq -@ {threads} {raw_reads_unmapped_sorted} > {raw_reads_unmapped_fastq}")
-#shell(f"gzip {raw_reads_unmapped_fastq}")
-shell(f"samtools fastq -@ {threads} {raw_reads_unmapped_sorted} | gzip -c > {raw_reads_unmapped_fastq}")
+shell(f"samtools fastq -@ {threads} {raw_reads_unmapped_sorted} > {raw_reads_unmapped_fastq}")
+shell(f"gzip -c {raw_reads_unmapped_fastq}")
+#shell(f"samtools fastq -@ {threads} {raw_reads_unmapped_sorted} | gzip -c > {raw_reads_unmapped_fastq}")
