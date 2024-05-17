@@ -17,8 +17,8 @@ rule all:
          "results/Genomics/1_Assembly/1_Preprocessing/fastqc_after_trimming",
          #ContaminationDetection.py
          #bwa_cleaning_contamination
-         expand("/data/zeynep/HIN_data/DNA/clean/{DNAseq}.fastq.gz",
-                DNAseq=config["reads"]),
+        # expand("/data/zeynep/HIN_data/DNA/clean/{DNAseq}.fastq.gz",
+        #        DNAseq=config["reads"]),
          ##flye
          "results/Genomics/1_Assembly/2_Assembly/flye/",
          #masurca
