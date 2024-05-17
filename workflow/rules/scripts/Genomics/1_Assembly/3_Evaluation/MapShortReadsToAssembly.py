@@ -1,27 +1,19 @@
 from snakemake.shell import shell
-import os
 
+genome = snakemake.input
 
 threads = snakemake.params.threads
-index = os.path.commonprefix(snakemake.input.index).rstrip(".")
 paired = snakemake.params.get('paired', False)
 
-bam = snakemake.output.bam
-bai = snakemake.output.bai
-
-
-#shell(f"""bowtie2 -p {threads} -1 {ill_R1} -2 {ill_R2} -x {index} | samtools sort -o {bam}""")
-#shell(f"""samtools index {bam} {bai}""")
-
+bam = snakemake.output
+bai = snakemake.output
 
 if paired:
     ill_R1 = snakemake.input.ill_R1
     ill_R2 = snakemake.input.ill_R2
-    shell(f"""bowtie2 -p {threads} -1 {ill_R1} -2 {ill_R2} -x {index} 2>bowtie2_paired.log | \
-        samtools sort -o {bam} 2>samtools_paired.log""")
-    shell(f"""samtools index {bam} {bai}""")
+    shell(f"""bwa mem -t {threads} {genome} {ill_R1} {ill_R2} | samtools sort -o {bam} -@ {threads}""")
+    shell(f"""samtools index {bam} {bai} -@ {threads}""")
 else:
     single = snakemake.input.single
-    shell(f"""bowtie2 -p {threads} {single} -x {index} 2>bowtie2_single.log | \
-        samtools sort -o {bam} 2>samtools_single.log""")
-    shell(f"""samtools index {bam} {bai}""")
+    shell(f"""bwa mem -t {threads} {genome} {single} | samtools sort -o {bam} -@ {threads}""")
+    shell(f"""samtools index {bam} {bai} -@ {threads} """)
