@@ -40,7 +40,7 @@ rule fastqc_after_trimming:
 
 #rule calculatereadmeanstdev
 
-rule bwa_index:
+rule bwa_index_contamination:
     input:
         "resources/Contamination/all_contaminated.fasta"
     output:
