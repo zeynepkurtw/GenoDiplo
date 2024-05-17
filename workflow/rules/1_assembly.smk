@@ -59,14 +59,14 @@ rule bwa_index_contamination:
 rule bwa_cleaning_contamination:
     input:
          contamination="resources/Contamination/all_contaminated.fasta",
-         raw_reads="/data/zeynep/HIN_data/DNA/raw/{DNAseq}.fastq.gz"
+         raw_reads="/data/zeynep/HIN_data/DNA/raw/{reads}.fastq.gz"
     params:
           threads=32,
           paired=False
     output:
-          raw_reads_unmapped="/data/zeynep/HIN_data/DNA/clean/cont/{DNAseq}.bam",
-          raw_reads_unmapped_sorted="/data/zeynep/HIN_data/DNA/clean/cont/{DNAseq}.sorted.bam",
-          raw_reads_unmapped_fastq="/data/zeynep/HIN_data/DNA/clean/{DNAseq}.fastq.gz"
+          raw_reads_unmapped="/data/zeynep/HIN_data/DNA/clean/cont/{reads}.bam",
+          raw_reads_unmapped_sorted="/data/zeynep/HIN_data/DNA/clean/cont/{reads}.sorted.bam",
+          raw_reads_unmapped_fastq="/data/zeynep/HIN_data/DNA/clean/{reads}.fastq.gz"
     conda:
          "envs/genomics.yaml"
     script:
