@@ -18,10 +18,7 @@ rule all:
          #ContaminationDetection.py
          #bwa_cleaning_contamination
          expand("/data/zeynep/HIN_data/DNA/clean/{reads}.fastq.gz",
-               reads=["pacbio","nanopore",
-         "illumina_run1_R1","illumina_run1_R2",
-         "illumina_run2_R1","illumina_run2_R2",
-         "illumina_run3_R1","illumina_run3_R2"]),
+               reads=config["reads"]),
          ##flye
          "results/Genomics/1_Assembly/2_Assembly/flye/",
          #masurca
