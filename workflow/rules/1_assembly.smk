@@ -10,36 +10,6 @@ rule fastqc_before_trimming:
     script:
          "scripts/Genomics/1_Assembly/1_ReadsPreprocessing/ReadQualityCheck.py"
 
-rule trimmomatic:
-    input:
-         r1="/data/zeynep/HIN_data/DNA/raw/{run}_R1.fastq.gz",
-         r2="/data/zeynep/HIN_data/DNA/raw/{run}_R2.fastq.gz"
-    params:
-            threads=32,
-    output:
-          r1_u="/data/zeynep/HIN_data/DNA/trimmed/{run}_R1.unique.trimmed.fastq",
-          r2_u="/data/zeynep/HIN_data/DNA/trimmed/{run}_R2.unique.trimmed.fastq",
-          r1_d="/data/zeynep/HIN_data/DNA/trimmed/{run}_R1.duplicate.trimmed.fastq",
-          r2_d="/data/zeynep/HIN_data/DNA/trimmed/{run}_R2.duplicate.trimmed.fastq"
-    conda:
-         "envs/genomics.yaml"
-    script:
-          "scripts/Genomics/1_Assembly/1_ReadsPreprocessing/TrimIlluminaReads.py"
-
-rule fastqc_after_trimming:
-    input:
-         input_dir="/data/zeynep/HIN_data/DNA/trimmed"
-    params:
-        threads=32,
-    output:
-          out_dir=directory("results/Genomics/1_Assembly/1_ReadsPreprocessing/fastqc_after_trimming/"),
-    conda:
-         "envs/genomics.yaml"
-    script:
-          "scripts/Genomics/1_Assembly/1_ReadsPreprocessing/ReadQualityCheck.py"
-
-#rule calculatereadmeanstdev
-
 rule bwa_index_contamination:
     input:
         "resources/Contamination/all_contaminated.fasta"
@@ -72,6 +42,35 @@ rule bwa_cleaning_contamination:
     script:
           "scripts/Genomics/1_Assembly/1_ReadsPreprocessing/ContaminationRemovalRawReadsBWA.py"
 
+rule trimmomatic:
+    input:
+         r1="/data/zeynep/HIN_data/DNA/clean/{run}_R1.fastq.gz",
+         r2="/data/zeynep/HIN_data/DNA/clean/{run}_R2.fastq.gz"
+    params:
+            threads=32,
+    output:
+          r1_p="/data/zeynep/HIN_data/DNA/trimmed/{run}_R1.paired.fastq",
+          r1_up="/data/zeynep/HIN_data/DNA/trimmed/{run}_R1.unpaired.fastq",
+          r2_p="/data/zeynep/HIN_data/DNA/trimmed/{run}_R2.paired.fastq",
+          r2_up="/data/zeynep/HIN_data/DNA/trimmed/{run}_R2.unpaired.fastq"
+    conda:
+         "envs/genomics.yaml"
+    script:
+          "scripts/Genomics/1_Assembly/1_ReadsPreprocessing/TrimIlluminaReads.py"
+
+rule fastqc_after_trimming:
+    input:
+         input_dir="/data/zeynep/HIN_data/DNA/trimmed"
+    params:
+        threads=32,
+    output:
+          out_dir=directory("results/Genomics/1_Assembly/1_ReadsPreprocessing/fastqc_after_trimming/"),
+    conda:
+         "envs/genomics.yaml"
+    script:
+          "scripts/Genomics/1_Assembly/1_ReadsPreprocessing/ReadQualityCheck.py"
+
+#rule calculatereadmeanstdev
 """
 rule bowtie2_index_cleaning_contamination:
     input:
@@ -165,6 +164,9 @@ rule masurca:
     script:
           "scripts/Genomics/1_Assembly/2_Assemblers/MasurcaAssembler.py"
 
+"""
+neither bowtie2 nor bwa doesnt work on clenaed illumina reads 
+file system latency error
 rule bwa_index_evaluation:
     input:
         "results/Genomics/1_Assembly/2_Assembly/{assembler}/assembly.fasta"
@@ -224,6 +226,71 @@ rule bwa_evaluation_single:
          "envs/genomics.yaml"
     script:
           "scripts/Genomics/1_Assembly/1_ReadsPreprocessing/MapShortReadsToAssembly.py"
+"""
+rule bowtie2_biult_index_evaluation:
+    input:
+         "results/Genomics/1_Assembly/2_Assembly/{assembler}/assembly.fasta"
+    output:
+          multiext(
+              "results/Genomics/1_Assembly/3_Evaluation/{assembler}/bowtie2/index_bt2/assembly",
+              ".1.bt2",
+              ".2.bt2",
+              ".3.bt2",
+              ".4.bt2",
+              ".rev.1.bt2",
+              ".rev.2.bt2")
+    params:
+          outname="results/Genomics/1_Assembly/3_Evaluation/{assembler}/bowtie2/index_bt2/assembly",
+          num_threads=30
+    conda:
+         "envs/genomics.yaml"
+    shell:
+         'bowtie2-build {input} --threads {params.num_threads} {params.outname}'
+
+rule bowtie2_evaluation_paired:
+    input:
+         index=multiext(
+             "results/Genomics/1_Assembly/3_Evaluation/{assembler}/bowtie2/index_bt2/assembly",
+             ".1.bt2",
+             ".2.bt2",
+             ".3.bt2",
+             ".4.bt2",
+             ".rev.1.bt2",
+             ".rev.2.bt2"),
+            ill_R1="/data/zeynep/HIN_data/DNA/trimmed/{sample}_R1.paired.fastq.gz",
+            ill_R2="/data/zeynep/HIN_data/DNA/trimmed/{sample}_R2.paired.fastq.gz"
+    output:
+          bam="results/Genomics/1_Assembly/3_Evaluation/{assembler}/bowtie2/paired/{sample}.bam",
+          bai="results/Genomics/1_Assembly/3_Evaluation/{assembler}/bowtie2/paired/{sample}.bai"
+    params:
+          threads=32,
+          paired= True
+    conda:
+         "envs/genomics.yaml"
+    script:
+          "scripts/Genomics/1_Assembly/3_Evaluation/MapShortReadsToAssembly.py"
+
+rule bowtie2_evaluation_single:
+    input:
+         index=multiext(
+             "results/Genomics/1_Assembly/3_Evaluation/{assembler}/bowtie2/index_bt2/assembly",
+             ".1.bt2",
+             ".2.bt2",
+             ".3.bt2",
+             ".4.bt2",
+             ".rev.1.bt2",
+             ".rev.2.bt2"),
+         single="/data/zeynep/HIN_data/DNA/timmed/{sample}.unpaired.fastq.gz",
+    output:
+          bam="results/Genomics/1_Assembly/3_Evaluation/{assembler}/bowtie2/unpaired/{sample}.bam",
+          bai="results/Genomics/1_Assembly/3_Evaluation/{assembler}/bowtie2/unpaired/{sample}.bai"
+    params:
+          threads=32,
+          paired=False
+    conda:
+         "envs/genomics.yaml"
+    script:
+          "scripts/Genomics/1_Assembly/3_Evaluation/MapShortReadsToAssembly.py"
 
 rule meryl:
     input:
