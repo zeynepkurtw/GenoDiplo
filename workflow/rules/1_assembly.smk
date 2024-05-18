@@ -257,8 +257,8 @@ rule bowtie2_evaluation_paired:
              ".4.bt2",
              ".rev.1.bt2",
              ".rev.2.bt2"),
-            ill_R1="data/zeynep/HIN_data/DNA/trimmed/paired/{sample}_R1.fastq",
-            ill_R2="data/zeynep/HIN_data/DNA/trimmed/paired/{sample}_R2.fastq"
+            ill_R1="/data/zeynep/HIN_data/DNA/trimmed/paired/{sample}_R1.fastq",
+            ill_R2="/data/zeynep/HIN_data/DNA/trimmed/paired/{sample}_R2.fastq"
     output:
           bam="results/Genomics/1_Assembly/3_Evaluation/{assembler}/bowtie2/paired/{sample}.bam",
           bai="results/Genomics/1_Assembly/3_Evaluation/{assembler}/bowtie2/paired/{sample}.bai"
