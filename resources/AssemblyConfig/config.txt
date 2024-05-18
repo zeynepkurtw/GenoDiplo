@@ -1,8 +1,8 @@
 DATA
 # Correctly specify the paths to the forward and reverse read files
-PE = aa 236 240 /data/zeynep/HIN_data/DNA/trimmed/illumina_run1_R1.paired.fastq /data/zeynep/HIN_data/DNA/trimmed/illumina_run1_R2.paired.fastq
-PE = ab 229 232 /data/zeynep/HIN_data/DNA/trimmed/illumina_run2_R1.paired.fastq /data/zeynep/HIN_data/DNA/trimmed/illumina_run2_R2.paired.fastq
-PE = ac 235 238 /data/zeynep/HIN_data/DNA/trimmed/illumina_run3_R1.paired.fastq /data/zeynep/HIN_data/DNA/trimmed/illumina_run3_R2.paired.fastq
+PE = aa 236 240 /data/zeynep/HIN_data/DNA/trimmed/paired/illumina_run1_R1.fastq /data/zeynep/HIN_data/DNA/trimmed/paired/illumina_run1_R2.fastq
+PE = ab 229 232 /data/zeynep/HIN_data/DNA/trimmed/paired/illumina_run2_R1.fastq /data/zeynep/HIN_data/DNA/trimmed/paired/illumina_run2_R2.fastq
+PE = ac 235 238 /data/zeynep/HIN_data/DNA/trimmed/paired/illumina_run3_R1.fastq /data/zeynep/HIN_data/DNA/trimmed/paired/illumina_run3_R2.fastq
 PACBIO = /data/zeynep/HIN_data/DNA/clean/nanopac/nanopac.fastq.gz
 END
 

@@ -15,7 +15,7 @@ rule all:
          expand("/data/zeynep/HIN_data/DNA/clean/{reads}.fastq.gz",
            reads=config["reads"]),
          #trimmomatic
-         expand("/data/zeynep/HIN_data/DNA/trimmed/{run}_R1.paired.fastq",
+         expand("/data/zeynep/HIN_data/DNA/trimmed/paired/{run}_R1.fastq",
                 run=["illumina_run1", "illumina_run2", "illumina_run3"]),
          #fastqc_after_trimming
          "results/Genomics/1_Assembly/1_Preprocessing/fastqc_after_trimming",
