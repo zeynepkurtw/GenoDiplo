@@ -34,8 +34,8 @@ rule bwa_cleaning_contamination:
           threads=32,
           paired=False
     output:
-          raw_reads_unmapped="/data/zeynep/HIN_data/DNA/clean/cont/{reads}.bam",
-          raw_reads_unmapped_sorted="/data/zeynep/HIN_data/DNA/clean/cont/{reads}.sorted.bam",
+          #raw_reads_unmapped="/data/zeynep/HIN_data/DNA/clean/cont/{reads}.bam",
+          #raw_reads_unmapped_sorted="/data/zeynep/HIN_data/DNA/clean/cont/{reads}.sorted.bam",
           raw_reads_unmapped_fastq="/data/zeynep/HIN_data/DNA/clean/{reads}.fastq.gz"
     conda:
          "envs/genomics.yaml"
