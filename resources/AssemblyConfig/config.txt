@@ -1,5 +1,9 @@
+#The mean and stdev parameters are the library insert average length and standard deviation.
+#If the standard deviation is not known, set it to approximately 15% of the mean.
+#If the second (reverse) read set is not available, do not specify it and just specify the forward reads.
+#Files must be in fastq format and can be gzipped.
+
 DATA
-# Correctly specify the paths to the forward and reverse read files
 PE = aa 236 240 /data/zeynep/HIN_data/DNA/trimmed/paired/illumina_run1_R1.fastq /data/zeynep/HIN_data/DNA/trimmed/paired/illumina_run1_R2.fastq
 PE = ab 229 232 /data/zeynep/HIN_data/DNA/trimmed/paired/illumina_run2_R1.fastq /data/zeynep/HIN_data/DNA/trimmed/paired/illumina_run2_R2.fastq
 PE = ac 235 238 /data/zeynep/HIN_data/DNA/trimmed/paired/illumina_run3_R1.fastq /data/zeynep/HIN_data/DNA/trimmed/paired/illumina_run3_R2.fastq

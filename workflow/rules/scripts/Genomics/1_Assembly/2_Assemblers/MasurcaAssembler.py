@@ -8,7 +8,4 @@ shell(f"mkdir -p {out_dir}")
 shell(f"cp {config} {out_dir}")
 shell(f"cd {out_dir}")
 shell(f"masurca {config}")
-#shell(f"mv assemble.sh {out_dir}")
 shell(f"bash assemble.sh")
-
-

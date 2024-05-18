@@ -20,8 +20,8 @@ rule all:
          #fastqc_after_trimming
          "results/Genomics/1_Assembly/1_Preprocessing/fastqc_after_trimming",
          ##flye
-        # expand("results/Genomics/1_Assembly/2_Assembly/flye/{process}",
-         #       process=["clean", "trimmed"]),
+         expand("results/Genomics/1_Assembly/2_Assembly/flye/{process}",
+                process=["clean", "trimmed"]),
          #masurca
          "results/Genomics/1_Assembly/2_Assembly/masurca/",
     """
