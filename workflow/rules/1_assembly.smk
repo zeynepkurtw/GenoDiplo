@@ -280,7 +280,7 @@ rule bowtie2_evaluation_single:
              ".4.bt2",
              ".rev.1.bt2",
              ".rev.2.bt2"),
-         single="/data/zeynep/HIN_data/DNA/timmed/{sample}.unpaired.fastq",
+         single="/data/zeynep/HIN_data/DNA/trimmed/{sample}.unpaired.fastq",
     output:
           bam="results/Genomics/1_Assembly/3_Evaluation/{assembler}/bowtie2/unpaired/{sample}.bam",
           bai="results/Genomics/1_Assembly/3_Evaluation/{assembler}/bowtie2/unpaired/{sample}.bai"
