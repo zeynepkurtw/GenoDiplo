@@ -9,7 +9,7 @@ repetitive_k15 = snakemake.input.repetitive_k15
 bam= snakemake.output.bam
 bai = snakemake.output.bai
 #params
-num_threads = snakemake.params.num_threads
+threads = snakemake.params.threads
 
 shell(f"""winnowmap -W {repetitive_k15} -ax map-ont {genome} {long_read} | samtools sort -o {bam}""")
 shell(f"""samtools index {bam} {bai} """)

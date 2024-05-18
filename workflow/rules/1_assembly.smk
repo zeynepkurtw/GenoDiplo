@@ -241,11 +241,11 @@ rule bowtie2_biult_index_evaluation:
               ".rev.2.bt2")
     params:
           outname="results/Genomics/1_Assembly/3_Evaluation/{assembler}/bowtie2/index_bt2/assembly",
-          num_threads=30
+          threads=30
     conda:
          "envs/genomics.yaml"
     shell:
-         'bowtie2-build {input} --threads {params.num_threads} {params.outname}'
+         'bowtie2-build {input} --threads {params.threads} {params.outname}'
 
 rule bowtie2_evaluation_paired:
     input:
@@ -299,7 +299,7 @@ rule meryl:
           merylDB=directory("results/Genomics/1_Assembly/3_Evaluation/{assembler}/winnowmap/merlyDB"),
           repetitive_k15="results/Genomics/1_Assembly/3_Evaluation/{assembler}/winnowmap/repetitive_k15.txt",
     params:
-          num_threads=30,
+          threads=30,
           nanopore=True
     conda:
          "envs/genomics.yaml"
@@ -316,7 +316,7 @@ rule winnowmap:
           bam="results/Genomics/1_Assembly/3_Evaluation/{assembler}/winnowmap/{long_read}.bam",
           bai="results/Genomics/1_Assembly/3_Evaluation/{assembler}/winnowmap/{long_read}.bai"
     params:
-          num_threads=32,
+          threads=32,
           nanopore=True
     conda:
          "envs/genomics.yaml"
