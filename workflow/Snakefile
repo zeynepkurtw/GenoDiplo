@@ -12,8 +12,8 @@ rule all:
          "results/Genomics/1_Assembly/1_Preprocessing/fastqc_before_trimming",
         #ContaminationDetection.py
         #bwa_cleaning_contamination
-        # expand("/data/zeynep/HIN_data/DNA/clean/{reads}.fastq.gz",
-         #  reads=config["reads"]),
+         expand("/data/zeynep/HIN_data/DNA/clean/{reads}.fastq.gz",
+           reads=config["reads"]),
          #trimmomatic
          expand("/data/zeynep/HIN_data/DNA/trimmed/{run}_R1.paired.fastq",
                 run=["illumina_run1", "illumina_run2", "illumina_run3"]),
