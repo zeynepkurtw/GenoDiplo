@@ -141,12 +141,12 @@ rule bowtie2_single_reads_cleaning_contamination:
 #Assembly
 rule flye:
     input:
-        reads="/data/zeynep/HIN_data/DNA/clean/nanopore.fastq.gz",
+        reads="/data/zeynep/HIN_data/DNA/{process}/nanopore.fastq.gz",
     params:
       genome_size="114m",
       threads=32,
     output:
-          out_dir=directory("results/Genomics/1_Assembly/2_Assembly/flye/"),
+          out_dir=directory("results/Genomics/1_Assembly/2_Assembly/flye/{process}/"),
     conda:
          "envs/genomics.yaml"
     script:

@@ -20,9 +20,10 @@ rule all:
          #fastqc_after_trimming
          "results/Genomics/1_Assembly/1_Preprocessing/fastqc_after_trimming",
          ##flye
-         "results/Genomics/1_Assembly/2_Assembly/flye/",
+        # expand("results/Genomics/1_Assembly/2_Assembly/flye/{process}",
+         #       process=["clean", "trimmed"]),
          #masurca
-      #   "results/Genomics/1_Assembly/2_Assembly/masurca/",
+         "results/Genomics/1_Assembly/2_Assembly/masurca/",
     """
          #bowtie_paired_reads_evaluation
          expand("results/Genomics/1_Assembly/3_Evaluation/{assembler}/bowtie2/paired/{sample}.bam",
