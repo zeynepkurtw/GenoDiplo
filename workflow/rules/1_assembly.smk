@@ -158,7 +158,7 @@ rule masurca:
     params:
           path="results/Genomics/1_Assembly/2_Assembly/masurca/",
     output:
-          out_dir=directory("results/Genomics/1_Assembly/2_Assembly/masurca/")
+          out_dir=directory("results/Genomics/1_Assembly/2_Assembly/masurca/flye.mr.33.17.15.0.02/")
     conda:
          "envs/genomics.yaml"
     script:
