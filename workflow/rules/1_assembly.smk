@@ -4,11 +4,11 @@ rule fastqc_before_trimming:
     params:
         threads=32,
     output:
-        out_dir = directory("results/Genomics/1_Assembly/1_ReadsPreprocessing/fastqc_before_trimming/"),
+        out_dir = directory("results/Genomics/1_Assembly/1_Preprocessing/fastqc_before_trimming/"),
     conda:
          "envs/genomics.yaml",
     script:
-         "scripts/Genomics/1_Assembly/1_ReadsPreprocessing/ReadQualityCheck.py"
+         "scripts/Genomics/1_Assembly/1_Preprocessing/ReadQualityCheck.py"
 
 rule bwa_index_contamination:
     input:
@@ -40,7 +40,7 @@ rule bwa_cleaning_contamination:
     conda:
          "envs/genomics.yaml"
     script:
-          "scripts/Genomics/1_Assembly/1_ReadsPreprocessing/ContaminationRemovalRawReadsBWA.py"
+          "scripts/Genomics/1_Assembly/1_Preprocessing/ContaminationRemovalRawReadsBWA.py"
 
 rule trimmomatic:
     input:
@@ -56,7 +56,7 @@ rule trimmomatic:
     conda:
          "envs/genomics.yaml"
     script:
-          "scripts/Genomics/1_Assembly/1_ReadsPreprocessing/TrimIlluminaReads.py"
+          "scripts/Genomics/1_Assembly/1_Preprocessing/TrimIlluminaReads.py"
 
 rule fastqc_after_trimming:
     input:
@@ -64,11 +64,11 @@ rule fastqc_after_trimming:
     params:
         threads=32,
     output:
-          out_dir=directory("results/Genomics/1_Assembly/1_ReadsPreprocessing/fastqc_after_trimming/"),
+          out_dir=directory("results/Genomics/1_Assembly/1_Preprocessing/fastqc_after_trimming/"),
     conda:
          "envs/genomics.yaml"
     script:
-          "scripts/Genomics/1_Assembly/1_ReadsPreprocessing/ReadQualityCheck.py"
+          "scripts/Genomics/1_Assembly/1_Preprocessing/ReadQualityCheck.py"
 
 #rule calculatereadmeanstdev
 """
@@ -114,7 +114,7 @@ rule bowtie2_paired_reads_cleaning_contamination:
     conda:
         "envs/genomics.yaml"
     script:
-        "scripts/Genomics/1_Assembly/1_ReadsPreprocessing/ContaminationRemovalRawReads.py"
+        "scripts/Genomics/1_Assembly/1_Preprocessing/ContaminationRemovalRawReads.py"
 
 rule bowtie2_single_reads_cleaning_contamination:
     input:
@@ -136,7 +136,7 @@ rule bowtie2_single_reads_cleaning_contamination:
     conda:
         "envs/genomics.yaml"
     script:
-        "scripts/Genomics/1_Assembly/1_ReadsPreprocessing/ContaminationRemovalRawReads.py"
+        "scripts/Genomics/1_Assembly/1_Preprocessing/ContaminationRemovalRawReads.py"
 """
 #Assembly
 rule flye:
@@ -205,7 +205,7 @@ rule bwa_evaluation_paired:
     conda:
          "envs/genomics.yaml"
     script:
-          "scripts/Genomics/1_Assembly/1_ReadsPreprocessing/MapShortReadsToAssembly.py"
+          "scripts/Genomics/1_Assembly/1_Preprocessing/MapShortReadsToAssembly.py"
 
 rule bwa_evaluation_single:
     input:
@@ -225,7 +225,7 @@ rule bwa_evaluation_single:
     conda:
          "envs/genomics.yaml"
     script:
-          "scripts/Genomics/1_Assembly/1_ReadsPreprocessing/MapShortReadsToAssembly.py"
+          "scripts/Genomics/1_Assembly/1_Preprocessing/MapShortReadsToAssembly.py"
 """
 rule bowtie2_biult_index_evaluation:
     input:
