@@ -15,8 +15,8 @@ rule all:
          expand("/data/zeynep/HIN_data/DNA/clean/{reads}.fastq.gz",
            reads=config["reads"]),
          #trimmomatic
-         expand("/data/zeynep/HIN_data/DNA/trimmed/paired/{run}_R1.fastq",
-                run=["illumina_run1", "illumina_run2", "illumina_run3"]),
+         expand("/data/zeynep/HIN_data/DNA/trimmed/paired/{sample}_R1.fastq",
+                sample=["illumina_run1", "illumina_run2", "illumina_run3"]),
          #fastqc_after_trimming
          "results/Genomics/1_Assembly/1_Preprocessing/fastqc_after_trimming",
          ##flye
@@ -27,10 +27,10 @@ rule all:
          expand("results/Genomics/1_Assembly/3_Evaluation/{assembler}/bowtie2/paired/{sample}.bam",
                 assembler=["flye", "masurca/flye.mr.83.17.15.0.02"],
                 sample=["illumina_run1","illumina_run2", "illumina_run3"]),
-        #bowtie_paired_reads_evaluation
-         expand("results/Genomics/1_Assembly/3_Evaluation/{assembler}/bowtie2/unpaired/{sample}.bam",
+        #bowtie_single_reads_evaluation
+         expand("results/Genomics/1_Assembly/3_Evaluation/{assembler}/bowtie2/unpaired/{read}.bam",
                assembler=["flye", "masurca/flye.mr.83.17.15.0.02"],
-                sample=["illumina_run1_R1","illumina_run1_R2",
+                read=["illumina_run1_R1","illumina_run1_R2",
                         "illumina_run2_R1","illumina_run2_R2",
                         "illumina_run3_R1","illumina_run3_R2",]),
          #winnowmap evaluation

@@ -44,15 +44,15 @@ rule bwa_cleaning_contamination:
 
 rule trimmomatic:
     input:
-         r1="/data/zeynep/HIN_data/DNA/clean/{run}_R1.fastq.gz",
-         r2="/data/zeynep/HIN_data/DNA/clean/{run}_R2.fastq.gz"
+         r1="/data/zeynep/HIN_data/DNA/clean/{sample}_R1.fastq.gz",
+         r2="/data/zeynep/HIN_data/DNA/clean/{sample}_R2.fastq.gz"
     params:
             threads=32,
     output:
-          r1_p="/data/zeynep/HIN_data/DNA/trimmed/paired/{run}_R1.fastq",
-          r1_up="/data/zeynep/HIN_data/DNA/trimmed/unpaired/{run}_R1.fastq",
-          r2_p="/data/zeynep/HIN_data/DNA/trimmed/paired/{run}_R2.fastq",
-          r2_up="/data/zeynep/HIN_data/DNA/trimmed/unpaired/{run}_R2.fastq"
+          r1_p="/data/zeynep/HIN_data/DNA/trimmed/paired/{sample}_R1.fastq",
+          r1_up="/data/zeynep/HIN_data/DNA/trimmed/unpaired/{sample}_R1.fastq",
+          r2_p="/data/zeynep/HIN_data/DNA/trimmed/paired/{sample}_R2.fastq",
+          r2_up="/data/zeynep/HIN_data/DNA/trimmed/unpaired/{sample}_R2.fastq"
     conda:
          "envs/genomics.yaml"
     script:
@@ -280,10 +280,10 @@ rule bowtie2_evaluation_single:
              ".4.bt2",
              ".rev.1.bt2",
              ".rev.2.bt2"),
-         single="/data/zeynep/HIN_data/DNA/trimmed/unpaired/{sample}.fastq",
+         single="/data/zeynep/HIN_data/DNA/trimmed/unpaired/{read}.fastq",
     output:
-          bam="results/Genomics/1_Assembly/3_Evaluation/{assembler}/bowtie2/unpaired/{sample}.bam",
-          bai="results/Genomics/1_Assembly/3_Evaluation/{assembler}/bowtie2/unpaired/{sample}.bai"
+          bam="results/Genomics/1_Assembly/3_Evaluation/{assembler}/bowtie2/unpaired/{read}.bam",
+          bai="results/Genomics/1_Assembly/3_Evaluation/{assembler}/bowtie2/unpaired/{read}.bai"
     params:
           threads=32,
           paired=False
