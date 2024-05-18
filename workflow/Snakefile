@@ -23,36 +23,36 @@ rule all:
          expand("results/Genomics/1_Assembly/2_Assembly/flye/{process}",
                 process=["clean", "raw"]),
          #masurca
-         "results/Genomics/1_Assembly/2_Assembly/masurca/flye.mr.33.17.15.0.02/",
-    """
+        #"results/Genomics/1_Assembly/2_Assembly/masurca/flye.mr.33.17.15.0.02/",
+
          #bowtie_paired_reads_evaluation
          expand("results/Genomics/1_Assembly/3_Evaluation/{assembler}/bowtie2/paired/{sample}.bam",
-                assembler=["flye", "masurca"],
+                assembler=["flye", "masurca/flye.mr.33.17.15.0.02"],
                 sample=["illumina_run1","illumina_run2", "illumina_run3"]),
         #bowtie_single_reads_evaluation
          expand("results/Genomics/1_Assembly/3_Evaluation/{assembler}/bowtie2/unpaired/{read}.bam",
-               assembler=["flye", "masurca"],
+               assembler=["flye", "masurca/flye.mr.33.17.15.0.02"],
                 read=["illumina_run1_R1","illumina_run1_R2",
                         "illumina_run2_R1","illumina_run2_R2",
                         "illumina_run3_R1","illumina_run3_R2",]),
          #winnowmap evaluation
          expand("results/Genomics/1_Assembly/3_Evaluation/{assembler}/winnowmap/merlyDB",
-                assembler=["flye", "masurca"],
+                assembler=["flye", "masurca/flye.mr.33.17.15.0.02"],
                 genome=["Hexamita"]),
          expand("results/Genomics/1_Assembly/3_Evaluation/{assembler}/winnowmap/repetitive_k15.txt",
-                assembler=["flye", "masurca"],
+                assembler=["flye", "masurca/flye.mr.33.17.15.0.02"],
                 genome=["Hexamita"]),
          expand("results/Genomics/1_Assembly/3_Evaluation/{assembler}/winnowmap/{long_reads}.bam",
-                assembler=["flye", "masurca"],
+                assembler=["flye", "masurca/flye.mr.33.17.15.0.02"],
                 long_reads=["nanopore", "pacbio"]),
          #pilon
          expand("results/Genomics/1_Assembly/2_Assembly/pilon/{assembler}/assembly_polished.fasta",
-                assembler=["flye", "masurca"]),
+                assembler=["flye", "masurca/flye.mr.33.17.15.0.02"]),
          #quast
          expand("results/Genomics/1_Assembly/3_Evaluation/quast/{assembler}/",
-                assembler=["flye", "masurca"],
+                assembler=["flye", "masurca/flye.mr.33.17.15.0.02"],
                 assembly=["assembly"]),
-
+    """
   #prodigal
          expand("results/Genomics/2_Annotation/1_Structural/{assembler}/prodigal/genome.gff",
                 assembler=["flye", "masurca"]),
