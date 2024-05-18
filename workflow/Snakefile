@@ -25,30 +25,30 @@ rule all:
          "results/Genomics/1_Assembly/2_Assembly/masurca/",
          #bowtie_paired_reads_evaluation
          expand("results/Genomics/1_Assembly/3_Evaluation/{assembler}/bowtie2/paired/{sample}.bam",
-                assembler=["flye", "masurca/flye.mr.83.17.15.0.02"],
+                assembler=["flye", "masurca"],
                 sample=["illumina_run1","illumina_run2", "illumina_run3"]),
         #bowtie_single_reads_evaluation
          expand("results/Genomics/1_Assembly/3_Evaluation/{assembler}/bowtie2/unpaired/{read}.bam",
-               assembler=["flye", "masurca/flye.mr.83.17.15.0.02"],
+               assembler=["flye", "masurca"],
                 read=["illumina_run1_R1","illumina_run1_R2",
                         "illumina_run2_R1","illumina_run2_R2",
                         "illumina_run3_R1","illumina_run3_R2",]),
          #winnowmap evaluation
          expand("results/Genomics/1_Assembly/3_Evaluation/{assembler}/winnowmap/merlyDB",
-                assembler=["flye", "masurca/flye.mr.83.17.15.0.02"],
+                assembler=["flye", "masurca"],
                 genome=["Hexamita"]),
          expand("results/Genomics/1_Assembly/3_Evaluation/{assembler}/winnowmap/repetitive_k15.txt",
-                assembler=["flye", "masurca/flye.mr.83.17.15.0.02"],
+                assembler=["flye", "masurca"],
                 genome=["Hexamita"]),
          expand("results/Genomics/1_Assembly/3_Evaluation/{assembler}/winnowmap/{long_reads}.bam",
-                assembler=["flye", "masurca/flye.mr.83.17.15.0.02"],
+                assembler=["flye", "masurca"],
                 long_reads=["nanopore", "pacbio"]),
          #pilon
          expand("results/Genomics/1_Assembly/2_Assembly/pilon/{assembler}/assembly_polished.fasta",
-                assembler=["flye", "masurca/flye.mr.83.17.15.0.02"]),
+                assembler=["flye", "masurca"]),
          #quast
          expand("results/Genomics/1_Assembly/3_Evaluation/quast/{assembler}/",
-                assembler=["flye", "masurca/flye.mr.83.17.15.0.02"],
+                assembler=["flye", "masurca"],
                 assembly=["assembly"]),
 
 """  #prodigal
