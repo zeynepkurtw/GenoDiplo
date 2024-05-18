@@ -326,9 +326,16 @@ rule winnowmap:
 rule pilon:
     input:
         assembly="results/Genomics/1_Assembly/2_Assembly/{assembler}/assembly.fasta",
-        illumina_run1="results/Genomics/1_Assembly/3_Evaluation/{assembler}/bowtie2/illumina_run1_R2_single.bam",
-        illumina_run2="results/Genomics/1_Assembly/3_Evaluation/{assembler}/bowtie2/illumina_run2_paired.bam",
-        illumina_run3="results/Genomics/1_Assembly/3_Evaluation/{assembler}/bowtie2/illumina_run3_paired.bam"
+        ill_run1="results/Genomics/1_Assembly/3_Evaluation/{assembler}/bowtie2/paired/ilumina_run1.bam",
+        ill_run2="results/Genomics/1_Assembly/3_Evaluation/{assembler}/bowtie2/paired/ilumina_run2.bam",
+        ill_run3="results/Genomics/1_Assembly/3_Evaluation/{assembler}/bowtie2/paired/ilumina_run3.bam",
+        ill_run1_R1_up="results/Genomics/1_Assembly/3_Evaluation/{assembler}/bowtie2/unpaired/ilumina_run1_R1.bam",
+        ill_run1_R2_up="results/Genomics/1_Assembly/3_Evaluation/{assembler}/bowtie2/unpaired/ilumina_run1_R2.bam",
+        ill_run2_R1_up="results/Genomics/1_Assembly/3_Evaluation/{assembler}/bowtie2/unpaired/ilumina_run2_R1.bam",
+        ill_run2_R2_up="results/Genomics/1_Assembly/3_Evaluation/{assembler}/bowtie2/unpaired/ilumina_run2_R2.bam",
+        ill_run3_R1_up="results/Genomics/1_Assembly/3_Evaluation/{assembler}/bowtie2/unpaired/ilumina_run3_R1.bam",
+        ill_run3_R2_up="results/Genomics/1_Assembly/3_Evaluation/{assembler}/bowtie2/unpaired/ilumina_run3_R2.bam",
+
     params:
         threads=32
     output:
