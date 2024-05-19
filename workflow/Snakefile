@@ -52,8 +52,8 @@ rule all:
          expand("results/Genomics/1_Assembly/3_Evaluation/quast/{assembler}/{process}",
                 assembler=["flye", "masurca/flye.mr.33.17.15.0.02"],
                 process=["clean", "raw"] ),
-         expand("results/Genomics/1_Assembly/3_Evaluation/quast/{assembler}/",
-                assembler=[ "masurca/flye.mr.33.17.15.0.02"]),
+         #expand("results/Genomics/1_Assembly/3_Evaluation/quast/{assembler}/",
+          #      assembler=[ "masurca/flye.mr.33.17.15.0.02"]),
     """
   #prodigal
          expand("results/Genomics/2_Annotation/1_Structural/{assembler}/prodigal/genome.gff",
