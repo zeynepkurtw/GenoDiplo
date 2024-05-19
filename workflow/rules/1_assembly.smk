@@ -346,7 +346,7 @@ rule pilon:
 #Evaluation
 rule quast:
     input:
-         assembly="1_Preprocessingresults/Genomics/1_Assembly/2_Assembly/{assembler}/{process}/assembly.fasta",
+         assembly="results/Genomics/1_Assembly/2_Assembly/{assembler}/{process}/assembly.fasta",
     params:
           threads=32
     output:
