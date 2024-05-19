@@ -355,3 +355,15 @@ rule quast:
          "envs/genomics.yaml"
     script:
           "scripts/Genomics/1_Assembly/3_Evaluation/AssemblyQualityCheck.py"
+
+rule multiqc:
+    input:
+         input_dir="results/Genomics/1_Assembly/3_Evaluation/quast/,
+    params:
+          threads=32
+    output:
+          out_dir=directory("results/Genomics/1_Assembly/3_Evaluation/quast/multiqc/")
+    conda:
+         "envs/genomics.yaml"
+    shell:
+            'multiqc {input} -o {output}'
