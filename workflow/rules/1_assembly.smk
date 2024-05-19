@@ -373,7 +373,7 @@ rule plot_coverage_cont:
             #coverage on assembley
             run1 = "results/Genomics/1_Assembly/3_Evaluation/{assembler}/bowtie2/paired/illumina_run1.bam",
             run2 = "results/Genomics/1_Assembly/3_Evaluation/{assembler}/bowtie2/paired/illumina_run2.bam",
-            run3 = "results/Genomics/1_Assembly/3_Evaluation/{assembler}/bowtie2/paired/illumina_run3.bam",,
+            run3 = "results/Genomics/1_Assembly/3_Evaluation/{assembler}/bowtie2/paired/illumina_run3.bam",
             pac = "results/Genomics/1_Assembly/3_Evaluation/{assembler}/winnowmap/pacbio.bam",
             nano = "results/Genomics/1_Assembly/3_Evaluation/{assembler}/winnowmap/nanopore.bam"
         output:
