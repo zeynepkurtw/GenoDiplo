@@ -346,11 +346,11 @@ rule pilon:
 #Evaluation
 rule quast:
     input:
-         assembly="results/Genomics/1_Assembly/2_Assembly/pilon/{assembler}/assembly_polished.fasta",
+         assembly="1_Preprocessingresults/Genomics/1_Assembly/2_Assembly/{assembler}/{process}/assembly.fasta",
     params:
           threads=32
     output:
-          report_dir=directory("results/Genomics/1_Assembly/3_Evaluation/quast/{assembler}/")
+          report_dir=directory("results/Genomics/1_Assembly/3_Evaluation/quast/{assembler}/{process}/")
     conda:
          "envs/genomics.yaml"
     script:
