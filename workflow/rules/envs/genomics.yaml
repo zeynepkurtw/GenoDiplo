@@ -8,13 +8,14 @@ dependencies:
   - bioconda::bwa
   - bioconda::flye
   - bioconda::masurca
-  - bioconda::pilon
-  - bioconda::quast
-  - bioconda::multiqc
   - bioconda::bowtie2
   - bioconda::samtools
   - bioconda::meryl
   - bioconda::winnowmap
+  - bioconda::pilon
+  - bioconda::quast
+  - bioconda::multiqc
+  - bioconda::deeptools
   - bioconda::prodigal
   - bioconda::glimmerhmm
   - bioconda::diamond

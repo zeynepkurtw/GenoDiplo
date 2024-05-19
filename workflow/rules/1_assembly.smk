@@ -367,3 +367,26 @@ rule multiqc:
          "envs/genomics.yaml"
     shell:
             'multiqc {input} -o {output}'
+
+rule plot_coverage_cont:
+        input:
+            #coverage on assembley
+            run1 = "results/Genomics/1_Assembly/3_Evaluation/{assembler}/bowtie2/paired/illumina_run1.bam",
+            run2 = "results/Genomics/1_Assembly/3_Evaluation/{assembler}/bowtie2/paired/illumina_run2.bam",
+            run3 = "results/Genomics/1_Assembly/3_Evaluation/{assembler}/bowtie2/paired/illumina_run3.bam",,
+            pac = "results/Genomics/1_Assembly/3_Evaluation/{assembler}/winnowmap/pacbio.bam",
+            nano = "results/Genomics/1_Assembly/3_Evaluation/{assembler}/winnowmap/nanopore.bam"
+        output:
+            out= "results/Genomics/1_Assembly/3_Evaluation/deeptools/{assembler}.png",
+            outraw= "results/Genomics/1_Assembly/3_Evaluation/deeptools/{assembler}/outRawCounts.txt"
+        params:
+            threads= 32,
+            ill1_S = "ill1_P",
+            ill2_P = "ill2_P",
+            ill3_P = "ill3_P",
+            pac = "pac",
+            nano = "nano",
+        conda:
+            "envs/genomics.yaml"
+        script:
+            "scripts/Genomics/1_Assembly/3_Evaluation/PlotCoverage.py"
