@@ -261,14 +261,13 @@ rule bowtie2_evaluation_paired:
             ill_R2="/data/zeynep/HIN_data/DNA/trimmed/paired/{sample}_R2.fastq"
     output:
           bam="results/Genomics/1_Assembly/3_Evaluation/{assembler}/bowtie2/paired/{sample}.bam",
-          #bai="results/Genomics/1_Assembly/3_Evaluation/{assembler}/bowtie2/paired/{sample}.bai"
     params:
           threads=32,
           paired= True
     conda:
          "envs/genomics.yaml"
     script:
-          "scripts/Genomics/1_Assembly/3_Evaluation/MapShortReadsToAssembly.py"
+          "scripts/Genomics/1_Assembly/3_Evaluation/MapShortReadsToAssembly_bowtie2.py"
 
 rule bowtie2_evaluation_single:
     input:
@@ -283,14 +282,13 @@ rule bowtie2_evaluation_single:
          single="/data/zeynep/HIN_data/DNA/trimmed/unpaired/{read}.fastq",
     output:
           bam="results/Genomics/1_Assembly/3_Evaluation/{assembler}/bowtie2/unpaired/{read}.bam",
-          #bai="results/Genomics/1_Assembly/3_Evaluation/{assembler}/bowtie2/unpaired/{read}.bai"
     params:
           threads=32,
           paired=False
     conda:
          "envs/genomics.yaml"
     script:
-          "scripts/Genomics/1_Assembly/3_Evaluation/MapShortReadsToAssembly.py"
+          "scripts/Genomics/1_Assembly/3_Evaluation/MapShortReadsToAssembly_bowtie2.py"
 
 rule meryl:
     input:
