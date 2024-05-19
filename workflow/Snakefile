@@ -56,6 +56,8 @@ rule all:
                 assembler=[ "masurca/flye.mr.33.17.15.0.02"]),
         #multiqc
          "results/Genomics/1_Assembly/3_Evaluation/quast/multiqc",
+
+
     """
   #prodigal
          expand("results/Genomics/2_Annotation/1_Structural/{assembler}/prodigal/genome.gff",
