@@ -6,9 +6,9 @@ long_read = snakemake.input.long_read
 merylDB= snakemake.input.merylDB
 repetitive_k15 = snakemake.input.repetitive_k15
 #output
-bam= snakemake.output.bam
+sorted_bam= snakemake.output.sorted_bam
 #params
 threads = snakemake.params.threads
 
-shell(f"""winnowmap -W {repetitive_k15} -ax map-ont {genome} {long_read} | samtools sort -o {bam}""")
-shell(f"""samtools index {bam}""")
+shell(f"""winnowmap -W {repetitive_k15} -ax map-ont {genome} {long_read} | samtools sort -o {sorted_bam} -""")
+shell(f"""samtools index {sorted_bam}""")

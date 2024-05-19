@@ -260,7 +260,7 @@ rule bowtie2_evaluation_paired:
             ill_R1="/data/zeynep/HIN_data/DNA/trimmed/paired/{sample}_R1.fastq",
             ill_R2="/data/zeynep/HIN_data/DNA/trimmed/paired/{sample}_R2.fastq"
     output:
-          bam="results/Genomics/1_Assembly/3_Evaluation/{assembler}/bowtie2/paired/{sample}.bam",
+          sorted_bam="results/Genomics/1_Assembly/3_Evaluation/{assembler}/bowtie2/paired/{sample}.bam",
     params:
           threads=32,
           paired= True
@@ -281,7 +281,7 @@ rule bowtie2_evaluation_single:
              ".rev.2.bt2"),
          single="/data/zeynep/HIN_data/DNA/trimmed/unpaired/{read}.fastq",
     output:
-          bam="results/Genomics/1_Assembly/3_Evaluation/{assembler}/bowtie2/unpaired/{read}.bam",
+          sorted_bam="results/Genomics/1_Assembly/3_Evaluation/{assembler}/bowtie2/unpaired/{read}.bam",
     params:
           threads=32,
           paired=False
@@ -311,7 +311,7 @@ rule winnowmap:
          merylDB="results/Genomics/1_Assembly/3_Evaluation/{assembler}/winnowmap/merlyDB",
          repetitive_k15="results/Genomics/1_Assembly/3_Evaluation/{assembler}/winnowmap/repetitive_k15.txt",
     output:
-          bam="results/Genomics/1_Assembly/3_Evaluation/{assembler}/winnowmap/{long_read}.bam",
+          sorted_bam="results/Genomics/1_Assembly/3_Evaluation/{assembler}/winnowmap/{long_read}.bam",
           #bai="results/Genomics/1_Assembly/3_Evaluation/{assembler}/winnowmap/{long_read}.bai"
     params:
           threads=32,
