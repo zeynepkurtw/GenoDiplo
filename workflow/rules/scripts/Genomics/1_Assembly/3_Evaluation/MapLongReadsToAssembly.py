@@ -12,4 +12,4 @@ bai = snakemake.output.bai
 threads = snakemake.params.threads
 
 shell(f"""winnowmap -W {repetitive_k15} -ax map-ont {genome} {long_read} | samtools sort -o {bam}""")
-shell(f"""samtools index {bam} {bai} """)
+shell(f"""samtools index {bam}""")
