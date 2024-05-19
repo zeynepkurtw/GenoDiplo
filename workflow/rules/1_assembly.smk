@@ -358,15 +358,15 @@ rule quast:
 
 rule multiqc:
     input:
-         input_dir="results/Genomics/1_Assembly/3_Evaluation/quast/",
+         input_dir="results/Genomics/1_Assembly/3_Evaluation/",
     params:
           threads=32
     output:
-          out_dir=directory("results/Genomics/1_Assembly/3_Evaluation/quast/multiqc/")
+          out_dir=directory("results/Genomics/1_Assembly/3_Evaluation/multiqc")
     conda:
          "envs/genomics.yaml"
     shell:
-            'multiqc {input} -o {output}'
+            'multiqc {input.input_dir} -o {output.output_dir}'
 
 rule plot_coverage_cont:
         input:
