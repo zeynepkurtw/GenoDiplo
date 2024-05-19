@@ -10,6 +10,7 @@ dependencies:
   - bioconda::masurca
   - bioconda::pilon
   - bioconda::quast
+  - bioconda::multiqc
   - bioconda::bowtie2
   - bioconda::samtools
   - bioconda::meryl
