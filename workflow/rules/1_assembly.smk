@@ -261,7 +261,7 @@ rule bowtie2_evaluation_paired:
             ill_R2="/data/zeynep/HIN_data/DNA/trimmed/paired/{sample}_R2.fastq"
     output:
           bam="results/Genomics/1_Assembly/3_Evaluation/{assembler}/bowtie2/paired/{sample}.bam",
-          bai="results/Genomics/1_Assembly/3_Evaluation/{assembler}/bowtie2/paired/{sample}.bai"
+          #bai="results/Genomics/1_Assembly/3_Evaluation/{assembler}/bowtie2/paired/{sample}.bai"
     params:
           threads=32,
           paired= True
@@ -283,7 +283,7 @@ rule bowtie2_evaluation_single:
          single="/data/zeynep/HIN_data/DNA/trimmed/unpaired/{read}.fastq",
     output:
           bam="results/Genomics/1_Assembly/3_Evaluation/{assembler}/bowtie2/unpaired/{read}.bam",
-          bai="results/Genomics/1_Assembly/3_Evaluation/{assembler}/bowtie2/unpaired/{read}.bai"
+          #bai="results/Genomics/1_Assembly/3_Evaluation/{assembler}/bowtie2/unpaired/{read}.bai"
     params:
           threads=32,
           paired=False
@@ -314,7 +314,7 @@ rule winnowmap:
          repetitive_k15="results/Genomics/1_Assembly/3_Evaluation/{assembler}/winnowmap/repetitive_k15.txt",
     output:
           bam="results/Genomics/1_Assembly/3_Evaluation/{assembler}/winnowmap/{long_read}.bam",
-          bai="results/Genomics/1_Assembly/3_Evaluation/{assembler}/winnowmap/{long_read}.bai"
+          #bai="results/Genomics/1_Assembly/3_Evaluation/{assembler}/winnowmap/{long_read}.bai"
     params:
           threads=32,
           nanopore=True

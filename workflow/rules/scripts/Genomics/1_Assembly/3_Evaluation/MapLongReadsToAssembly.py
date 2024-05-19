@@ -7,7 +7,6 @@ merylDB= snakemake.input.merylDB
 repetitive_k15 = snakemake.input.repetitive_k15
 #output
 bam= snakemake.output.bam
-bai = snakemake.output.bai
 #params
 threads = snakemake.params.threads
 

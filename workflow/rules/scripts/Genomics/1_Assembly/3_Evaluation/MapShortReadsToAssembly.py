@@ -6,7 +6,6 @@ paired = snakemake.params.get('paired', False)
 index = os.path.commonprefix(snakemake.input.index).rstrip(".")
 
 bam = snakemake.output
-bai = snakemake.output
 
 if paired:
     ill_R1 = snakemake.input.ill_R1
