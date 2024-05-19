@@ -366,7 +366,7 @@ rule multiqc:
     conda:
          "envs/genomics.yaml"
     shell:
-            'multiqc {input.input_dir} -o {output.output_dir}'
+            'multiqc {input.input_dir} -o {output.out_dir}'
 
 rule plot_coverage_cont:
         input:
