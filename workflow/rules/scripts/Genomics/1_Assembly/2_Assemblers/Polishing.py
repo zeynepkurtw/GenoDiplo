@@ -21,14 +21,14 @@ polished_assembly = snakemake.output.polished_assembly
 
 shell(f"""pilon \
 --genome {assembly} \
---frags {ill_run1}\
---frags {ill_run2}\
---frags {ill_run3}\
---frags {ill_run1_R1_up}\
---frags {ill_run1_R2_up}\
---frags {ill_run2_R1_up}\
---frags {ill_run2_R2_up}\
---frags {ill_run3_R1_up}\
---frags {ill_run3_R2_up}\
+--frags {ill_run1} \
+--frags {ill_run2} \
+--frags {ill_run3} \
+--frags {ill_run1_R1_up} \
+--frags {ill_run1_R2_up} \
+--frags {ill_run2_R1_up} \
+--frags {ill_run2_R2_up} \
+--frags {ill_run3_R1_up} \
+--frags {ill_run3_R2_up} \
 --output {polished_assembly} \
 --threads {threads}""")
