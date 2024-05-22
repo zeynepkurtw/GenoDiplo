@@ -381,11 +381,11 @@ rule plot_coverage_cont:
             outraw= "results/Genomics/1_Assembly/3_Evaluation/deeptools/{assembler}/outRawCounts.txt"
         params:
             threads= 32,
-            ill1_P = "ill1_P",
-            ill2_P = "ill2_P",
-            ill3_P = "ill3_P",
-            pac = "pac",
-            nano = "nano",
+           # ill1_P = "ill1_P",
+           # ill2_P = "ill2_P",
+           # ill3_P = "ill3_P",
+            #pac = "pac",
+            #nano = "nano",
         conda:
             "envs/genomics.yaml"
         script:
