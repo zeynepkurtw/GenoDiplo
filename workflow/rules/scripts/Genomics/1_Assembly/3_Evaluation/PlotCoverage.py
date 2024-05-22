@@ -1,7 +1,5 @@
 from snakemake.shell import shell
 
-pacbio = snakemake.input.pacbio
-nanopore = snakemake.input.nanopore
 run1 = snakemake.input.run1
 run2 = snakemake.input.run2
 run3 = snakemake.input.run3
