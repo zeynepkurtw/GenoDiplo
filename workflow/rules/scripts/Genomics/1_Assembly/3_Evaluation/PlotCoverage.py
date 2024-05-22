@@ -14,5 +14,5 @@ ill3_P = snakemake.params.ill3_P
 pac = snakemake.params.pac
 nano = snakemake.params.nano
 
-shell(f"""plotCoverage -b {run1} {run2} {run3} {pac} {nano}\
-  -o {out} -p {threads} --verbose --outRawCounts {outraw}""")
+shell(f"""plotCoverage -b {run1} {run2} {run3} {pac} {nano} \
+-o {out} -p {threads} --verbose --outRawCounts {outraw}""")
