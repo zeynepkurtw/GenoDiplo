@@ -58,7 +58,7 @@ rule all:
         # expand("results/Genomics/1_Assembly/3_Evaluation/deeptools/{assembler}.png",
          #       assembler=["flye/clean", "flye/raw", "masurca/flye.mr.33.17.15.0.02"]),
          #multiqc
-         #"results/Genomics/1_Assembly/3_Evaluation/",
+         "results/Genomics/1_Assembly/3_Evaluation/",
 
     """
   #prodigal
