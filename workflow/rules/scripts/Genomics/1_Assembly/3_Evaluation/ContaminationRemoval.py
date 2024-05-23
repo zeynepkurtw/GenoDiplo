@@ -3,6 +3,7 @@ from snakemake.shell import shell
 assembly = snakemake.input.assembly
 assembly_gc_filtered = snakemake.output.assembly_gc_filtered
 gc_stats = snakemake.output.gc_stats
+
 min_gc = snakemake.params.min_gc
 max_gc = snakemake.params.max_gc
 
