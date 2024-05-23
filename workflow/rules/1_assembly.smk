@@ -109,7 +109,8 @@ rule seqkit:
     script:
         "scripts/Genomics/1_Assembly/3_Evaluation/ContaminationRemoval.py"
 
-rule setup_nr_db:
+#
+rule setup_nr_db:  #FIX
     output:
         protected(directory("/data/zeynep/databases"))
     conda:

@@ -10,8 +10,7 @@ rule all:
     input:
          #fastqc_before_trimming,
          "results/Genomics/1_Assembly/1_Preprocessing/fastqc_before_trimming",
-        #ContaminationDetection.py
-        #bwa_cleaning_contamination
+         #bwa_cleaning_contamination
          expand("/data/zeynep/HIN_data/DNA/clean/{reads}.fastq.gz",
            reads=config["reads"]),
          #trimmomatic
@@ -23,47 +22,46 @@ rule all:
          #expand("results/Genomics/1_Assembly/2_Assembly/flye/{process}",
           #      process=["clean", "raw"]),
          #masurca
-        #"results/Genomics/1_Assembly/2_Assembly/masurca/flye.mr.33.17.15.0.02/",
+         #"results/Genomics/1_Assembly/2_Assembly/masurca/flye.mr.33.17.15.0.02/",
          #seqkit gc filter script
-         #"results/Genomics/1_Assembly/2_Assembly/flye/raw/filtered/assembly.fasta",
+         "results/Genomics/1_Assembly/2_Assembly/flye/raw/filtered/assembly.fasta",
          #blastn contamination detection
-         expand("results/Genomics/1_Assembly/3_Evaluation/blastn/{assembler}/assembly.blastn",
-                assembler=["flye/clean", "flye/raw", "masurca/flye.mr.33.17.15.0.02"] ),
-        ###
+         #expand("results/Genomics/1_Assembly/3_Evaluation/blastn/{assembler}/assembly.blastn",
+          #      assembler=["flye/clean", "flye/raw", "masurca/flye.mr.33.17.15.0.02"] ),
+"""  ###
          #bowtie_paired_reads_evaluation
-        # expand("results/Genomics/1_Assembly/3_Evaluation/bowtie2/paired/{assembler}/{sample}.bam",
-         #       assembler=["flye/clean", "flye/raw/filtered", "masurca/flye.mr.33.17.15.0.02"],
-          #      sample=["illumina_run1","illumina_run2", "illumina_run3"]),
+         expand("results/Genomics/1_Assembly/3_Evaluation/bowtie2/paired/{assembler}/{sample}.bam",
+                assembler=["flye/clean", "flye/raw/filtered", "masurca/flye.mr.33.17.15.0.02"],
+                sample=["illumina_run1","illumina_run2", "illumina_run3"]),
         #bowtie_single_reads_evaluation
-        # expand("results/Genomics/1_Assembly/3_Evaluation/bowtie2/unpaired/{assembler}/{read}.bam",
-         #       assembler=["flye/clean", "flye/raw/filtered", "masurca/flye.mr.33.17.15.0.02"],
-          #      read=["illumina_run1_R1","illumina_run1_R2",
-           #             "illumina_run2_R1","illumina_run2_R2",
-            #            "illumina_run3_R1","illumina_run3_R2",]),
+         expand("results/Genomics/1_Assembly/3_Evaluation/bowtie2/unpaired/{assembler}/{read}.bam",
+                assembler=["flye/clean", "flye/raw/filtered", "masurca/flye.mr.33.17.15.0.02"],
+                read=["illumina_run1_R1","illumina_run1_R2",
+                        "illumina_run2_R1","illumina_run2_R2",
+                        "illumina_run3_R1","illumina_run3_R2",]),
+        #pilon
+         expand("results/Genomics/1_Assembly/2_Assembly/pilon/{assembler}/assembly_polished.fasta",
+                assembler=["flye/clean", "flye/raw/filtered", "masurca/flye.mr.33.17.15.0.02"]),
+"""
          #winnowmap evaluation
-      #  expand("results/Genomics/1_Assembly/3_Evaluation/winnowmap/{assembler}/merlyDB",
-       #         assembler=["flye/clean", "flye/raw/filtered", "masurca/flye.mr.33.17.15.0.02"],
-        #        genome=["Hexamita"]),
-        # expand("results/Genomics/1_Assembly/3_Evaluation/winnowmap/{assembler}/repetitive_k15.txt",
-         #       assembler=["flye/clean", "flye/raw/filtered", "masurca/flye.mr.33.17.15.0.02"],
-          #      genome=["Hexamita"]),
-        # expand("results/Genomics/1_Assembly/3_Evaluation/winnowmap/{assembler}/{long_reads}.bam",
-         #       assembler=["flye/clean", "flye/raw/filtered", "masurca/flye.mr.33.17.15.0.02"],
-          #      long_reads=["nanopore", "pacbio"]),
-         #pilon
-         #expand("results/Genomics/1_Assembly/2_Assembly/pilon/{assembler}/assembly_polished.fasta",
-           #     assembler=["flye/clean", "flye/raw/filtered", "masurca/flye.mr.33.17.15.0.02"]),
+        expand("results/Genomics/1_Assembly/3_Evaluation/winnowmap/{assembler}/merlyDB",
+                assembler=["flye/clean", "flye/raw/filtered", "masurca/flye.mr.33.17.15.0.02"],
+                genome=["Hexamita"]),
+        expand("results/Genomics/1_Assembly/3_Evaluation/winnowmap/{assembler}/repetitive_k15.txt",
+                assembler=["flye/clean", "flye/raw/filtered", "masurca/flye.mr.33.17.15.0.02"],
+                genome=["Hexamita"]),
+        expand("results/Genomics/1_Assembly/3_Evaluation/winnowmap/{assembler}/{long_reads}.bam",
+                assembler=["flye/clean", "flye/raw/filtered", "masurca/flye.mr.33.17.15.0.02"],
+                long_reads=["nanopore", "pacbio"]),
          #quast
-         #expand("results/Genomics/1_Assembly/3_Evaluation/quast/{assembler}/",
-          #      assembler=["flye/clean", "flye/raw/filtered", "masurca/flye.mr.33.17.15.0.02"]),
+        expand("results/Genomics/1_Assembly/3_Evaluation/quast/{assembler}/",
+                assembler=["flye/clean", "flye/raw/filtered", "masurca/flye.mr.33.17.15.0.02"]),
         #deeptools
-       #  expand("results/Genomics/1_Assembly/3_Evaluation/deeptools/{assembler}.png",
-        #        assembler=["flye/clean", "flye/raw/filtered", "masurca/flye.mr.33.17.15.0.02"]),
+        expand("results/Genomics/1_Assembly/3_Evaluation/deeptools/{assembler}.png",
+                assembler=["flye/clean", "flye/raw/filtered", "masurca/flye.mr.33.17.15.0.02"]),
          #multiqc
        #  expand("results/Genomics/1_Assembly/3_Evaluation/multiqc/{assembler}",
         #   assembler=["flye/clean", "flye/raw/filtered", "masurca/flye.mr.33.17.15.0.02"]),
-
-
     """
   #prodigal
          expand("results/Genomics/2_Annotation/1_Structural/{assembler}/prodigal/genome.gff",
