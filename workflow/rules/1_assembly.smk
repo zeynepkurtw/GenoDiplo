@@ -103,8 +103,8 @@ rule seqkit:
         gc_stats = "results/Genomics/1_Assembly/2_Assemblers/flye/raw/filtered/gc_stats.txt",
         assembly_gc_filtered="results/Genomics/1_Assembly/2_Assemblers/flye/raw/filtered/assembly.fasta"
     params:
-          min_gc=30,
-          max_gc=40
+          min_gc=23,
+          max_gc=43
     conda:
         "envs/genomics.yaml"
     script:
