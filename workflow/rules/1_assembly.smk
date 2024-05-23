@@ -98,7 +98,7 @@ rule masurca:
 
 rule seqkit:
     input:
-        assembly="q"
+        assembly="results/Genomics/1_Assembly/2_Assemblers/flye/raw/assembly.fasta"
     output:
         assembly_gc_filtered="results/Genomics/1_Assembly/2_Assemblers/flye/raw/filtered/assembly.fasta"
     params:
