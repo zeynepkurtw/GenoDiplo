@@ -98,7 +98,7 @@ rule masurca:
 
 rule seqkit:
     input:
-        assembly="results/Genomics/1_Assembly/2_Assembly/flye/raw/assembly.fasta"
+        assembly="q"
     output:
         assembly_gc_filtered="results/Genomics/1_Assembly/2_Assembly/flye/raw/filtered/assembly.fasta"
     params:
@@ -109,7 +109,6 @@ rule seqkit:
     script:
         "scripts/Genomics/1_Assembly/3_Evaluation/ContaminationRemoval.py"
 
-#
 rule setup_nr_db:  #FIX
     output:
         protected(directory("/data/zeynep/databases"))
