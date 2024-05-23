@@ -88,7 +88,7 @@ rule masurca:
     input:
          config="resources/AssemblyConfig/config.txt"
     params:
-          path="results/Genomics/1_Assembly/2_Assembly/masurca/",
+          path="results/Genomics/1_Assembly/2_Assembly/masurca/"
     output:
           out_dir=directory("results/Genomics/1_Assembly/2_Assembly/masurca/flye.mr.33.17.15.0.02/")
     conda:
@@ -97,15 +97,15 @@ rule masurca:
           "scripts/Genomics/1_Assembly/2_Assemblers/MasurcaAssembler.py"
 
 rule seqkit:
-    input: "results/Genomics/1_Assembly/2_Assembly/flye/raw/assembly.fasta",
-    output: "results/Genomics/1_Assembly/2_Assembly/flye/raw/filtered/assembly.fasta",
+    input: "results/Genomics/1_Assembly/2_Assembly/flye/raw/assembly.fasta"
+    output:"results/Genomics/1_Assembly/2_Assembly/flye/raw/filtered/assembly.fasta"
     params:
           min_gc=30,
           max_gc=40
     conda:
-        "envs/genomics.yaml",
+        "envs/genomics.yaml"
     script:
-        "scripts/Genomics/1_Assembly/3_Evaluation/ContaminationRemoval.py",
+        "scripts/Genomics/1_Assembly/3_Evaluation/ContaminationRemoval.py"
 
 rule bowtie2_biult_index_evaluation:
     input:
