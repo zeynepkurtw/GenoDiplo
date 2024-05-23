@@ -100,6 +100,7 @@ rule seqkit:
     input:
         assembly="results/Genomics/1_Assembly/2_Assemblers/flye/raw/assembly.fasta"
     output:
+        gc_stats = "results/Genomics/1_Assembly/2_Assemblers/flye/raw/filtered/gc_stats.txt",
         assembly_gc_filtered="results/Genomics/1_Assembly/2_Assemblers/flye/raw/filtered/assembly.fasta"
     params:
           min_gc=30,
