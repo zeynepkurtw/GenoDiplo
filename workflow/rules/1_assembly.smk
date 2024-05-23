@@ -78,7 +78,7 @@ rule flye:
           genome_size="114m",
           threads=32,
     output:
-          out_dir=directory("results/Genomics/1_Assembly/2_Assembly/flye/{process}/")
+          out_dir=directory("results/Genomics/1_Assembly/2_Assemblers/flye/{process}/")
     conda:
          "envs/genomics.yaml"
     script:
@@ -88,9 +88,9 @@ rule masurca:
     input:
          config="resources/AssemblyConfig/config.txt"
     params:
-          path="results/Genomics/1_Assembly/2_Assembly/masurca/"
+          path="results/Genomics/1_Assembly/2_Assemblers/masurca/"
     output:
-          out_dir=directory("results/Genomics/1_Assembly/2_Assembly/masurca/flye.mr.33.17.15.0.02/")
+          out_dir=directory("results/Genomics/1_Assembly/2_Assemblers/masurca/flye.mr.33.17.15.0.02/")
     conda:
          "envs/genomics.yaml"
     script:
@@ -100,7 +100,7 @@ rule seqkit:
     input:
         assembly="q"
     output:
-        assembly_gc_filtered="results/Genomics/1_Assembly/2_Assembly/flye/raw/filtered/assembly.fasta"
+        assembly_gc_filtered="results/Genomics/1_Assembly/2_Assemblers/flye/raw/filtered/assembly.fasta"
     params:
           min_gc=30,
           max_gc=40
@@ -119,7 +119,7 @@ rule setup_nr_db:  #FIX
 
 rule blastn:
     input:
-        query="results/Genomics/1_Assembly/2_Assembly/{assembler}/assembly.fasta",
+        query="results/Genomics/1_Assembly/2_Assemblers/{assembler}/assembly.fasta",
         db="/data/zeynep/databases"
     output:
         "results/Genomics/1_Assembly/3_Evaluation/blastn/{assembler}/assembly.blastn"
@@ -138,7 +138,7 @@ rule blastn:
 
 rule bowtie2_biult_index_evaluation:
     input:
-         "results/Genomics/1_Assembly/2_Assembly/{assembler}/assembly.fasta"
+         "results/Genomics/1_Assembly/2_Assemblers/{assembler}/assembly.fasta"
     output:
           multiext(
               "results/Genomics/1_Assembly/3_Evaluation/{assembler}/bowtie2/index_bt2/assembly",
@@ -201,7 +201,7 @@ rule bowtie2_evaluation_single:
 
 rule meryl:
     input:
-         genome="results/Genomics/1_Assembly/2_Assembly/{assembler}/assembly.fasta",
+         genome="results/Genomics/1_Assembly/2_Assemblers/{assembler}/assembly.fasta",
     output:
           merylDB=directory("results/Genomics/1_Assembly/3_Evaluation/winnowmap/{assembler}/merlyDB"),
           repetitive_k15="results/Genomics/1_Assembly/3_Evaluation/winnowmap/{assembler}/repetitive_k15.txt",
@@ -215,7 +215,7 @@ rule meryl:
 
 rule winnowmap:
     input:
-         genome="results/Genomics/1_Assembly/2_Assembly/{assembler}/assembly.fasta",
+         genome="results/Genomics/1_Assembly/2_Assemblers/{assembler}/assembly.fasta",
          long_read="/data/zeynep/HIN_data/DNA/clean/{long_read}.fastq.gz",
          merylDB="results/Genomics/1_Assembly/3_Evaluation/winnowmap/{assembler}/merlyDB",
          repetitive_k15="results/Genomics/1_Assembly/3_Evaluation/winnowmap/{assembler}/repetitive_k15.txt",
@@ -232,7 +232,7 @@ rule winnowmap:
 
 rule pilon:
     input:
-         assembly="results/Genomics/1_Assembly/2_Assembly/{assembler}/assembly.fasta",
+         assembly="results/Genomics/1_Assembly/2_Assemblers/{assembler}/assembly.fasta",
          ill_run1="results/Genomics/1_Assembly/3_Evaluation/bowtie2/paired/{assembler}/illumina_run1.bam",
          ill_run2="results/Genomics/1_Assembly/3_Evaluation/bowtie2/paired/{assembler}/illumina_run2.bam",
          ill_run3="results/Genomics/1_Assembly/3_Evaluation/bowtie2/paired/{assembler}/illumina_run3.bam",
@@ -246,7 +246,7 @@ rule pilon:
     params:
           threads=32
     output:
-          polished_assembly="results/Genomics/1_Assembly/2_Assembly/pilon/{assembler}/assembly_polished.fasta"
+          polished_assembly="results/Genomics/1_Assembly/2_Assemblers/pilon/{assembler}/assembly_polished.fasta"
     conda:
          "envs/genomics.yaml"
     script:
@@ -255,7 +255,7 @@ rule pilon:
 #Evaluation
 rule quast:
     input:
-         assembly="results/Genomics/1_Assembly/2_Assembly/{assembler}/{process}/assembly.fasta",
+         assembly="results/Genomics/1_Assembly/2_Assemblers/{assembler}/{process}/assembly.fasta",
     params:
           threads=32
     output:
