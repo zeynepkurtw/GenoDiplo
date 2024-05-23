@@ -25,7 +25,7 @@ rule all:
          #masurca
         #"results/Genomics/1_Assembly/2_Assembly/masurca/flye.mr.33.17.15.0.02/",
          #seqkit
-            "results/Genomics/1_Assembly/2_Assembly/flye/raw/filtered/assembly.fasta",
+         "results/Genomics/1_Assembly/2_Assembly/flye/raw/filtered/assembly.fasta",
          #bowtie_paired_reads_evaluation
          expand("results/Genomics/1_Assembly/3_Evaluation/bowtie2/paired/{assembler}/{sample}.bam",
                 assembler=["flye/clean", "flye/raw/filtered", "masurca/flye.mr.33.17.15.0.02"],
