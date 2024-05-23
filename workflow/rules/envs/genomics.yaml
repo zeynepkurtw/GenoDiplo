@@ -13,6 +13,7 @@ dependencies:
   - bioconda::meryl
   - bioconda::winnowmap
   - bioconda::pilon
+  - bioconda::seqkit
   - bioconda::quast
   - bioconda::multiqc
   - bioconda::deeptools
