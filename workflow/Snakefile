@@ -28,21 +28,19 @@ rule all:
          #blastn contamination detection
          #expand("results/Genomics/1_Assembly/3_Evaluation/blastn/{assembler}/assembly.blastn",
           #      assembler=["flye/clean", "flye/raw", "masurca/flye.mr.33.17.15.0.02"] ),
-"""  ###
          #bowtie_paired_reads_evaluation
-         expand("results/Genomics/1_Assembly/3_Evaluation/bowtie2/paired/{assembler}/{sample}.bam",
-                assembler=["flye/clean", "flye/raw/filtered", "masurca/flye.mr.33.17.15.0.02"],
-                sample=["illumina_run1","illumina_run2", "illumina_run3"]),
+       #  expand("results/Genomics/1_Assembly/3_Evaluation/bowtie2/paired/{assembler}/{sample}.bam",
+        #        assembler=["flye/clean", "flye/raw/filtered", "masurca/flye.mr.33.17.15.0.02"],
+         #       sample=["illumina_run1","illumina_run2", "illumina_run3"]),
         #bowtie_single_reads_evaluation
-         expand("results/Genomics/1_Assembly/3_Evaluation/bowtie2/unpaired/{assembler}/{read}.bam",
-                assembler=["flye/clean", "flye/raw/filtered", "masurca/flye.mr.33.17.15.0.02"],
-                read=["illumina_run1_R1","illumina_run1_R2",
-                        "illumina_run2_R1","illumina_run2_R2",
-                        "illumina_run3_R1","illumina_run3_R2",]),
+        # expand("results/Genomics/1_Assembly/3_Evaluation/bowtie2/unpaired/{assembler}/{read}.bam",
+         #       assembler=["flye/clean", "flye/raw/filtered", "masurca/flye.mr.33.17.15.0.02"],
+          #      read=["illumina_run1_R1","illumina_run1_R2",
+           #             "illumina_run2_R1","illumina_run2_R2",
+            #            "illumina_run3_R1","illumina_run3_R2",]),
         #pilon
-         expand("results/Genomics/1_Assembly/2_Assembly/pilon/{assembler}/assembly_polished.fasta",
-                assembler=["flye/clean", "flye/raw/filtered", "masurca/flye.mr.33.17.15.0.02"]),
-"""
+         #expand("results/Genomics/1_Assembly/2_Assembly/pilon/{assembler}/assembly_polished.fasta",
+          #      assembler=["flye/clean", "flye/raw/filtered", "masurca/flye.mr.33.17.15.0.02"]),
           #winnowmap evaluation
          expand("results/Genomics/1_Assembly/3_Evaluation/winnowmap/{assembler}/merlyDB",
                 assembler=["flye/clean", "flye/raw/filtered", "masurca/flye.mr.33.17.15.0.02"],
