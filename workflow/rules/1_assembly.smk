@@ -362,7 +362,7 @@ rule multiqc:
     params:
           threads=32
     output:
-          out_dir=directory("results/Genomics/1_Assembly/3_Evaluation/multiqc")
+          out_dir=directory("results/Genomics/1_Assembly/3_Evaluation/multiqc/{assembler}")
     conda:
          "envs/genomics.yaml"
     shell:
