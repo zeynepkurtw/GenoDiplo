@@ -58,5 +58,6 @@ rule all:
          #expand("results/Genomics/1_Assembly/3_Evaluation/deeptools/{assembler}.png",
           #      assembler=["flye/clean", "flye/raw/filtered", "masurca/flye.mr.33.17.15.0.02"]),
         #multiqc
-         expand("results/Genomics/1_Assembly/3_Evaluation/multiqc/{assembler}",
-           assembler=["flye/clean", "flye/raw/filtered", "masurca/flye.mr.33.17.15.0.02"])
+         #expand("results/Genomics/1_Assembly/3_Evaluation/multiqc/{assembler}",
+         # assembler=["flye/clean", "flye/raw/filtered", "masurca/flye.mr.33.17.15.0.02"])
+
