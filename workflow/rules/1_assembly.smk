@@ -260,7 +260,7 @@ rule bowtie2_evaluation_paired:
             ill_R1="/data/zeynep/HIN_data/DNA/trimmed/paired/{sample}_R1.fastq",
             ill_R2="/data/zeynep/HIN_data/DNA/trimmed/paired/{sample}_R2.fastq"
     output:
-          sorted_bam="results/Genomics/1_Assembly/3_Evaluation/{assembler}/bowtie2/paired/{sample}.bam",
+          sorted_bam="results/Genomics/1_Assembly/3_Evaluation/bowtie2/paired/{assembler}/{sample}.bam",
     params:
           threads=32,
           paired= True
@@ -281,7 +281,7 @@ rule bowtie2_evaluation_single:
              ".rev.2.bt2"),
          single="/data/zeynep/HIN_data/DNA/trimmed/unpaired/{read}.fastq",
     output:
-          sorted_bam="results/Genomics/1_Assembly/3_Evaluation/{assembler}/bowtie2/unpaired/{read}.bam",
+          sorted_bam="results/Genomics/1_Assembly/3_Evaluation/bowtie2/unpaired/{assembler}/{read}.bam",
     params:
           threads=32,
           paired=False
@@ -294,8 +294,8 @@ rule meryl:
     input:
          genome="results/Genomics/1_Assembly/2_Assembly/{assembler}/assembly.fasta",
     output:
-          merylDB=directory("results/Genomics/1_Assembly/3_Evaluation/{assembler}/winnowmap/merlyDB"),
-          repetitive_k15="results/Genomics/1_Assembly/3_Evaluation/{assembler}/winnowmap/repetitive_k15.txt",
+          merylDB=directory("results/Genomics/1_Assembly/3_Evaluation/winnowmap/{assembler}/merlyDB"),
+          repetitive_k15="results/Genomics/1_Assembly/3_Evaluation/winnowmap/{assembler}/repetitive_k15.txt",
     params:
           threads=30,
           nanopore=True
@@ -308,11 +308,11 @@ rule winnowmap:
     input:
          genome="results/Genomics/1_Assembly/2_Assembly/{assembler}/assembly.fasta",
          long_read="/data/zeynep/HIN_data/DNA/clean/{long_read}.fastq.gz",
-         merylDB="results/Genomics/1_Assembly/3_Evaluation/{assembler}/winnowmap/merlyDB",
-         repetitive_k15="results/Genomics/1_Assembly/3_Evaluation/{assembler}/winnowmap/repetitive_k15.txt",
+         merylDB="results/Genomics/1_Assembly/3_Evaluation/winnowmap/{assembler}/merlyDB",
+         repetitive_k15="results/Genomics/1_Assembly/3_Evaluation/winnowmap/{assembler}/repetitive_k15.txt",
     output:
-          sorted_bam="results/Genomics/1_Assembly/3_Evaluation/{assembler}/winnowmap/{long_read}.bam",
-          #bai="results/Genomics/1_Assembly/3_Evaluation/{assembler}/winnowmap/{long_read}.bai"
+          sorted_bam="results/Genomics/1_Assembly/3_Evaluation/winnowmap/{assembler}/{long_read}.bam",
+          #bai="results/Genomics/1_Assembly/3_Evaluation/winnowmap/{assembler}/{long_read}.bai"
     params:
           threads=32,
           nanopore=True
@@ -324,15 +324,15 @@ rule winnowmap:
 rule pilon:
     input:
         assembly="results/Genomics/1_Assembly/2_Assembly/{assembler}/assembly.fasta",
-        ill_run1="results/Genomics/1_Assembly/3_Evaluation/{assembler}/bowtie2/paired/illumina_run1.bam",
-        ill_run2="results/Genomics/1_Assembly/3_Evaluation/{assembler}/bowtie2/paired/illumina_run2.bam",
-        ill_run3="results/Genomics/1_Assembly/3_Evaluation/{assembler}/bowtie2/paired/illumina_run3.bam",
-        ill_run1_R1_up="results/Genomics/1_Assembly/3_Evaluation/{assembler}/bowtie2/unpaired/illumina_run1_R1.bam",
-        ill_run1_R2_up="results/Genomics/1_Assembly/3_Evaluation/{assembler}/bowtie2/unpaired/illumina_run1_R2.bam",
-        ill_run2_R1_up="results/Genomics/1_Assembly/3_Evaluation/{assembler}/bowtie2/unpaired/illumina_run2_R1.bam",
-        ill_run2_R2_up="results/Genomics/1_Assembly/3_Evaluation/{assembler}/bowtie2/unpaired/illumina_run2_R2.bam",
-        ill_run3_R1_up="results/Genomics/1_Assembly/3_Evaluation/{assembler}/bowtie2/unpaired/illumina_run3_R1.bam",
-        ill_run3_R2_up="results/Genomics/1_Assembly/3_Evaluation/{assembler}/bowtie2/unpaired/illumina_run3_R2.bam",
+        ill_run1="results/Genomics/1_Assembly/3_Evaluation/bowtie2/paired/{assembler}/illumina_run1.bam",
+        ill_run2="results/Genomics/1_Assembly/3_Evaluation/bowtie2/paired/{assembler}/illumina_run2.bam",
+        ill_run3="results/Genomics/1_Assembly/3_Evaluation/bowtie2/paired/{assembler}/illumina_run3.bam",
+        ill_run1_R1_up="results/Genomics/1_Assembly/3_Evaluation/bowtie2/unpaired/{assembler}/illumina_run1_R1.bam",
+        ill_run1_R2_up="results/Genomics/1_Assembly/3_Evaluation/bowtie2/unpaired/{assembler}/illumina_run1_R2.bam",
+        ill_run2_R1_up="results/Genomics/1_Assembly/3_Evaluation/bowtie2/unpaired/{assembler}/illumina_run2_R1.bam",
+        ill_run2_R2_up="results/Genomics/1_Assembly/3_Evaluation/bowtie2/unpaired/{assembler}/illumina_run2_R2.bam",
+        ill_run3_R1_up="results/Genomics/1_Assembly/3_Evaluation/bowtie2/unpaired/{assembler}/illumina_run3_R1.bam",
+        ill_run3_R2_up="results/Genomics/1_Assembly/3_Evaluation/bowtie2/unpaired/{assembler}/illumina_run3_R2.bam",
 
     params:
         threads=32
@@ -371,11 +371,11 @@ rule multiqc:
 rule plot_coverage_cont:
         input:
             #coverage on assembley
-            run1 = "results/Genomics/1_Assembly/3_Evaluation/{assembler}/bowtie2/paired/illumina_run1.bam",
-            run2 = "results/Genomics/1_Assembly/3_Evaluation/{assembler}/bowtie2/paired/illumina_run2.bam",
-            run3 = "results/Genomics/1_Assembly/3_Evaluation/{assembler}/bowtie2/paired/illumina_run3.bam",
-            pac = "results/Genomics/1_Assembly/3_Evaluation/{assembler}/winnowmap/pacbio.bam",
-            nano = "results/Genomics/1_Assembly/3_Evaluation/{assembler}/winnowmap/nanopore.bam"
+            run1 = "results/Genomics/1_Assembly/3_Evaluation/bowtie2/paired/{assembler}/illumina_run1.bam",
+            run2 = "results/Genomics/1_Assembly/3_Evaluation/bowtie2/paired/{assembler}/illumina_run2.bam",
+            run3 = "results/Genomics/1_Assembly/3_Evaluation/bowtie2/paired/{assembler}/illumina_run3.bam",
+            pac = "results/Genomics/1_Assembly/3_Evaluation/winnowmap/{assembler}/pacbio.bam",
+            nano = "results/Genomics/1_Assembly/3_Evaluation/winnowmap/{assembler}/nanopore.bam"
         output:
             out= "results/Genomics/1_Assembly/3_Evaluation/deeptools/{assembler}.png",
             outraw= "results/Genomics/1_Assembly/3_Evaluation/deeptools/{assembler}/outRawCounts.txt"
