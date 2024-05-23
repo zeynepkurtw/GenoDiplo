@@ -1,0 +1,1 @@
+from snakemake.shell import shelloutput = snakemake.output[0]shell(f"""    mkdir -p {output}    cd {output}    update_blastdb.pl --decompress nr""")

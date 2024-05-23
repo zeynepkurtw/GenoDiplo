@@ -24,6 +24,61 @@ rule glimmerhmm:
     script:
         "scripts/Genomics/2_Annotation/1_Structural/GlimmerHMMAnnotation.py"
 
+rule augustus:
+    input:
+        genome = "resources/{type}/hybrid_masurca_masked.fasta"
+    output:
+        directory("output/{type}/Augustus"),
+        "output/{type}/Augustus/HIN.gff"
+    params:
+        num_threads = 30,
+        species= "BUSCO_sp_tetrahymena_long"
+    conda:
+        "envs/blast.yaml"
+    script:
+        "scripts/augustus.py"
+
+rule V3_busco_geneset:
+    input:
+        geneset = "resources/{type}/geneset/HIN.faa"
+    output:
+        directory("output/{type}/V3/HIN_geneset_V3_eukaryota/")
+    params:
+        lineage = "resources/3_BUSCO/V3/eukaryota_odb9",
+        mode = "prot",
+        num_threads = 30,
+        out_name = "HIN_v3_euk"
+    conda:
+        "envs/blast.yaml"
+    script:
+        "scripts/busco_v3.py"
+
+rule busco_transcriptome:
+    input:
+        trans = "resources/{type}/{assesment}/HIN_trans.fasta"
+    output:
+        directory("output/{type}/{assesment}/HIN_trans")
+    params:
+        lineage = "eukaryota_odb10",
+        mode = "tran",
+        tran = True,
+        num_threads = 30,
+        species= "tetrahymena"
+    conda:
+        "envs/blast.yaml"
+    script:
+        "scripts/busco.py"
+
+rule busco_plot:
+    input:
+        "resources/{type}/summaries/"
+    output:
+        directory("resources/{type}/summaries/")
+    conda:
+        "envs/blast.yaml"
+    shell:
+        "generate_plot.py -wd {input}"
+
 #Functional Annotation
 rule makeblastdb:
     input:

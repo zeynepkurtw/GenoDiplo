@@ -109,6 +109,33 @@ rule seqkit:
     script:
         "scripts/Genomics/1_Assembly/3_Evaluation/ContaminationRemoval.py"
 
+rule setup_nr_db:
+    output:
+        protected(directory("/data/zeynep/databases"))
+    conda:
+        "envs/genomics.yaml"
+    script:
+        "scripts/Genomics/1_Assembly/3_Evaluation/setup_nr_db.py"
+
+rule blastn:
+    input:
+        query="results/Genomics/1_Assembly/2_Assembly/{assembler}/assembly.fasta",
+        db="/data/zeynep/databases"
+    output:
+        "results/Genomics/1_Assembly/3_Evaluation/blastn/{assembler}/assembly.blastn"
+    params:
+        perc_identity=95,
+        outfmt=6,
+        threads=32,
+        max_target_seqs=1,
+        max_hsps=1,
+        db_prefix="/data/zeynep/databases/nr"
+    conda:
+        "envs/genomics.yaml"
+    script:
+        "scripts/Genomics/1_Assembly/3_Evaluation/blastn.py"
+
+
 rule bowtie2_biult_index_evaluation:
     input:
          "results/Genomics/1_Assembly/2_Assembly/{assembler}/assembly.fasta"
