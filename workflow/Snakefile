@@ -24,7 +24,7 @@ rule all:
                 process=["clean", "raw"]),
          #masurca
         #"results/Genomics/1_Assembly/2_Assembly/masurca/flye.mr.33.17.15.0.02/",
-         #seqkit
+         #seqkit gc filter
          "results/Genomics/1_Assembly/2_Assembly/flye/raw/filtered/assembly.fasta",
          #bowtie_paired_reads_evaluation
          expand("results/Genomics/1_Assembly/3_Evaluation/bowtie2/paired/{assembler}/{sample}.bam",
