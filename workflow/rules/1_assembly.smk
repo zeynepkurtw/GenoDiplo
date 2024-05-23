@@ -97,8 +97,10 @@ rule masurca:
           "scripts/Genomics/1_Assembly/2_Assemblers/MasurcaAssembler.py"
 
 rule seqkit:
-    input: "results/Genomics/1_Assembly/2_Assembly/flye/raw/assembly.fasta"
-    output:"results/Genomics/1_Assembly/2_Assembly/flye/raw/filtered/assembly.fasta"
+    input:
+        assembly="results/Genomics/1_Assembly/2_Assembly/flye/raw/assembly.fasta"
+    output:
+        assembly_gc_filtered="results/Genomics/1_Assembly/2_Assembly/flye/raw/filtered/assembly.fasta"
     params:
           min_gc=30,
           max_gc=40
