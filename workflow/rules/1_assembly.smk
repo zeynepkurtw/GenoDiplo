@@ -112,7 +112,7 @@ rule seqkit:
 
 rule setup_nr_db:  #FIX
     output:
-        protected(directory("/data/zeynep/databases"))
+        outdir = protected(directory("/data/zeynep/databases"))
     conda:
         "envs/genomics.yaml"
     script:
@@ -121,17 +121,16 @@ rule setup_nr_db:  #FIX
 rule blastn:
     input:
         query="results/Genomics/1_Assembly/2_Assemblers/{assembler}/assembly.fasta",
-        #db="/data/zeynep/databases"
-        db_files=expand("/data/zeynep/databases/nr.{ext}",ext=["00", "01", "02", "03", "04", "05", "06", "07", "08", "09","10"])
+        db="/data/zeynep/databases"
     output:
-        "results/Genomics/1_Assembly/3_Evaluation/blastn/{assembler}/assembly.blastn"
+        "results/Genomics/1_Assembly/3_Evaluation/blastn/{assembler}/{db}/assembly.blastn"
     params:
         perc_identity=95,
         outfmt=6,
         threads=32,
         max_target_seqs=1,
         max_hsps=1,
-        db_prefix="/data/zeynep/databases/nr"
+        db_prefix="/data/zeynep/databases/{db}"
     conda:
         "envs/genomics.yaml"
     script:

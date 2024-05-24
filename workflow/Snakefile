@@ -26,9 +26,10 @@ rule all:
          #seqkit gc filter script
          "results/Genomics/1_Assembly/2_Assemblers/flye/raw/filtered/assembly.fasta",
          #blastn contamination detection
-         expand("results/Genomics/1_Assembly/3_Evaluation/blastn/{assembler}/assembly.blastn",
+         expand("results/Genomics/1_Assembly/3_Evaluation/blastn/{assembler}/{db}/assembly.blastn",
                 #assembler=["flye/clean", "flye/raw","flye/raw/filtered", "masurca/flye.mr.33.17.15.0.02"] ),
-                assembler=["flye/raw"]),
+                assembler=["flye/raw"],
+                db= ["human_genomic", "ref_prok_rep_genomes"]),
                 #bowtie_paired_reads_evaluation
        #  expand("results/Genomics/1_Assembly/3_Evaluation/bowtie2/paired/{assembler}/{sample}.bam",
         #        assembler=["flye/clean", "flye/raw/filtered", "masurca/flye.mr.33.17.15.0.02"],
