@@ -121,7 +121,8 @@ rule setup_nr_db:  #FIX
 rule blastn:
     input:
         query="results/Genomics/1_Assembly/2_Assemblers/{assembler}/assembly.fasta",
-        db="/data/zeynep/databases"
+        #db="/data/zeynep/databases"
+        db_files=expand("/data/zeynep/databases/nr.{ext}",ext=["00", "01", "02", "03", "04", "05", "06", "07", "08", "09","10"])
     output:
         "results/Genomics/1_Assembly/3_Evaluation/blastn/{assembler}/assembly.blastn"
     params:
