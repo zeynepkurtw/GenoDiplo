@@ -1,6 +1,6 @@
 rule prodigal:
     input:
-         genome="results/Genomics/1_Assembly/2_Assemblers/{assembler}/assembly.fasta",
+         assembly="results/Genomics/1_Assembly/2_Assemblers/{assembler}/assembly.fasta",
     output:
           gff="results/Genomics/2_Annotation/1_Structural/prodigal/{assembler}/genome.gff",
           faa="results/Genomics/2_Annotation/1_Structural/prodigal/{assembler}/genome.faa",
