@@ -118,13 +118,13 @@ rule diamond_blastp:
           "scripts/Genomics/2_Annotation/2_Functional/Diamond.py"
 rule eggnogmapper:
     input:
-         proteome="results/Genomics/2_Annotation/1_Structural/{assembler}/{annotation}/genome.faa"
+         proteome="results/Genomics/2_Annotation/1_Structural/{annotation}/{assembler}/genome.faa"
     output:
-          "results/Genomics/2_Annotation/2_Functional/eggnogmapper/{assembler}/{annotation}/eggnogmapper_results.tsv"
+          "results/Genomics/2_Annotation/2_Functional/eggnogmapper/{annotation}/{assembler}/eggnogmapper_results.tsv"
     params:
           threads=32,
           diamond="diamond",
-          outdir="results/Genomics/2_Annotation/2_Functional/eggnogmapper/{assembler}/{annotation}/",
+          outdir="results/Genomics/2_Annotation/2_Functional/eggnogmapper/{annotation}/{assembler}/",
           datadir="/data/zeynep/eggnog-mapper/data/",
 
     conda:
