@@ -53,8 +53,8 @@ rule all:
          expand("results/Genomics/2_Annotation/1_Structural/prodigal/{assembler}/genome.gff",
                 assembler=["masurca/flye.mr.33.17.15.0.02"]),
          #glimmerhmm
-         #expand("results/Genomics/2_Annotation/1_Structural/glimmerhmm/{assembler}/genome.faa",
-          #      assembler=["flye/clean", "masurca/flye.mr.33.17.15.0.02"]),
+         expand("results/Genomics/2_Annotation/1_Structural/glimmerhmm/{assembler}/genome.faa",
+              assembler=["masurca/flye.mr.33.17.15.0.02"]),
     """ 
          #diamond_blastp
          #  expand("results/Genomics/2_Annotation/2_Functional/{annotation}/{assembler}/genome_diplomonads.blastp",
