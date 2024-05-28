@@ -1,7 +1,7 @@
 from snakemake.shell import shell
 
 genome = snakemake.input.genome
-out = snakemake.output
+out = snakemake.output[0]
 
 #seq_identity = snakemake.params.seq_identity
 threads = snakemake.params.threads
