@@ -11,7 +11,7 @@ rule prodigal:
           "scripts/Genomics/2_Annotation/1_Structural/ProdigalAnnotation.py"
 rule glimmerhmm:
     input:
-        training_genes="resources/Train_GlimmerHMM/training_genes.fasta",
+        training_genes="resources/Train_GlimmerHMM/training_genes.cds",
         genome= "results/Genomics/1_Assembly/2_Assembly/{assembler}/assembly.fasta",
     params:
           n=150,
