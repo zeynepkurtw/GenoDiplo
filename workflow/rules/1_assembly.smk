@@ -110,7 +110,7 @@ rule seqkit:
     script:
         "scripts/Genomics/1_Assembly/3_Evaluation/ContaminationRemoval.py"
 
-rule setup_nr_db:  #FIX
+rule setup_nr_db:  #FIX how to actuvste this before running blastn
     output:
         outdir = protected(directory("/data/zeynep/databases"))
     conda:
@@ -125,11 +125,9 @@ rule blastn:
     output:
         "results/Genomics/1_Assembly/3_Evaluation/blastn/{assembler}/{db}/assembly.blastn"
     params:
-        perc_identity=95,
-        outfmt=6,
+        outfmt= "6 qseqid sseqid pident length mismatch gapopen qstart qend sstart send evalue bitscore qlen slen stitle",
         threads=32,
-        max_target_seqs=1,
-        max_hsps=1,
+        evalue=1e-10,
         db_prefix="/data/zeynep/databases/{db}"
     conda:
         "envs/genomics.yaml"
