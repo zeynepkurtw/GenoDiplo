@@ -51,40 +51,40 @@ rule all:
          # assembler=["flye/clean", "flye/raw/filtered", "masurca/flye.mr.33.17.15.0.02"])
          #prodigal
          expand("results/Genomics/2_Annotation/1_Structural/prodigal/{assembler}/genome.gff",
-                assembler=["flye/clean", "masurca"]),
+                assembler=["flye/clean", "masurca/flye.mr.33.17.15.0.02"]),
          #glimmerhmm
          expand("results/Genomics/2_Annotation/1_Structural/glimmerhmm/{assembler}/genome.faa",
-                assembler=["flye/clean", "masurca"]),
+                assembler=["flye/clean", "masurca/flye.mr.33.17.15.0.02"]),
          #diamond_blastp
          #  expand("results/Genomics/2_Annotation/2_Functional/{assembler}/{annotation}/genome_diplomonads.blastp",
          #        annotation=["glimmerhmm"],
-         #       assembler=["flye/clean", "masurca"]),
+         #       assembler=["flye/clean", "masurca/flye.mr.33.17.15.0.02"]),
          #eggnogmapper
          expand("results/Genomics/2_Annotation/2_Functional/{assembler}/{annotation}/eggnogmapper_results.tsv",
                 annotation=["glimmerhmm"],
-                assembler=["flye/clean", "masurca"]),
+                assembler=["flye/clean", "masurca/flye.mr.33.17.15.0.02"]),
          #interproscan
          expand("results/Genomics/2_Annotation/2_Functional/{assembler}/{annotation}/interproscan_results.tsv",
                 annotation=["glimmerhmm"],
-                assembler=["flye/clean", "masurca"]),
+                assembler=["flye/clean", "masurca/flye.mr.33.17.15.0.02"]),
          #repeatmodeler
          expand("results/ComparativeGenomics/1_GenomeStructureLevel/{assembler}/RModeler/genome_db-families.fasta",
-                assembler=["flye/clean", "masurca"]),
+                assembler=["flye/clean", "masurca/flye.mr.33.17.15.0.02"]),
          #repeatmasker
          expand("results/ComparativeGenomics/1_GenomeStructureLevel/{assembler}/RMasker",
-                assembler=["flye/clean", "masurca"]),
+                assembler=["flye/clean", "masurca/flye.mr.33.17.15.0.02"]),
          #tRNAscan
          expand("results/Genomics/1_Assembly/2_Assembly/{assembler}/genome.tRNAscan",
-                assembler=["flye/clean", "masurca"]),
+                assembler=["flye/clean", "masurca/flye.mr.33.17.15.0.02"]),
          #tRNAscan_cov
          expand("results/Genomics/1_Assembly/2_Assembly/{assembler}/sensitive_search/genome.tRNAscan_cov",
-                assembler=["flye/clean", "masurca"]),
+                assembler=["flye/clean", "masurca/flye.mr.33.17.15.0.02"]),
          #barrnap
          expand("results/ComparativeGenomics/1_GenomeStructureLevel/{assembler}/genome.rrna.gff",
-                assembler=["flye/clean", "masurca"]),
+                assembler=["flye/clean", "masurca/flye.mr.33.17.15.0.02"]),
          #cdhit
          expand("results/ComparativeGenomics/1_GenomeStructureLevel/{assembler}/genome_{n}.cdhit",
-                assembler=["flye/clean", "masurca"],
+                assembler=["flye/clean", "masurca/flye.mr.33.17.15.0.02"],
                 n=[0.70, 0.75, 0.80, 0.85, 0.90, 0.95, 1]),
         #orthofinder
             "results/ComparativeGenomics/2_SequenceSimilarityLevel/"
