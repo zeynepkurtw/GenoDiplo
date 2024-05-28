@@ -1,7 +1,7 @@
 #Genome Structure Level
 rule build_database_repeatmodeler:
     input:
-         genome="results/Genomics/1_Assembly/2_Assembly/pilon/{assembler}/assembly_polished.fasta",
+         genome="results/Genomics/1_Assembly/2_Assemblers/{assembler}/assembly.fasta",
     output:
           multiext("results/ComparativeGenomics/1_GenomeStructureLevel/RModeler/{assembler}/genome_db",
                    ".nhr",
@@ -34,7 +34,7 @@ rule repeatmodeler:
 
 rule repeatmasker:
     input:
-         genome="results/Genomics/1_Assembly/2_Assembly/pilon/{assembler}/assembly_polished.fasta",
+         genome="results/Genomics/1_Assembly/2_Assemblers/{assembler}/assembly.fasta",
          lib="results/ComparativeGenomics/1_GenomeStructureLevel/RModeler/{assembler}/genome_db-families.fasta"
     output:
           directory("results/ComparativeGenomics/1_GenomeStructureLevel/RMasker/{assembler}")
@@ -46,7 +46,7 @@ rule repeatmasker:
 
 rule tRNAscan:
     input:
-         genome="results/Genomics/1_Assembly/2_Assembly/pilon/{assembler}/assembly_polished.fasta"
+         genome="results/Genomics/1_Assembly/2_Assemblers/{assembler}/assembly.fasta"
     params: threads=8
     output:
           tRNA="results/Genomics/1_Assembly/2_Assembly/tRNAscan/{assembler}/genome.tRNAscan",
@@ -59,7 +59,7 @@ rule tRNAscan:
 
 rule tRNAscan_cov:
     input:
-         genome="results/Genomics/1_Assembly/2_Assembly/pilon/{assembler}/assembly_polished.fasta"
+         genome="results/Genomics/1_Assembly/2_Assemblers/{assembler}/assembly.fasta"
     params: threads=8
     output:
           tRNA="results/Genomics/1_Assembly/2_Assembly/tRNAscan/sensitive_search/{assembler}/genome.tRNAscan_cov",
@@ -71,7 +71,7 @@ rule tRNAscan_cov:
 
 rule barrnap:
     input:
-         genome="results/Genomics/1_Assembly/2_Assembly/pilon/{assembler}/assembly_polished.fasta"
+         genome="results/Genomics/1_Assembly/2_Assemblers/{assembler}/assembly.fasta"
     output:
           gff="results/ComparativeGenomics/1_GenomeStructureLevel/barrnap/{assembler}/genome.rrna.gff",
     conda:
@@ -81,7 +81,7 @@ rule barrnap:
 
 rule cdhit:
     input:
-        genome = "results/Genomics/1_Assembly/2_Assembly/pilon/{assembler}/assembly_polished.fasta"
+        genome = "results/Genomics/1_Assembly/2_Assemblers/{assembler}/assembly.fasta"
     params:
         threads=8
     output: "results/ComparativeGenomics/1_GenomeStructureLevel/cdhit/{assembler}/genome_{n}.cdhit"
