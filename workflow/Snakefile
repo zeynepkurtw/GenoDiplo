@@ -60,7 +60,7 @@ rule all:
          #        annotation=["glimmerhmm"],
          #       assembler=["flye/clean", "masurca/flye.mr.33.17.15.0.02"]),
          #eggnogmapper
-         expand("results/Genomics/2_Annotation/2_Functional/{assembler}/{annotation}/eggnogmapper_results.tsv",
+         expand("results/Genomics/2_Annotation/2_Functional/eggnogmapper/{assembler}/{annotation}/eggnogmapper_results.tsv",
                 annotation=["glimmerhmm"],
                 assembler=["flye/clean", "masurca/flye.mr.33.17.15.0.02"]),
          #interproscan

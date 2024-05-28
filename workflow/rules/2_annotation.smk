@@ -34,7 +34,7 @@ rule augustus:
         num_threads = 30,
         species= "BUSCO_sp_tetrahymena_long"
     conda:
-        "envs/blast.yaml"
+        "envs/genomics.yaml"
     script:
         "scripts/augustus.py"
 
@@ -49,7 +49,7 @@ rule V3_busco_geneset:
         num_threads = 30,
         out_name = "HIN_v3_euk"
     conda:
-        "envs/blast.yaml"
+        "envs/genomics.yaml"
     script:
         "scripts/busco_v3.py"
 
@@ -65,7 +65,7 @@ rule busco_transcriptome:
         num_threads = 30,
         species= "tetrahymena"
     conda:
-        "envs/blast.yaml"
+        "envs/genomics.yaml"
     script:
         "scripts/busco.py"
 
@@ -75,7 +75,7 @@ rule busco_plot:
     output:
         directory("resources/{type}/summaries/")
     conda:
-        "envs/blast.yaml"
+        "envs/genomics.yaml"
     shell:
         "generate_plot.py -wd {input}"
 
@@ -95,7 +95,7 @@ rule makeblastdb:
     params:
         outname="results/{type}/db/{db}"
     conda:
-        "envss/blast.yaml"
+        "envs/genomics.yaml"
     shell:
         'makeblastdb -dbtype nucl -in {input} -out {params.outname}'
 
@@ -119,12 +119,12 @@ rule eggnogmapper:
     input:
          proteome="results/Genomics/2_Annotation/1_Structural/{assembler}/{annotation}/genome.faa"
     output:
-          "results/Genomics/2_Annotation/2_Functional/{assembler}/{annotation}/eggnogmapper_results.tsv"
+          "results/Genomics/2_Annotation/2_Functional/eggnogmapper/{assembler}/{annotation}/eggnogmapper_results.tsv"
     params:
           threads=32,
           diamond="diamond",
-          outdir="results/Genomics/2_Annotation/2_Functional/{assembler}/{annotation}/",
-          datadir="path/to/data",
+          outdir="results/Genomics/2_Annotation/2_Functional/eggnogmapper/{assembler}/{annotation}/",
+          datadir="/data/zeynep/eggnog-mapper/data/",
 
     conda:
          "envs/genomics.yaml"
