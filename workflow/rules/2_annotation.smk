@@ -1,44 +1,11 @@
-"""
-    #prodigal
-         expand("results/Genomics/2_Annotation/1_Structural/{assembler}/prodigal/genome.gff",
-                assembler=["flye", "masurca"]),
-         #glimmerhmm
-         expand("results/Genomics/2_Annotation/1_Structural/{assembler}/glimmerhmm/genome.faa",
-                assembler=["flye", "masurca"]),
-         #diamond_blastp
-       #  expand("results/Genomics/2_Annotation/2_Functional/{assembler}/{annotation}/genome_diplomonads.blastp",
-        #        annotation=["glimmerhmm"],
-         #       assembler=["flye", "masurca"]),
-         #eggnogmapper
-         expand("results/Genomics/2_Annotation/2_Functional/{assembler}/{annotation}/eggnogmapper_results.tsv",
-                annotation=["glimmerhmm"],
-                assembler=["flye", "masurca"]),
-         #interproscan
-         expand("results/Genomics/2_Annotation/2_Functional/{assembler}/{annotation}/interproscan_results.tsv",
-                annotation=["glimmerhmm"],
-                assembler=["flye", "masurca"]),
-        #repeatmodeler
-         expand("results/ComparativeGenomics/1_GenomeStructureLevel/{assembler}/RModeler/genome_db-families.fasta",
-                assembler=["flye", "masurca"]),
-        #repeatmasker
-            expand("results/ComparativeGenomics/1_GenomeStructureLevel/{assembler}/RMasker",
-                   assembler=["flye", "masurca"]),
-        #tRNAscan
-            expand("results/Genomics/1_Assembly/2_Assembly/{assembler}/genome.tRNAscan",
-                   assembler=["flye", "masurca"]),
-        #tRNAscan_cov
-            expand("results/Genomics/1_Assembly/2_Assembly/{assembler}/sensitive_search/genome.tRNAscan_cov",
-                   assembler=["flye", "masurca"]),
-        #barrnap
-            expand("results/ComparativeGenomics/1_GenomeStructureLevel/{assembler}/genome.rrna.gff",
-                   assembler=["flye", "masurca"]),
-        #cdhit
-            expand("results/ComparativeGenomics/1_GenomeStructureLevel/{assembler}/genome_{n}.cdhit",
-                   assembler=["flye", "masurca"],
-                   n=[0.70, 0.75, 0.80, 0.85, 0.90, 0.95, 1]),
-        #orthofinder
-            #"results/ComparativeGenomics/2_SequenceSimilarityLevel/"
-        #orthofinder_rerun
+configfile: "config/config.yaml"
+include: "rules/2_annotation.smk"
+
+
+rule all:
+    input:
+
+
 
 
 #expand("results/2_cdhit/{sp}_{n}.cdhit", n=config["seq_identity"], sp=config["species"])

@@ -1,3 +1,12 @@
+configfile: "config/config.yaml"
+include: "rules/4_homology_level.smk"
+
+rule all:
+    input:
+        #orthofinder
+        "results/ComparativeGenomics/2_SequenceSimilarityLevel/"
+        #orthofinder_rerun
+
 rule orthofinder:
     input:
          proteome="resources/Orthofinder/sp/"
