@@ -1,6 +1,6 @@
 rule prodigal:
     input:
-         genome="results/Genomics/1_Assembly /2_Assemblers/{assembler}/assembly.fasta",
+         genome="results/Genomics/1_Assembly/2_Assemblers/{assembler}/assembly.fasta",
     output:
           gff="results/Genomics/2_Annotation/1_Structural/prodigal/{assembler}/genome.gff",
           faa="results/Genomics/2_Annotation/1_Structural/prodigal/{assembler}/genome.faa",
@@ -12,7 +12,7 @@ rule prodigal:
 rule glimmerhmm:
     input:
         training_genes="resources/Train_GlimmerHMM/training_genes.cds",
-        genome= "results/Genomics/1_Assembly /2_Assemblers/{assembler}/assembly.fasta",
+        genome= "results/Genomics/1_Assembly/2_Assemblers/{assembler}/assembly.fasta",
     params:
           n=150,
           v=50
