@@ -3,8 +3,8 @@ rule prodigal:
          genome="results/Genomics/1_Assembly/2_Assembly/{assembler}/assembly.fasta",
     output:
           gff="results/Genomics/2_Annotation/1_Structural/prodigal/{assembler}/genome.gff",
-          faa="results/Genomics/2_Annotation/1_Structural/prodigal/{assembler}/genome.faa",
-          ffn="results/Genomics/2_Annotation/1_Structural/prodigal/{assembler}/genome.ffn",
+          #faa="results/Genomics/2_Annotation/1_Structural/prodigal/{assembler}/genome.faa",
+          #ffn="results/Genomics/2_Annotation/1_Structural/prodigal/{assembler}/genome.ffn",
     conda:
          "envs/genomics.yaml"
     script:
