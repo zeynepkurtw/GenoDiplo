@@ -1,28 +1,3 @@
-configfile: "config/config.yaml"
-include: "rules/2_annotation.smk"
-
-
-rule all:
-    input:
-
-
-
-
-#expand("results/2_cdhit/{sp}_{n}.cdhit", n=config["seq_identity"], sp=config["species"])
-#expand("results/7_tRNAscan/{sp}.tRNAscan",sp=["HIN", "muris", "wb", "spiro"]),
-#expand("results/7_tRNAscan/sensitive_search/{sp}.cov.tRNAscan",sp=[ "muris", "wb", "spiro"]),
-
-
-Genomics Analysis
-    1: Hybrid Genome Assembly Workflow
-        -Reads Preprocessing
-        -Assembly
-        -Evaluation
-    2: Genome Annotation Workflow
-        -Structural Annotation
-        -Functional Annotation
-"""
-
 rule prodigal:
     input:
          genome="results/Genomics/1_Assembly/2_Assembly/pilon/{assembler}/assembly_polished.fasta",
