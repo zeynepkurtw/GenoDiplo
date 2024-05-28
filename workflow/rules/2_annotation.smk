@@ -102,9 +102,9 @@ rule makeblastdb:
 
 rule diamond_blastp:
     input:
-         genome="results/Genomics/2_Annotation/1_Structural/{assembler}/{annotation}/genome.faa"
+         genome="results/Genomics/2_Annotation/1_Structural/{annotation}/{assembler}/genome.faa"
     output:
-          "results/Genomics/2_Annotation/2_Functional/{assembler}/{annotation}/genome_diplomonads.blastp"
+          "results/Genomics/2_Annotation/2_Functional/{annotation}/{assembler}/genome_diplomonads.blastp"
     params:
           db_prefix="path/to/database_prefix",
           outfmt=6,
@@ -133,9 +133,9 @@ rule eggnogmapper:
           "scripts/Genomics/2_Annotation/2_Functional/Eggnogmapper.py"
 rule interproscan:
     input:
-         proteome="results/Genomics/2_Annotation/1_Structural/{assembler}/{annotation}/genome.faa"
+         proteome="results/Genomics/2_Annotation/1_Structural/{annotation}/{assembler}/genome.faa"
     output:
-          "results/Genomics/2_Annotation/2_Functional/{assembler}/{annotation}/interproscan_results.tsv"
+          "results/Genomics/2_Annotation/2_Functional/interproscan/{annotation}/{assembler}/interproscan_results.tsv"
     params:
           threads=32,
     conda:

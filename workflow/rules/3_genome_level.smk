@@ -20,11 +20,11 @@ rule build_database_repeatmodeler:
 
 rule repeatmodeler:
     input:
-         db="results/ComparativeGenomics/1_GenomeStructureLevel/{assembler}/RModeler/genome_db.nhr"
+         db="results/ComparativeGenomics/1_GenomeStructureLevel/RModeler/{assembler}/genome_db.nhr"
     output:
-          "results/ComparativeGenomics/1_GenomeStructureLevel/{assembler}/RModeler/genome_db-families.fasta"
+          "results/ComparativeGenomics/1_GenomeStructureLevel/RModeler/{assembler}/genome_db-families.fasta"
     params:
-          db_name="results/ComparativeGenomics/1_GenomeStructureLevel/{assembler}/RModeler/genome_db",
+          db_name="results/ComparativeGenomics/1_GenomeStructureLevel/RModeler/{assembler}/genome_db",
           threads = 8,
           engine="ncbi"
     conda:
@@ -35,9 +35,9 @@ rule repeatmodeler:
 rule repeatmasker:
     input:
          genome="results/Genomics/1_Assembly/2_Assembly/pilon/{assembler}/assembly_polished.fasta",
-         lib="results/ComparativeGenomics/1_GenomeStructureLevel/{assembler}/RModeler/genome_db-families.fasta"
+         lib="results/ComparativeGenomics/1_GenomeStructureLevel/RModeler/{assembler}/genome_db-families.fasta"
     output:
-          directory("results/ComparativeGenomics/1_GenomeStructureLevel/{assembler}/RMasker")
+          directory("results/ComparativeGenomics/1_GenomeStructureLevel/RMasker/{assembler}")
     conda:
          "envs/genomics.yaml"
     threads: 32
@@ -49,9 +49,9 @@ rule tRNAscan:
          genome="results/Genomics/1_Assembly/2_Assembly/pilon/{assembler}/assembly_polished.fasta"
     params: threads=8
     output:
-          tRNA="results/Genomics/1_Assembly/2_Assembly/{assembler}/genome.tRNAscan",
-          stats="results/Genomics/1_Assembly/2_Assembly/{assembler}/genome.stats",
-          gff="results/Genomics/1_Assembly/2_Assembly/{assembler}/genome.gff"
+          tRNA="results/Genomics/1_Assembly/2_Assembly/tRNAscan/{assembler}/genome.tRNAscan",
+          stats="results/Genomics/1_Assembly/2_Assembly/tRNAscan/{assembler}/genome.stats",
+          gff="results/Genomics/1_Assembly/2_Assembly/tRNAscan/{assembler}/genome.gff"
     conda:
          "envs/genomics.yaml"
     script:
@@ -62,8 +62,8 @@ rule tRNAscan_cov:
          genome="results/Genomics/1_Assembly/2_Assembly/pilon/{assembler}/assembly_polished.fasta"
     params: threads=8
     output:
-          tRNA="results/Genomics/1_Assembly/2_Assembly/{assembler}/sensitive_search/genome.tRNAscan_cov",
-          stats="results/Genomics/1_Assembly/2_Assembly/{assembler}/sensitive_search/genome.stats_cov"
+          tRNA="results/Genomics/1_Assembly/2_Assembly/tRNAscan/sensitive_search/{assembler}/genome.tRNAscan_cov",
+          stats="results/Genomics/1_Assembly/2_Assembly/tRNAscan/sensitive_search/{assembler}/genome.stats_cov"
     conda:
          "envs/genomics.yaml"
     script:
@@ -73,7 +73,7 @@ rule barrnap:
     input:
          genome="results/Genomics/1_Assembly/2_Assembly/pilon/{assembler}/assembly_polished.fasta"
     output:
-          gff="results/ComparativeGenomics/1_GenomeStructureLevel/{assembler}/genome.rrna.gff",
+          gff="results/ComparativeGenomics/1_GenomeStructureLevel/barrnap/{assembler}/genome.rrna.gff",
     conda:
          "envs/genomics.yaml"
     script:
@@ -84,7 +84,7 @@ rule cdhit:
         genome = "results/Genomics/1_Assembly/2_Assembly/pilon/{assembler}/assembly_polished.fasta"
     params:
         threads=8
-    output: "results/ComparativeGenomics/1_GenomeStructureLevel/{assembler}/genome_{n}.cdhit"
+    output: "results/ComparativeGenomics/1_GenomeStructureLevel/cdhit/{assembler}/genome_{n}.cdhit"
     conda:
          "envs/genomics.yaml"
     script:
