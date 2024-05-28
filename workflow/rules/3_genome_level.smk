@@ -25,7 +25,7 @@ rule repeatmodeler:
           "results/ComparativeGenomics/1_GenomeStructureLevel/RModeler/{assembler}/genome_db-families.fasta"
     params:
           db_name="results/ComparativeGenomics/1_GenomeStructureLevel/RModeler/{assembler}/genome_db",
-          threads = 8,
+          threads = 32,
           engine="ncbi"
     conda:
          "envs/genomics.yaml"
@@ -47,7 +47,7 @@ rule repeatmasker:
 rule tRNAscan:
     input:
          genome="results/Genomics/1_Assembly/2_Assemblers/{assembler}/assembly.fasta"
-    params: threads=8
+    params: threads=32
     output:
           tRNA="results/Genomics/1_Assembly/2_Assembly/tRNAscan/{assembler}/genome.tRNAscan",
           stats="results/Genomics/1_Assembly/2_Assembly/tRNAscan/{assembler}/genome.stats",
@@ -60,7 +60,7 @@ rule tRNAscan:
 rule tRNAscan_cov:
     input:
          genome="results/Genomics/1_Assembly/2_Assemblers/{assembler}/assembly.fasta"
-    params: threads=8
+    params: threads=32
     output:
           tRNA="results/Genomics/1_Assembly/2_Assembly/tRNAscan/sensitive_search/{assembler}/genome.tRNAscan_cov",
           stats="results/Genomics/1_Assembly/2_Assembly/tRNAscan/sensitive_search/{assembler}/genome.stats_cov"
@@ -83,7 +83,7 @@ rule cdhit:
     input:
         genome = "results/Genomics/1_Assembly/2_Assemblers/{assembler}/assembly.fasta"
     params:
-        threads=8
+        threads=32
     output: "results/ComparativeGenomics/1_GenomeStructureLevel/cdhit/{assembler}/genome_{n}.cdhit"
     conda:
          "envs/genomics.yaml"
