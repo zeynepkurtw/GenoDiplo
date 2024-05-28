@@ -18,7 +18,7 @@ rule glimmerhmm:
           v=50
     output:
         trained_genes = "results/Genomics/2_Annotation/1_Structural/glimmerhmm/{assembler}/genome_trained_genes.hmm",
-        gff="results/Genomics/2_Annotation/1_Structural/{assembler}/genome.gff",
+        gff="results/Genomics/2_Annotation/1_Structural/glimmerhmm/{assembler}/genome.gff",
     conda:
         "envs/genomics.yaml"
     script:
