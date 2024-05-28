@@ -3,7 +3,7 @@ rule build_database_repeatmodeler:
     input:
          genome="results/Genomics/1_Assembly/2_Assembly/pilon/{assembler}/assembly_polished.fasta",
     output:
-          multiext("results/ComparativeGenomics/1_GenomeStructureLevel/{assembler}/RModeler/genome_db",
+          multiext("results/ComparativeGenomics/1_GenomeStructureLevel/RModeler/{assembler}/genome_db",
                    ".nhr",
                    ".nnd",
                    ".nin",
@@ -12,7 +12,7 @@ rule build_database_repeatmodeler:
                    ".nsq",
                    ".translation")
     params:
-          db_name="results/ComparativeGenomics/1_GenomeStructureLevel/{assembler}/RModeler/genome_db"
+          db_name="results/ComparativeGenomics/1_GenomeStructureLevel/RModeler/{assembler}/genome_db"
     conda:
          "envs/genomics.yaml"
     script:
